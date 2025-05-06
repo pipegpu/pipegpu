@@ -1,0 +1,110 @@
+/**
+ * @description
+ * pipegup context descriptor
+ */
+interface IContextOpts 
+{
+    /**
+     * selector for the element to be used as a context
+     * for example: 'canvas'
+     */
+    selector: string;
+
+    /**
+     * width of the context
+     *
+     */
+    width: number;
+
+    /**
+     * height of the context
+     */
+    height: number;
+
+    /**
+     * pixel ratio of the context
+     * @description this is the ratio of the device pixel ratio to the css pixel ratio
+     */
+    devicePixelRatio: number;
+}
+
+/**
+ * 
+ * @param container 
+ * @param width 
+ * @param height 
+ * @param devicePixelRatio 
+ */
+const createCanvasElement = (
+    container: HTMLElement,
+    width: number,
+    height: number,
+    devicePixelRatio: number
+): HTMLCanvasElement => {
+    const canvas = document.createElement('canvas');
+    const w = width || container.clientWidth || window.innerWidth;
+    const h = height || container.clientHeight || window.innerHeight;
+    canvas.width = w * devicePixelRatio;
+    canvas.height = h * devicePixelRatio;
+    canvas.style.border = `0px`;
+    canvas.style.margin = `0px`;
+    canvas.style.padding = `0px`;
+    canvas.style.top = `0px`;
+    canvas.style.left = `0px`;
+    canvas.style.width = `${w}px`;
+    canvas.style.height = `${h}px`;
+    container === document.body ? canvas.style.position = 'absolute' : null;
+    container.appendChild(canvas);
+    return canvas;
+}
+
+/**
+ * @description
+ * @param container 
+ * @param width 
+ * @param height 
+ * @param devicePixelRatio  
+ */
+interface ContextDesc extends IContextOpts 
+{
+    /**
+     * @description
+     * @param container the container element to be used as a context
+     */
+    container:HTMLElement;
+
+    /**
+     * @description
+     * @param canvas the canvas element to be used as a context
+     */
+    canvas:HTMLCanvasElement;
+}
+
+/**
+ * @description
+ * @param opts 
+ */
+const parseContextDesc = (opts: IContextOpts = {
+    selector: "",
+    width: 0,
+    height: 0,
+    devicePixelRatio: 0
+}): ContextDesc => {
+    const container = document.body;
+    const canvas = createCanvasElement(container, opts.width, opts.height, opts.devicePixelRatio);
+    let desc:ContextDesc = {
+        selector: "",
+        width: 0,
+        height: 0,
+        devicePixelRatio: opts.devicePixelRatio || devicePixelRatio || 1.0,
+        container:container,
+        canvas:canvas
+    };
+    return desc;
+}
+
+export {
+    type IContextOpts,
+    type ContextDesc,
+    parseContextDesc
+}
