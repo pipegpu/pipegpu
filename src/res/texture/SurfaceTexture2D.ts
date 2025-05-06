@@ -1,7 +1,7 @@
 import type { Context } from "../Context";
-import { BaseBuffer } from "./BaseBuffer";
+import { BaseTexture } from "./BaseTexture";
 
-class IndexBuffer extends BaseBuffer {
+class SurfaceTexture2D extends BaseTexture {
 
     constructor(
         opts: {
@@ -9,15 +9,16 @@ class IndexBuffer extends BaseBuffer {
             ctx: Context
         }
     ) {
+
         super({
             id: opts.id,
             ctx: opts.ctx,
-            bufferUsageFlags: GPUBufferUsage.INDEX | GPUBufferUsage.COPY_DST
-        })
+            textureUsageFlags: GPUTextureUsage.RENDER_ATTACHMENT
+        });
     }
 
 }
 
 export {
-    IndexBuffer
+    SurfaceTexture2D
 }

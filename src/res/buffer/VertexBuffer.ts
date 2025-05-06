@@ -12,7 +12,7 @@ class VertexBuffer extends BaseBuffer {
         super({
             id: opts.id,
             ctx: opts.ctx,
-            usageFlags: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST
+            bufferUsageFlags: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST
         })
     }
 

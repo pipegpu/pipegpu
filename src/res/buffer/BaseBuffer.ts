@@ -14,7 +14,7 @@ class BaseBuffer {
     /**
      * 
      */
-    private usageFlags: GPUBufferUsageFlags | null | undefined;
+    private bufferUsageFlags: GPUBufferUsageFlags | null | undefined;
 
     /**
      *
@@ -28,12 +28,12 @@ class BaseBuffer {
         opts: {
             id: number,
             ctx: Context,
-            usageFlags: GPUBufferUsageFlags
+            bufferUsageFlags: GPUBufferUsageFlags
         }
     ) {
         this.id = opts.id;
         this.ctx = opts.ctx;
-        this.usageFlags = opts.usageFlags;
+        this.bufferUsageFlags = opts.bufferUsageFlags;
     }
 
     /**

@@ -12,7 +12,7 @@ class StorageBuffer extends BaseBuffer {
         super({
             id: opts.id,
             ctx: opts.ctx,
-            usageFlags: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST
+            bufferUsageFlags: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST
         })
     }
 
