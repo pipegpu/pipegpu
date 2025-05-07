@@ -13,14 +13,22 @@ class BaseShader {
     /**
      * 
      */
+    private shaderStage: GPUFlagsConstant;
+
+    /**
+     * 
+     */
     constructor(
         opts: {
             id: number,
-            ctx: Context
+            ctx: Context,
+            shaderStage: GPUFlagsConstant,
+            code: string,
+            entryPoint: string
         }
     ) {
         this.ctx = opts.ctx;
-
+        this.shaderStage = opts.shaderStage;
     }
 
 }

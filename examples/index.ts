@@ -17,9 +17,15 @@ import { reflectShaderUniforms, type IReflectUniforms } from '../src/util/reflec
 
     const fragment_code = `
 
+    @group(1) @binding(0) var<uniform> uColorR:f32;
+
+    @group(1) @binding(1) var<uniform> uColorG:f32;
+
+    @group(1) @binding(2) var<uniform> uColorB:f32;
+
     @fragment
     fn fs_main() -> @location(0) vec4f {
-        return vec4f(1.0, 0.4, 1.0, 1.0);
+        return vec4f(uColorR, uColorG, uColorB, 1.0);
     }
 
     `;
@@ -27,7 +33,7 @@ import { reflectShaderUniforms, type IReflectUniforms } from '../src/util/reflec
     const rfas: IReflectAttributes = reflectShaderAttributes(vertex_code, "vs_main");
     console.log(rfas);
 
-    const rfus: IReflectUniforms = reflectShaderUniforms(fragment_code, "fs_main", "FRAGMENT");
+    const rfus: IReflectUniforms = reflectShaderUniforms(fragment_code, "fs_main", GPUShaderStage.FRAGMENT);
     console.log(rfus);
 
 })();

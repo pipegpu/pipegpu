@@ -3,12 +3,12 @@ type TypedArrayFormat = Int8Array | Uint8Array | Uint8ClampedArray | Int16Array 
 
 type ShapedArrayFormat = number[][][] | number[][] | number[] | TypedArrayFormat;
 
-type GPUShaderStageFormat = keyof {
-    [key in keyof typeof GPUShaderStage]: string
-}
+// type GPUShaderStageFormat = keyof {
+//     [key in keyof typeof GPUShaderStage]: string
+// }
 
 export type {
-    GPUShaderStageFormat,
+    // GPUShaderStageFormat,
     TypedArrayFormat,
     ShapedArrayFormat
 }
