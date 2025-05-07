@@ -1,10 +1,14 @@
+import { Compiler } from '../src/compile/Compiler.ts';
 import { Context } from '../src/res/Context.ts';
+import { VertexShader } from '../src/res/shader/VertexShader.ts';
 import { reflectShaderAttributes, type IReflectAttributes } from '../src/util/reflectShaderAttributes.ts';
 import { reflectShaderUniforms, type IReflectUniforms } from '../src/util/reflectShaderUniforms.ts';
 
 (async () => {
+
     const ctx = new Context();
     await ctx.init();
+    const compiler: Compiler = new Compiler({ ctx: ctx });
 
     const vertex_code = `
 
