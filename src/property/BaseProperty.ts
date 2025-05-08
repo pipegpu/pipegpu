@@ -1,18 +1,9 @@
-/**
- * 
- */
-const SupportedPropertyConst = {
-    DrawCount: "DrawCount",
-    DrawIndexed: "DrawIndexed",
-} as const;
-
-type SupportedProperty = keyof typeof SupportedPropertyConst;
+import type { PropertyFormat } from "../res/Format";
 
 /**
  * 
  */
 class BaseProperty {
-
     /**
      * 
      */
@@ -21,25 +12,25 @@ class BaseProperty {
     /**
      * 
      */
-    private supportedProperty: SupportedProperty;
+    private propertyFormat: PropertyFormat;
 
     /**
      * 
      * @param propertyName 
      * @param supportedProperty 
      */
-    constructor(propertyName: string, supportedProperty: SupportedProperty) {
+    constructor(propertyName: string, supportedProperty: PropertyFormat) {
 
         this.propertyName = propertyName;
-        this.supportedProperty = supportedProperty;
+        this.propertyFormat = supportedProperty;
     }
 
     /**
      * 
      * @returns 
      */
-    getSupportedProperty = (): SupportedProperty => {
-        return this.supportedProperty;
+    getPropertyFormat = (): PropertyFormat => {
+        return this.propertyFormat;
     }
 
     /**
@@ -49,10 +40,8 @@ class BaseProperty {
     getPropertyName = (): string => {
         return this.propertyName;
     }
-
 }
 
 export {
-    type SupportedProperty,
     BaseProperty
 };

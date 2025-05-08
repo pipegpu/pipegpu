@@ -9,7 +9,7 @@ class Context {
     /**
      * 
      */
-    private gpuContext: GPUCanvasContext | null;
+    private gpuContext: GPUCanvasContext | null | undefined;
 
     /**
      *  
@@ -36,6 +36,10 @@ class Context {
      */
     private limits: GPUSupportedLimits | undefined;
 
+    /**
+     * 
+     * @param opts 
+     */
     constructor(opts: IContextOpts = {
         selector: "",
         width: 0,
@@ -44,6 +48,7 @@ class Context {
     }) {
         this.contextDesc = parseContextDesc(opts);
         this.gpuContext = this.contextDesc.canvas.getContext("webgpu");
+
     }
 
     async init() {
@@ -59,8 +64,21 @@ class Context {
         this.queue = this.device?.queue;
     }
 
+    /**
+     * 
+     * @returns 
+     */
+    getGpuDevice = (): GPUDevice => {
+        return this.device as GPUDevice;
+    }
 
-
+    /**
+     * 
+     * @returns 
+     */
+    getGpuQueue = (): GPUQueue => {
+        return this.queue as GPUQueue;
+    }
 }
 
 export {

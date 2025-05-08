@@ -1,4 +1,4 @@
-import type { TypedArrayFormat } from "./Format";
+import type { TypedArray1DFormat } from "./Format";
 
 /**
  * @param v search 16 pow of 2
@@ -70,9 +70,9 @@ class BufferPool {
      * @param size 
      * @returns 
      */
-    public allocType = (scomponent: SComponent, size: number): TypedArrayFormat => {
+    public allocType = (scomponent: SComponent, size: number): TypedArray1DFormat => {
         const alloc = this.alloc;
-        let arr: TypedArrayFormat = null as any;
+        let arr: TypedArray1DFormat = null as any;
         switch (scomponent) {
             case 'BYTE':
                 arr = new Int8Array(alloc(size), 0, size);
@@ -115,7 +115,7 @@ class BufferPool {
      * @description free typed arraybuffer
      * @param typedArraybuffer 
      */
-    public freeType = (typedArraybuffer: TypedArrayFormat): void => {
+    public freeType = (typedArraybuffer: TypedArray1DFormat): void => {
         this.free(typedArraybuffer.buffer);
     }
 }
@@ -125,6 +125,6 @@ class BufferPool {
  */
 const bufferPool0 = new BufferPool();
 
-export { 
+export {
     bufferPool0
 }

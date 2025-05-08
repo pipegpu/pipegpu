@@ -1,6 +1,8 @@
 import { Compiler, type RenderHolderDesc } from '../src/compile/Compiler.ts';
+import type { RenderHolder } from '../src/holder/RenderHolder.ts';
 import { RenderProperty } from '../src/property/dispatch/RenderProperty.ts';
 import { Attributes, Uniforms } from '../src/property/Properties.ts';
+import { VertexBuffer } from '../src/res/buffer/VertexBuffer.ts';
 import { Context } from '../src/res/Context.ts';
 import { VertexShader } from '../src/res/shader/VertexShader.ts';
 import { reflectShaderAttributes, type IReflectAttributes } from '../src/util/reflectShaderAttributes.ts';
@@ -41,15 +43,21 @@ import { reflectShaderUniforms, type IReflectUniforms } from '../src/util/reflec
         dispatch: new RenderProperty(6, 1)
     };
 
+    const vertexArr = new Float32Array([-0.15, -0.5, 0.5, -0.5, 0.0, 0.5, -0.55, -0.5, -0.05, 0.5, -0.55, 0.5]);
+    const vertexBuffer = compiler.createVertexBuffer({
+        rawData: vertexArr
+    });
+    desc.attributes.assign("in_vertex_position", vertexBuffer);
 
-    console.log(desc);
+    const uniformBufferR = compiler.createUniformBuffer({ rawData: new Float32Array([1.0]) });
+    const uniformBufferG = compiler.createUniformBuffer({ rawData: new Float32Array([0.2]) });
+    const uniformBufferB = compiler.createUniformBuffer({ rawData: new Float32Array([0.0]) });
 
-    // const rfas: IReflectAttributes = reflectShaderAttributes(vertex_code, "vs_main");
-    // console.log(rfas);
+    desc.uniforms.assign("uColorR", uniformBufferR);
+    desc.uniforms.assign("uColorG", uniformBufferG);
+    desc.uniforms.assign("uColorB", uniformBufferB);
 
-    // const rfus: IReflectUniforms = reflectShaderUniforms(fragment_code, "fs_main", GPUShaderStage.FRAGMENT);
-    // console.log(rfus);
-
+    const holder: RenderHolder | undefined = compiler.compileRenderHolder(desc);
 })();
 
 

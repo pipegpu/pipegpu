@@ -1,26 +1,39 @@
 import { Context } from "../Context.ts"
+import type { FrameStageFormat, TypedArray1DFormat, TypedArray2DFormat } from "../Format.ts";
 
+/**
+ * e.g for vertex / index / unfiorm buffer.
+ */
+type Handle1D = () => TypedArray1DFormat;
 
+/**
+ * e.g for storage buffer.
+ */
+type Handle2D = () => TypedArray2DFormat;
 
 /**
  * 
  */
-class BaseBuffer {
-
+abstract class BaseBuffer {
     /**
-     * 
-     */
-    private ctx: Context | null | undefined;
-
-    /**
-     * 
-     */
-    private bufferUsageFlags: GPUBufferUsageFlags | null | undefined;
-
-    /**
-     *
-     */
+    *
+    */
     private id: number;
+
+    /**
+     * 
+     */
+    protected ctx: Context | undefined;
+
+    /**
+     * 
+     */
+    protected bufferUsageFlags: GPUBufferUsageFlags | undefined;
+
+    /**
+     * 
+     */
+    protected buffer: GPUBuffer | undefined = undefined;
 
     /**
      * 
@@ -37,6 +50,8 @@ class BaseBuffer {
         this.bufferUsageFlags = opts.bufferUsageFlags;
     }
 
+    abstract getGpuBuffer(encoder: GPUCommandEncoder, frameStage: FrameStageFormat): void;
+
     /**
      * 
      * @returns 
@@ -44,9 +59,10 @@ class BaseBuffer {
     getId = (): number => {
         return this.id;
     }
-
 }
 
 export {
+    type Handle1D,
+    type Handle2D,
     BaseBuffer
 }
