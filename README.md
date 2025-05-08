@@ -11,19 +11,19 @@
 - [] parseContextDesc
 
 ### holder
-- [] ComputeHolder
-- [] RenderHolder
+- [ ] ComputeHolder
+- [ ] RenderHolder
 
 ### property
-- [] Properties
-- [] BaseProperty
-- [] StorageBufferProperty (uniforms)
-- [] TextureProperty (uniforms)
-- [] TextureSamplerProperty (uniforms)
-- [] UniformBufferProperty (uniforms)
-- [] VertexBufferProperty (attribute)
-- [] ComputeProperty (dispatch)
-- [] RenderProperty (dispatch)
+- [ ] Properties
+- [ ] BaseProperty
+- [ ] StorageBufferProperty (uniforms)
+- [ ] TextureProperty (uniforms)
+- [ ] TextureSamplerProperty (uniforms)
+- [ ] UniformBufferProperty (uniforms)
+- [ ] VertexBufferProperty (attribute)
+- [ ] ComputeProperty (dispatch)
+- [ ] RenderProperty (dispatch)
 
 ### res
 - [] Pool
