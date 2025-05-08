@@ -7,8 +7,10 @@ import type { Context } from "../res/Context";
 import type { TypedArray1DFormat } from "../res/Format";
 import { uniqueID } from "../util/uniqueID";
 
+/**
+ * 
+ */
 class BufferState {
-
     /**
      * 
      */
@@ -34,12 +36,12 @@ class BufferState {
      */
     createIndexBuffer(id: number = 0): IndexBuffer {
         if (!BufferState.BUFFER_SET.has(id)) {
-            const idx: number = uniqueID();
+            id = uniqueID();
             const buffer: IndexBuffer = new IndexBuffer({
                 id: uniqueID(),
                 ctx: this.ctx
             });
-            BufferState.BUFFER_SET.set(idx, buffer);
+            BufferState.BUFFER_SET.set(id, buffer);
         }
         return BufferState.BUFFER_SET.get(id) as IndexBuffer;
     }
@@ -51,12 +53,12 @@ class BufferState {
      */
     createStorageBuffer(id: number = -1): StorageBuffer {
         if (!BufferState.BUFFER_SET.has(id)) {
-            const idx: number = uniqueID();
+            id = uniqueID();
             const buffer: StorageBuffer = new StorageBuffer({
                 id: uniqueID(),
                 ctx: this.ctx
             });
-            BufferState.BUFFER_SET.set(idx, buffer);
+            BufferState.BUFFER_SET.set(id, buffer);
         }
         return BufferState.BUFFER_SET.get(id) as StorageBuffer;
     }
@@ -74,14 +76,14 @@ class BufferState {
         id: number = -1
     ): UniformBuffer => {
         if (!BufferState.BUFFER_SET.has(id)) {
-            const idx: number = uniqueID();
+            id = uniqueID();
             const buffer: UniformBuffer = new UniformBuffer({
                 id: uniqueID(),
                 ctx: this.ctx,
                 typedArrayData1D: opts.rawData,
                 handler: opts.handler
             });
-            BufferState.BUFFER_SET.set(idx, buffer);
+            BufferState.BUFFER_SET.set(id, buffer);
         }
         return BufferState.BUFFER_SET.get(id) as UniformBuffer;
     }
@@ -100,18 +102,17 @@ class BufferState {
         id: number = -1
     ): VertexBuffer => {
         if (!BufferState.BUFFER_SET.has(id)) {
-            const idx: number = uniqueID();
+            id = uniqueID();
             const buffer: VertexBuffer = new VertexBuffer({
                 id: uniqueID(),
                 ctx: this.ctx,
                 typedArrayData1D: opts.rawData,
                 handler: opts.handler
             });
-            BufferState.BUFFER_SET.set(idx, buffer);
+            BufferState.BUFFER_SET.set(id, buffer);
         }
         return BufferState.BUFFER_SET.get(id) as VertexBuffer;
     }
-
 }
 
 export {

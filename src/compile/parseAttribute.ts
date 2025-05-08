@@ -1,43 +1,72 @@
-import type { VertexBuffer } from "../res/buffer/VertexBuffer"
-import type { ShapedArrayFormat } from "../res/Format"
-import type { Props, TProps } from "../res/Props"
+import type { VertexBufferProperty } from "../property/attribute/VertexBufferProperty"
+import type { BaseProperty } from "../property/BaseProperty"
+import type { Attributes } from "../property/Properties"
+import type { PropertyFormat } from "../res/Format"
 
+/**
+ * 
+ */
 interface IAttributeRecord {
     name: string,
     offset: number,
     stride: number,
+    type: PropertyFormat,
     normalized: boolean
-}
-
-/**
- * 
- * @param buffer, support vertex buffer(gpu warpped buffer) or shaped array format(raw value).
- * @param [offset]
- * @param [stride]
- * @param [vertexFormat]
- * 
- */
-interface IAttributeBuffer {
-    buffer: VertexBuffer | ShapedArrayFormat,
-    offset?: number,
-    stride?: number,
-    vertexFormat?: GPUVertexFormat
-}
-
-type TAttribute = {
-    [propName in string | number]: ShapedArrayFormat | IAttributeBuffer | Props<TProps>;
 }
 
 /**
  * 
  * @param opts 
  */
-const parseAttribute = <TA extends TAttribute>(opts: {}): Map<string, IAttributeRecord> => {
-    let attributeMap: Map<string, IAttributeRecord> = new Map();
+const parseAttribute = (
+    attributes: Attributes,
+    attributeRecordMap: Map<string, IAttributeRecord>,
+    bufferAttributeRecordsMap: Map<number, Map<string, IAttributeRecord>>
+): void => {
+    if (attributes.isEmpty()) {
+        console.log(`[I][parseAttribute] input 'attributes' is empty.`);
+        return;
+    }
 
-    return attributeMap;
+    const appendBufferIDWithAttributeRecords = (bufferID: number, record: IAttributeRecord): void => {
+        if (!bufferAttributeRecordsMap.has(bufferID)) {
+            const records: Map<string, IAttributeRecord> = new Map();
+            bufferAttributeRecordsMap.set(bufferID, records);
+        }
+        const records = bufferAttributeRecordsMap.get(bufferID);
+        records?.set(record.name, record);
+    }
+
+    const propertyMap: Map<string, BaseProperty> = attributes.getPropertyMap();
+    propertyMap.forEach((propertyBase: BaseProperty, propertyName: string) => {
+        const t: PropertyFormat = propertyBase.getPropertyFormat();
+        switch (t) {
+            case "VertexBuffer":
+                {
+                    const vertexBufferProperty: VertexBufferProperty = propertyBase as VertexBufferProperty;
+                    const bufferID: number = vertexBufferProperty.getVertexBufferID();
+                    let record: IAttributeRecord = {
+                        name: propertyName,
+                        type: t,
+                        offset: 0,
+                        stride: 0,
+                        normalized: false
+                    };
+                    appendBufferIDWithAttributeRecords(bufferID, record);
+                    attributeRecordMap.set(propertyName, record);
+                    break;
+                }
+            default:
+                {
+                    console.log(`[E][ParseAttribute] unsupport property type: ${t}`);
+                    break;
+                }
+        }
+    });
+
 }
 
 export {
+    type IAttributeRecord,
     parseAttribute
 }

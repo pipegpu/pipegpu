@@ -12,7 +12,7 @@ import type { VertexShader } from "../res/shader/VertexShader";
 import { BufferState } from "../state/BufferState";
 import { ShaderState } from "../state/ShaderState";
 import { StringState } from "../state/StringState";
-import { parseAttribute } from "./parseAttribute";
+import { parseAttribute, type IAttributeRecord } from "./parseAttribute";
 
 /**
  * 
@@ -103,7 +103,13 @@ class Compiler {
             console.log(`[E][Compiler][compileRenderHolder] missing shader, vertexShader: ${vertexShader}; fragmentShader:${fragmentShader}`);
             return undefined;
         }
-        parseAttribute({});
+
+        const attributeRecordMap: Map<string, IAttributeRecord> = new Map();
+        const bufferAttributeRecordsMap: Map<number, Map<string, IAttributeRecord>> = new Map();
+        parseAttribute(desc.attributes, attributeRecordMap, bufferAttributeRecordsMap);
+
+        // TODO:: uniform buffer parse
+
     }
 
     /**

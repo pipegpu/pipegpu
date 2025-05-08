@@ -12,12 +12,22 @@ type TypedArray2DFormat = Array<TypedArray1DFormat>;
 /**
  * 
  */
-type FrameStageFormat = keyof { FrameBegin: "FrameBegin", FrameFinish: "FrameFinish" };
+type FrameStageFormat = keyof { FrameBegin: 'FrameBegin', FrameFinish: 'FrameFinish' };
 
 /**
  * 
  */
-type PropertyFormat = keyof { DrawCount: "DrawCount", DrawIndexed: "DrawIndexed" };
+type PropertyFormat = keyof {
+    DrawCount: 'DrawCount',
+    DrawIndexed: 'DrawIndexed',
+    VertexBuffer: 'VertexBuffer',
+    UniformBuffer: 'UniformBuffer',
+    IndexBuffer: 'IndexBuffer',
+    StorageBuffer: 'StorageBuffer',
+    Texutre2D: 'Texutre2D',
+    SurfaceTexture2D: 'SurfaceTexture2D',
+    TextureStorage2D: 'TextureStorage2D',
+};
 
 export type {
     PropertyFormat,
