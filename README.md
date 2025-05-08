@@ -6,9 +6,14 @@
 > descriptor of modules in pipegpu.
 
 ### compiler
-- [] Compiler
-- [] parseAttribute
-- [] parseContextDesc
+- [ ] Compiler
+- [ ] parseAttribute
+- [ ] parseContextDesc
+
+### graph
+- [b] BaseGraph
+- [ ] DirectedAcycilicGraph
+- [ ] OrderedGraph
 
 ### holder
 - [ ] ComputeHolder
