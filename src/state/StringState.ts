@@ -21,12 +21,23 @@ class StringState {
 
     /**
      * 
+     * @param key 
+     * @returns 
+     */
+    hasKey = (key: string): boolean => {
+        return StringState.STRINGSTATE_SET.has(key);
+    }
+
+    /**
+     * 
      * @param str 
      * @returns 
      */
-    id = (str: string) => {
+    id = (str: string): number => {
         let result = StringState.STRINGSTATE_SET.get(str);
-        if (result) return result;
+        if (result) {
+            return result;
+        }
         result = this.stringValues.length;
         StringState.STRINGSTATE_SET.set(str, result);
         this.stringValues.push(str);
@@ -38,7 +49,7 @@ class StringState {
      * @param id 
      * @returns 
      */
-    str = (id: number) => {
+    str = (id: number): string => {
         return this.stringValues[id];
     }
 

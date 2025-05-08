@@ -21,7 +21,7 @@ class BufferState {
         this.ctx = opts.ctx;
     }
 
-    acquireIndexBuffer(id: number = 0): IndexBuffer {
+    createIndexBuffer(id: number = 0): IndexBuffer {
         if (!BufferState.BUFFER_SET.has(id)) {
             const idx: number = uniqueID();
             const buffer: IndexBuffer = new IndexBuffer({
@@ -33,7 +33,7 @@ class BufferState {
         return BufferState.BUFFER_SET.get(id) as IndexBuffer;
     }
 
-    acquireStorageBuffer(id: number = 0): StorageBuffer {
+    createStorageBuffer(id: number = 0): StorageBuffer {
         if (!BufferState.BUFFER_SET.has(id)) {
             const idx: number = uniqueID();
             const buffer: StorageBuffer = new StorageBuffer({
@@ -45,7 +45,7 @@ class BufferState {
         return BufferState.BUFFER_SET.get(id) as StorageBuffer;
     }
 
-    acquireVertexBuffer(id: number = 0): VertexBuffer {
+    createVertexBuffer(id: number = 0): VertexBuffer {
         if (!BufferState.BUFFER_SET.has(id)) {
             const idx: number = uniqueID();
             const buffer: VertexBuffer = new VertexBuffer({

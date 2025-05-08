@@ -34,11 +34,20 @@ import { reflectShaderUniforms, type IReflectUniforms } from '../src/util/reflec
 
     `;
 
-    const rfas: IReflectAttributes = reflectShaderAttributes(vertex_code, "vs_main");
-    console.log(rfas);
+    const vertexShader = compiler.createVertexShader({ code: vertex_code, entryPoint: "vs_main" });
+    const fragmentShader = compiler.createFragmentShader({ code: vertex_code, entryPoint: "fs_main" });
 
-    const rfus: IReflectUniforms = reflectShaderUniforms(fragment_code, "fs_main", GPUShaderStage.FRAGMENT);
-    console.log(rfus);
+
+
+
+    console.log(vertexShader);
+    console.log(fragmentShader);
+
+    // const rfas: IReflectAttributes = reflectShaderAttributes(vertex_code, "vs_main");
+    // console.log(rfas);
+
+    // const rfus: IReflectUniforms = reflectShaderUniforms(fragment_code, "fs_main", GPUShaderStage.FRAGMENT);
+    // console.log(rfus);
 
 })();
 
