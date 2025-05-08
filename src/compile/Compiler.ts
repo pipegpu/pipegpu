@@ -1,3 +1,5 @@
+import type { RenderProperty } from "../property/dispatch/RenderProperty";
+import type { Attributes, Uniforms } from "../property/Properties";
 import type { Context } from "../res/Context";
 import type { ComputeShader } from "../res/shader/ComputeShader";
 import type { FragmentShader } from "../res/shader/FragmentShader";
@@ -5,18 +7,27 @@ import type { VertexShader } from "../res/shader/VertexShader";
 import { BufferState } from "../state/BufferState";
 import { ShaderState } from "../state/ShaderState";
 import { StringState } from "../state/StringState";
+import { parseAttribute } from "./parseAttribute";
 
-// interface RenderHolderDesc {
-//     debugLable: string,
-//     vertexShader: VertexShader,
-//     fragmentShader: FragmentShader,
-// attributes:Map<string,
+/**
+ * 
+ */
+interface RenderHolderDesc {
+    label: string,
+    vertexShader: VertexShader,
+    fragmentShader: FragmentShader,
+    attributes: Attributes,
+    uniforms: Uniforms,
+    dispatch: RenderProperty,
+}
 
-// }
-
-// interface ComputeHolderDesc {
-
-// }
+/**
+ * 
+ */
+interface ComputeHolderDesc {
+    label: string,
+    computeShader: ComputeShader,
+}
 
 /**
  * 
@@ -58,6 +69,17 @@ class Compiler {
         this.shaderState = new ShaderState({ ctx: this.ctx, stringState: this.stringState });
     }
 
+    compileRenderHolder = (desc: RenderHolderDesc) => {
+        const vertexShader = desc.vertexShader, fragmentShader = desc.fragmentShader;
+        if (!vertexShader || !fragmentShader) {
+            console.log(`[E][Compiler][compileRenderHolder] missing shader, vertexShader: ${vertexShader}; fragmentShader:${fragmentShader}`);
+            return undefined;
+        }
+        parseAttribute({});
+
+    }
+
+
     createVertexShader = (
         opts: {
             code: string,
@@ -91,5 +113,6 @@ class Compiler {
 }
 
 export {
+    type RenderHolderDesc,
     Compiler
 }

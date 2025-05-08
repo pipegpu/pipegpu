@@ -66,5 +66,6 @@ class Uniforms extends Properties {
 
 export {
     Properties,
-    Attributes
+    Attributes,
+    Uniforms
 }
