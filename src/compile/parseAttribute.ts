@@ -3,7 +3,10 @@ import type { ShapedArrayFormat } from "../res/Format"
 import type { Props, TProps } from "../res/Props"
 
 interface IAttributeRecord {
-
+    name: string,
+    offset: number,
+    stride: number,
+    normalized: boolean
 }
 
 /**
@@ -29,8 +32,12 @@ type TAttribute = {
  * 
  * @param opts 
  */
-const parseAttributes = <TA extends TAttribute>(opts: {}): Map<string, IAttributeRecord> => {
+const parseAttribute = <TA extends TAttribute>(opts: {}): Map<string, IAttributeRecord> => {
     let attributeMap: Map<string, IAttributeRecord> = new Map();
 
     return attributeMap;
+}
+
+export {
+    parseAttribute
 }
