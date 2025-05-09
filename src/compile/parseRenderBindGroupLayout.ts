@@ -1,10 +1,18 @@
 import type { Context } from "../res/Context"
 import type { FragmentShader } from "../res/shader/FragmentShader"
 import type { VertexShader } from "../res/shader/VertexShader"
-import { parseBindGroupLayout } from "./ParseBindGroupLayout";
+import { parseBindGroupLayout } from "./parseBindGroupLayout";
 
-
-
+/**
+ * 
+ * @param ctx 
+ * @param vertexShader 
+ * @param fragmentShader 
+ * @param bindGroupLayouts 
+ * @param gourpIDWithBindGroupLayoutMap 
+ * @param gourpIDWithBindGroupLayoutDescriptorMap 
+ * @returns 
+ */
 const parseRenderBindGroupLayout = (
     ctx: Context,
     vertexShader: VertexShader,

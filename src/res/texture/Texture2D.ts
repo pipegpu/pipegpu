@@ -22,10 +22,17 @@ class Texture2D extends BaseTexture {
 
     /**
      * 
+     */
+    protected override createGpuTexture(): void {
+        throw new Error("Method not implemented.");
+    }
+
+    /**
+     * 
      * @param encoder 
      * @param frameStage 
      */
-    getGpuTexture = (encoder: GPUCommandEncoder, frameStage: FrameStageFormat): void => {
+    override getGpuTexture = (encoder: GPUCommandEncoder, frameStage: FrameStageFormat): void => {
 
 
     }

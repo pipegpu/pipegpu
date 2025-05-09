@@ -12,26 +12,75 @@ type TypedArray2DFormat = Array<TypedArray1DFormat>;
 /**
  * 
  */
-type FrameStageFormat = keyof { FrameBegin: 'FrameBegin', FrameFinish: 'FrameFinish' };
+type BlendFormat =
+    | 'opaque'
+    | 'addAlphaSrcOneDst'   // color = src * k + dst * ( 1- k);
+    ;
 
 /**
  * 
  */
-type PropertyFormat = keyof {
-    None: 'None',
-    DrawCount: 'DrawCount',
-    DrawIndexed: 'DrawIndexed',
-    DrawIndirect: 'DrawIndirect',
-    VertexBuffer: 'VertexBuffer',
-    UniformBuffer: 'UniformBuffer',
-    IndexBuffer: 'IndexBuffer',
-    StorageBuffer: 'StorageBuffer',
-    Texutre2D: 'Texutre2D',
-    SurfaceTexture2D: 'SurfaceTexture2D',
-    TextureStorage2D: 'TextureStorage2D',
-};
+type ColorLoadStoreFormat =
+    | 'clearStore' // load clear, store store
+    | 'loadStore'   // load: load, store store
+    ;
+
+/**
+ * 
+ */
+type MultiSampleFormat =
+    | '1x'
+    | '2x'
+    | '4x'
+    | '8x'
+    ;
+
+/**
+ * 
+ */
+type FrameStageFormat =
+    | 'FrameBegin'
+    | 'FrameFinish'
+    ;
+
+/**
+ * 
+ */
+type PropertyFormat =
+    | 'None'
+    | 'DrawCount'
+    | 'DrawIndexed'
+    | 'DrawIndirect'
+    | 'VertexBuffer'
+    | 'UniformBuffer'
+    | 'IndexBuffer'
+    | 'StorageBuffer'
+    | 'Texutre2D'
+    | 'SurfaceTexture2D'
+    | 'TextureStorage2D'
+    ;
+
+/**
+ * 
+ */
+type DepthCompareFormat =
+    | 'lessEqual'
+    ;
+
+/**
+ * 
+ */
+type DepthLoadStoreFormat =
+    | 'loadStore'
+    | 'clearStore'
+    ;
 
 export type {
+    ColorLoadStoreFormat,
+    DepthLoadStoreFormat,
+    DepthCompareFormat,
+    BlendFormat,
+    MultiSampleFormat,
     PropertyFormat,
     FrameStageFormat,
     TypedArray1DFormat,

@@ -5,7 +5,7 @@ import type { Handle1D } from "../res/buffer/BaseBuffer";
 import type { UniformBuffer } from "../res/buffer/UniformBuffer";
 import type { VertexBuffer } from "../res/buffer/VertexBuffer";
 import type { Context } from "../res/Context";
-import type { FrameStageFormat, TypedArray1DFormat } from "../res/Format";
+import type { FrameStageFormat, MultiSampleFormat, TypedArray1DFormat } from "../res/Format";
 import type { RenderHandle } from "../res/Handle";
 import type { ComputeShader } from "../res/shader/ComputeShader";
 import type { FragmentShader } from "../res/shader/FragmentShader";
@@ -15,7 +15,9 @@ import { ShaderState } from "../state/ShaderState";
 import { StringState } from "../state/StringState";
 import { TextureState } from "../state/TextureState";
 import { parseAttribute, type IAttributeRecord } from "./parseAttribute";
+import { parseMultisampleState } from "./parseMultiSampleState";
 import { parseRenderBindGroupLayout } from "./parseRenderBindGroupLayout";
+import { parseRenderDispatch } from "./parseRenderDispatch";
 import { parseUniform, type IUniformRecord, type UniformHandle } from "./parseUniform";
 
 /**
@@ -50,7 +52,14 @@ interface RenderHolderDesc {
     /**
      * 
      */
+    multiSampleFormat?: MultiSampleFormat,
+
+    /**
+     * 
+     */
     dispatch: RenderProperty,
+
+    // colorAttachments: Coloratt
 }
 
 /**
@@ -163,8 +172,22 @@ class Compiler {
             gourpIDWithBindGroupLayoutDescriptorMap
         );
 
-        //
+        // parse render dispatch
         let renderHandler: RenderHandle = _emptyRenderHandler;
+        parseRenderDispatch(
+            this.bufferState,
+            desc.dispatch,
+            renderHandler
+        );
+
+        // parse multi sample state
+        let multiSampleState: GPUMultisampleState = {};
+        parseMultisampleState(
+            desc.multiSampleFormat || '1x',
+            multiSampleState
+        );
+
+
 
 
     }

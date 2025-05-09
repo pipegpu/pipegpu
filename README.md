@@ -11,14 +11,14 @@
 - [ ] emitRenderPipeline
 - [ ] emitUniforms
 - [x] parseAttribute
-- [ ] parseBindGroupLayout
+- [x] parseBindGroupLayout
 - [ ] parseColorAttachments
 - [ ] parseContextDesc
 - [ ] parseFragmentState
-- [ ] parseMSAAState
+- [x] parseMultisampleState
 - [ ] parsePipelineLayout
 - [ ] parsePrimitiveState
-- [ ] parseRenderBindGroupLayout
+- [x] parseRenderBindGroupLayout
 - [ ] parseRenderDispatch
 - [ ] parseUniform
 

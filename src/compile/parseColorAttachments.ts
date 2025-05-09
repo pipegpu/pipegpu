@@ -1,0 +1,8 @@
+
+const parseColorAttachments = () => {
+
+}
+
+export {
+    parseColorAttachments
+}

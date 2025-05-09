@@ -37,6 +37,18 @@ class IndexBuffer extends BaseBuffer {
 
     /**
      * 
+     * @returns 
+     */
+    getIndexCount = (): number => {
+        if (this.typedArrayData1D) {
+            return this.typedArrayData1D.byteLength / this.typedArrayData1D.BYTES_PER_ELEMENT;
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * 
      */
     createGpuBuffer = () => {
         this.byte_length = this.typedArrayData1D?.byteLength as number;
@@ -67,7 +79,7 @@ class IndexBuffer extends BaseBuffer {
      * @param _encoder 
      * @param frameStage 
      */
-    override getGpuBuffer = (_encoder: GPUCommandEncoder, _frameStage: FrameStageFormat): GPUBuffer => {
+    override getGpuBuffer = (_encoder: GPUCommandEncoder | null = null, _frameStage: FrameStageFormat = 'FrameBegin'): GPUBuffer => {
         if (!this.buffer) {
             this.createGpuBuffer();
         }

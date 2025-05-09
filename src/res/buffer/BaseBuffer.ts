@@ -63,7 +63,7 @@ abstract class BaseBuffer {
      * @param encoder 
      * @param frameStage 
      */
-    abstract getGpuBuffer(encoder: GPUCommandEncoder, frameStage: FrameStageFormat): GPUBuffer;
+    abstract getGpuBuffer(encoder: GPUCommandEncoder | null, frameStage: FrameStageFormat): GPUBuffer;
 }
 
 export {

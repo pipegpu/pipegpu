@@ -11,7 +11,12 @@ class RenderProperty extends BaseProperty {
     /**
      * 
      */
-    private instanceCount: number = 0;
+    private instanceCount: number = 1;
+
+    /**
+     * 
+     */
+    private indexBufferID: number = 0;
 
     /**
      * 
@@ -36,7 +41,8 @@ class RenderProperty extends BaseProperty {
             this.maxDrawCount = a;
             this.instanceCount = b;
         } else if (a instanceof IndexBuffer) {
-            this.propertyFormat = 'DrawIndexed'
+            this.propertyFormat = 'DrawIndexed';
+            this.indexBufferID = a.getId();
         } else if (a instanceof IndirectBuffer) {
             this.propertyFormat = 'DrawIndirect'
         } else {
@@ -44,8 +50,28 @@ class RenderProperty extends BaseProperty {
         }
     }
 
+    /**
+     * 
+     * @returns 
+     */
     getMaxDrawCount(): number {
         return this.maxDrawCount;
+    }
+
+    /**
+     * 
+     * @returns 
+     */
+    getInstanceCount(): number {
+        return this.instanceCount;
+    }
+
+    /**
+     * 
+     * @returns 
+     */
+    getIndexBufferID(): number {
+        return this.indexBufferID;
     }
 }
 
