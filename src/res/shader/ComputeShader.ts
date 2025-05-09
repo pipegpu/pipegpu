@@ -1,3 +1,4 @@
+import { reflectShaderUniforms } from "../../util/reflectShaderUniforms";
 import type { Context } from "../Context";
 import { BaseShader } from "./BaseShader";
 
@@ -18,6 +19,13 @@ class ComputeShader extends BaseShader {
         });
     }
 
+    /**
+     * 
+     */
+    protected override reflect = (): void => {
+        this.createGpuShader(`[ComputeShader][ID][${this.getID()}]`);
+        this.reflectedUniforms = reflectShaderUniforms(this.code, this.entryPoint, this.shaderStage);
+    }
 }
 
 export {

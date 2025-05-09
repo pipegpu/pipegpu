@@ -15,9 +15,6 @@ interface IUniformRecord {
 type UniformHandle = (frameStage: FrameStageFormat, encoder: GPUCommandEncoder, bufferState: BufferState, textureState: TextureState) => void;
 
 const parseUniform = (
-    ctx: Context,
-    bufferState: BufferState,
-    textureState: TextureState,
     handler: UniformHandle,
     uniforms: Uniforms,
     uniformRecordMap: Map<string, IUniformRecord>,

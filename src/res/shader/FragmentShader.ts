@@ -1,3 +1,4 @@
+import { reflectShaderUniforms } from "../../util/reflectShaderUniforms";
 import type { Context } from "../Context";
 import { BaseShader } from "./BaseShader";
 
@@ -16,6 +17,14 @@ class FragmentShader extends BaseShader {
             entryPoint: opts.entryPoint,
             shaderStage: GPUShaderStage.FRAGMENT
         });
+    }
+
+    /**
+     * 
+     */
+    protected override reflect = (): void => {
+        this.createGpuShader(`[FragmentShader][ID][${this.getID()}]`);
+        this.reflectedUniforms = reflectShaderUniforms(this.code, this.entryPoint, this.shaderStage);
     }
 
 }

@@ -7,8 +7,21 @@
 
 ### compiler
 - [ ] Compiler
-- [ ] parseAttribute
+- [ ] emitAttributes
+- [ ] emitRenderPipeline
+- [ ] emitUniforms
+- [x] parseAttribute
+- [ ] parseBindGroupLayout
+- [ ] parseColorAttachments
 - [ ] parseContextDesc
+- [ ] parseFragmentState
+- [ ] parseMSAAState
+- [ ] parsePipelineLayout
+- [ ] parsePrimitiveState
+- [ ] parseRenderBindGroupLayout
+- [ ] parseRenderDispatch
+- [ ] parseUniform
+
 
 ### graph
 - [ ] BaseGraph
@@ -20,13 +33,13 @@
 - [ ] RenderHolder
 
 ### property
-- [ ] Properties
-- [ ] BaseProperty
+- [x] Properties
+- [x] BaseProperty
 - [ ] StorageBufferProperty (uniforms)
 - [ ] TextureProperty (uniforms)
 - [ ] TextureSamplerProperty (uniforms)
-- [ ] UniformBufferProperty (uniforms)
-- [ ] VertexBufferProperty (attribute)
+- [x] UniformBufferProperty (uniforms)
+- [x] VertexBufferProperty (attribute)
 - [ ] ComputeProperty (dispatch)
 - [ ] RenderProperty (dispatch)
 
@@ -38,10 +51,10 @@
 - [ ] SurfaceTexture2D (texture)
 - [ ] Texture2D (texture)
 - [ ] TextureStorage2D (texture)
-- [ ] BaseShader (shader)
-- [ ] ComputeShader (shader)
-- [ ] FragmentShader (shader)
-- [ ] VertexShader (shader)
+- [x] BaseShader (shader)
+- [x] ComputeShader (shader)
+- [x] FragmentShader (shader)
+- [x] VertexShader (shader)
 - [ ] BaseBuffer (buffer)
 - [ ] IndexBuffer (buffer)
 - [ ] StorageBuffer (buffer)

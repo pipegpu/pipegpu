@@ -115,15 +115,20 @@ class Compiler {
             return undefined;
         }
 
+        // parse attribute
         const attributeRecordMap: Map<string, IAttributeRecord> = new Map();
         const bufferAttributeRecordsMap: Map<number, Map<string, IAttributeRecord>> = new Map();
         parseAttribute(desc.attributes, attributeRecordMap, bufferAttributeRecordsMap);
 
-        // TODO:: uniform buffer parse
+        // parse uniform
         let unifomrHandler: UniformHandle = _emptyUniformHandler;
         const uniformRecordMap: Map<string, IUniformRecord> = new Map();
         const bufferUniformRecordsMap: Map<number, Map<string, IUniformRecord>> = new Map();
-        parseUniform(this.ctx, this.bufferState, this.textureState, unifomrHandler, desc.uniforms, uniformRecordMap, bufferUniformRecordsMap);
+        parseUniform(unifomrHandler, desc.uniforms, uniformRecordMap, bufferUniformRecordsMap);
+
+        // parse render holder bindgrouplayout
+
+
     }
 
     /**
