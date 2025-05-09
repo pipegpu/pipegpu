@@ -18,8 +18,10 @@ type FrameStageFormat = keyof { FrameBegin: 'FrameBegin', FrameFinish: 'FrameFin
  * 
  */
 type PropertyFormat = keyof {
+    None: 'None',
     DrawCount: 'DrawCount',
     DrawIndexed: 'DrawIndexed',
+    DrawIndirect: 'DrawIndirect',
     VertexBuffer: 'VertexBuffer',
     UniformBuffer: 'UniformBuffer',
     IndexBuffer: 'IndexBuffer',

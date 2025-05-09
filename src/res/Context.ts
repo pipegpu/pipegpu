@@ -79,6 +79,15 @@ class Context {
     getGpuQueue = (): GPUQueue => {
         return this.queue as GPUQueue;
     }
+
+    /**
+     * 
+     * @returns 
+     */
+    getLimits = (): GPUSupportedLimits => {
+        return this.limits as GPUSupportedLimits;
+    }
+
 }
 
 export {

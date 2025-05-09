@@ -104,22 +104,22 @@ abstract class BaseShader {
      * 
      * @returns 
      */
-    getBindGroupWithGroupLayoutEntriesMap = (): Map<number, Array<GPUBindGroupLayoutEntry>> | undefined => {
+    getBindGroupWithGroupLayoutEntriesMap = (): Map<number, Array<GPUBindGroupLayoutEntry>> => {
         if (!this.shader) {
             this.reflect();
         }
-        return this.reflectedUniforms?.groupIDwithBindGroupLayoutEntriesMap;
+        return this.reflectedUniforms?.groupIDwithBindGroupLayoutEntriesMap as Map<number, Array<GPUBindGroupLayoutEntry>>;
     }
 
     /**
      * 
      * @returns 
      */
-    getBindGroupWithResourceBindingsMap = (): Map<number, Array<VariableInfo>> | undefined => {
+    getBindGroupWithResourceBindingsMap = (): Map<number, Array<VariableInfo>> => {
         if (!this.shader) {
             this.reflect();
         }
-        return this.reflectedUniforms?.groupIDwithResourceBindingsMap;
+        return this.reflectedUniforms?.groupIDwithResourceBindingsMap as Map<number, Array<VariableInfo>>;
     }
 
     protected abstract reflect(): void;

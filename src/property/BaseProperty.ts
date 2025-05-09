@@ -12,14 +12,14 @@ class BaseProperty {
     /**
      * 
      */
-    private propertyFormat: PropertyFormat;
+    protected propertyFormat: PropertyFormat;
 
     /**
      * 
      * @param propertyName 
      * @param supportedProperty 
      */
-    constructor(propertyName: string, propertyFormat: PropertyFormat) {
+    constructor(propertyName: string, propertyFormat: PropertyFormat = 'None') {
         this.propertyName = propertyName;
         this.propertyFormat = propertyFormat;
     }

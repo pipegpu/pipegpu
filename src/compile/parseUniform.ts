@@ -1,8 +1,8 @@
 import type { BaseProperty } from "../property/BaseProperty";
 import type { Uniforms } from "../property/Properties"
 import type { UniformBufferProperty } from "../property/uniform/UniformBufferProperty";
-import type { Context } from "../res/Context"
 import type { FrameStageFormat, PropertyFormat } from "../res/Format";
+import type { UniformHandle } from "../res/Handle";
 import type { BufferState } from "../state/BufferState"
 import type { TextureState } from "../state/TextureState"
 
@@ -12,10 +12,8 @@ interface IUniformRecord {
     resourceID: number
 }
 
-type UniformHandle = (frameStage: FrameStageFormat, encoder: GPUCommandEncoder, bufferState: BufferState, textureState: TextureState) => void;
-
 const parseUniform = (
-    handler: UniformHandle,
+    _handler: UniformHandle,
     uniforms: Uniforms,
     uniformRecordMap: Map<string, IUniformRecord>,
     bufferUniformRecordsMap: Map<number, Map<string, IUniformRecord>>
@@ -64,7 +62,7 @@ const parseUniform = (
     // support:
     // handler
     if (bc.length || tc.length) {
-        handler = (frameStage: FrameStageFormat, encoder: GPUCommandEncoder, bufferState: BufferState, textureState: TextureState) => {
+        _handler = (frameStage: FrameStageFormat, encoder: GPUCommandEncoder, bufferState: BufferState, textureState: TextureState) => {
             bc.forEach(bufferID => {
                 bufferState.getBuffer(bufferID)?.getGpuBuffer(encoder, frameStage);
             });

@@ -28,7 +28,7 @@ abstract class BaseBuffer {
     /**
      * 
      */
-    protected bufferUsageFlags: GPUBufferUsageFlags | undefined;
+    protected bufferUsageFlags: GPUBufferUsageFlags;
 
     /**
      * 
@@ -63,7 +63,7 @@ abstract class BaseBuffer {
      * @param encoder 
      * @param frameStage 
      */
-    abstract getGpuBuffer(encoder: GPUCommandEncoder, frameStage: FrameStageFormat): void;
+    abstract getGpuBuffer(encoder: GPUCommandEncoder, frameStage: FrameStageFormat): GPUBuffer;
 }
 
 export {

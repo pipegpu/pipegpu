@@ -59,6 +59,11 @@ class VertexShader extends BaseShader {
         return this.reflectedAttributes?.attributeOdered;
     }
 
+    /**
+     * 
+     * @param location 
+     * @returns 
+     */
     getAttributeNameByLocation = (location: number): string | undefined => {
         if (!this.shader) {
             this.reflect();
@@ -66,6 +71,10 @@ class VertexShader extends BaseShader {
         return this.reflectedAttributes?.locationMap.get(location);
     }
 
+    /**
+     * 
+     * @returns 
+     */
     getAttributeCount = (): number | undefined => {
         if (!this.shader) {
             this.reflect();
