@@ -21,7 +21,7 @@ class StorageBuffer extends BaseBuffer {
      * @param _encoder 
      * @param _frameStage 
      */
-    public override getGpuBuffer = (_encoder: GPUCommandEncoder, _frameStage: FrameStageFormat): GPUBuffer => {
+    override getGpuBuffer = (_encoder: GPUCommandEncoder, _frameStage: FrameStageFormat): GPUBuffer => {
         throw new Error("Method not implemented.");
     }
 }

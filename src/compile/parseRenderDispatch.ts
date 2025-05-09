@@ -8,6 +8,9 @@ const parseRenderDispatch = (dispatch: RenderProperty): void => {
 
     const t: PropertyFormat = dispatch.getPropertyFormat();
     switch (t) {
+        case "DrawCount":
+
+
         default:
             break;
     }

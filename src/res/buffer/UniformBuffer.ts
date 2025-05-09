@@ -71,7 +71,7 @@ class UniformBuffer extends BaseBuffer {
      * @param _encoder 
      * @param frameStage 
      */
-    public override getGpuBuffer = (_encoder: GPUCommandEncoder, frameStage: FrameStageFormat): GPUBuffer => {
+    override getGpuBuffer = (_encoder: GPUCommandEncoder, frameStage: FrameStageFormat): GPUBuffer => {
         if (!this.buffer) {
             this.createGpuBuffer();
         } else {
