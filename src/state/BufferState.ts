@@ -32,6 +32,18 @@ class BufferState {
     /**
      * 
      * @param id 
+     */
+    getBuffer = (id: number): BaseBuffer | undefined => {
+        if (!BufferState.BUFFER_SET.has(id)) {
+            console.log(`[E][BufferState][getBuffer] find buffer failed.`)
+        } else {
+            return BufferState.BUFFER_SET.get(id);
+        }
+    }
+
+    /**
+     * 
+     * @param id 
      * @returns 
      */
     createIndexBuffer(id: number = 0): IndexBuffer {

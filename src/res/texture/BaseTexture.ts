@@ -1,11 +1,26 @@
 import type { Context } from "../Context"
+import type { FrameStageFormat } from "../Format";
 
-class BaseTexture {
+abstract class BaseTexture {
+    /**
+     * 
+     */
+    private id: number;
 
     /**
      * 
      */
-    private textureUsageFlags: GPUTextureUsageFlags;
+    protected textureUsageFlags: GPUTextureUsageFlags;
+
+    /**
+     * 
+     */
+    protected ctx: Context;
+
+    /**
+     * 
+     */
+    protected texture: GPUTexture | undefined;
 
     /**
      * 
@@ -18,10 +33,25 @@ class BaseTexture {
             textureUsageFlags: GPUTextureUsageFlags
         }
     ) {
+        this.id = opts.id;
+        this.ctx = opts.ctx;
         this.textureUsageFlags = opts.textureUsageFlags;
     }
 
+    /**
+     * 
+     * @returns 
+     */
+    getId = (): number => {
+        return this.id;
+    }
 
+    /**
+     * 
+     * @param encoder 
+     * @param frameStage 
+     */
+    abstract getGpuTexture(encoder: GPUCommandEncoder, frameStage: FrameStageFormat): void;
 }
 
 export {

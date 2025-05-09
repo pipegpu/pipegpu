@@ -1,8 +1,12 @@
 import type { Context } from "../Context";
+import type { FrameStageFormat } from "../Format";
 import { BaseTexture } from "./BaseTexture";
 
 class SurfaceTexture2D extends BaseTexture {
-
+    /**
+     * 
+     * @param opts 
+     */
     constructor(
         opts: {
             id: number,
@@ -17,6 +21,15 @@ class SurfaceTexture2D extends BaseTexture {
         });
     }
 
+    /**
+     * 
+     * @param encoder 
+     * @param frameStage 
+     */
+    getGpuTexture = (encoder: GPUCommandEncoder, frameStage: FrameStageFormat): void => {
+
+
+    }
 }
 
 export {

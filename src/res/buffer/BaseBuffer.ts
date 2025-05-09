@@ -33,7 +33,7 @@ abstract class BaseBuffer {
     /**
      * 
      */
-    protected buffer: GPUBuffer | undefined = undefined;
+    protected buffer: GPUBuffer | undefined;
 
     /**
      * 
@@ -50,8 +50,6 @@ abstract class BaseBuffer {
         this.bufferUsageFlags = opts.bufferUsageFlags;
     }
 
-    abstract getGpuBuffer(encoder: GPUCommandEncoder, frameStage: FrameStageFormat): void;
-
     /**
      * 
      * @returns 
@@ -59,6 +57,13 @@ abstract class BaseBuffer {
     getId = (): number => {
         return this.id;
     }
+
+    /**
+     * 
+     * @param encoder 
+     * @param frameStage 
+     */
+    abstract getGpuBuffer(encoder: GPUCommandEncoder, frameStage: FrameStageFormat): void;
 }
 
 export {

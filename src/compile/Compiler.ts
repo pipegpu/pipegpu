@@ -5,14 +5,16 @@ import type { Handle1D } from "../res/buffer/BaseBuffer";
 import type { UniformBuffer } from "../res/buffer/UniformBuffer";
 import type { VertexBuffer } from "../res/buffer/VertexBuffer";
 import type { Context } from "../res/Context";
-import type { TypedArray1DFormat } from "../res/Format";
+import type { FrameStageFormat, TypedArray1DFormat } from "../res/Format";
 import type { ComputeShader } from "../res/shader/ComputeShader";
 import type { FragmentShader } from "../res/shader/FragmentShader";
 import type { VertexShader } from "../res/shader/VertexShader";
 import { BufferState } from "../state/BufferState";
 import { ShaderState } from "../state/ShaderState";
 import { StringState } from "../state/StringState";
+import { TextureState } from "../state/TextureState";
 import { parseAttribute, type IAttributeRecord } from "./parseAttribute";
+import { parseUniform, type IUniformRecord, type UniformHandle } from "./parseUniform";
 
 /**
  * 
@@ -57,6 +59,8 @@ interface ComputeHolderDesc {
     computeShader: ComputeShader,
 }
 
+const _emptyUniformHandler = (_frameStage: FrameStageFormat, _encoder: GPUCommandEncoder, _bufferState: BufferState, _textureState: TextureState): void => { }
+
 /**
  * 
  */
@@ -84,6 +88,11 @@ class Compiler {
 
     /**
      * 
+     */
+    private textureState: TextureState;
+
+    /**
+     * 
      * @param opts 
      */
     constructor(
@@ -95,10 +104,12 @@ class Compiler {
         this.stringState = new StringState();
         this.bufferState = new BufferState({ ctx: this.ctx });
         this.shaderState = new ShaderState({ ctx: this.ctx, stringState: this.stringState });
+        this.textureState = new TextureState({ ctx: this.ctx });
     }
 
     compileRenderHolder = (desc: RenderHolderDesc): RenderHolder | undefined => {
         const vertexShader = desc.vertexShader, fragmentShader = desc.fragmentShader;
+
         if (!vertexShader || !fragmentShader) {
             console.log(`[E][Compiler][compileRenderHolder] missing shader, vertexShader: ${vertexShader}; fragmentShader:${fragmentShader}`);
             return undefined;
@@ -109,7 +120,10 @@ class Compiler {
         parseAttribute(desc.attributes, attributeRecordMap, bufferAttributeRecordsMap);
 
         // TODO:: uniform buffer parse
-
+        let unifomrHandler: UniformHandle = _emptyUniformHandler;
+        const uniformRecordMap: Map<string, IUniformRecord> = new Map();
+        const bufferUniformRecordsMap: Map<number, Map<string, IUniformRecord>> = new Map();
+        parseUniform(this.ctx, this.bufferState, this.textureState, unifomrHandler, desc.uniforms, uniformRecordMap, bufferUniformRecordsMap);
     }
 
     /**

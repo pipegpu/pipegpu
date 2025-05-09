@@ -23,6 +23,14 @@ class Properties {
 
     /**
      * 
+     * @returns 
+     */
+    isEmpty = (): boolean => {
+        return this.propertyMap.size === 0;
+    }
+
+    /**
+     * 
      */
     getPropertyMap = (): Map<string, BaseProperty> => {
         return this.propertyMap;
@@ -40,14 +48,6 @@ class Attributes extends Properties {
      */
     constructor() {
         super();
-    }
-
-    /**
-     * 
-     * @returns 
-     */
-    isEmpty = (): boolean => {
-        return this.propertyMap.size === 0;
     }
 
     /**
