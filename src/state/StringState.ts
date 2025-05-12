@@ -8,7 +8,6 @@
  * stringState.str(1);
  */
 class StringState {
-
     /**
      * 
      */
@@ -18,6 +17,13 @@ class StringState {
      * 
      */
     private stringValues: string[] = [];
+
+    /**
+     * 
+     */
+    constructor() {
+
+    }
 
     /**
      * 

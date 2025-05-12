@@ -2,6 +2,9 @@ import type { Context } from "../Context";
 import type { FrameStageFormat, TypedArray1DFormat } from "../Format";
 import { BaseBuffer, type Handle1D } from "./BaseBuffer";
 
+/**
+ * 
+ */
 class UniformBuffer extends BaseBuffer {
     /**
      * 

@@ -21,12 +21,8 @@ class PipelineState {
      * 
      * @param opts 
      */
-    constructor(
-        opts: {
-            ctx: Context
-        }
-    ) {
-        this.ctx = opts.ctx;
+    constructor(ctx: Context) {
+        this.ctx = ctx;
     }
 
     /**

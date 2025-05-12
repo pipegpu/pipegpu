@@ -90,6 +90,14 @@ class IndexBuffer extends BaseBuffer {
 
     /**
      * 
+     * @returns 
+     */
+    override getByteLength(): number {
+        return this.byte_length;
+    }
+
+    /**
+     * 
      * @param _encoder 
      * @param frameStage 
      */

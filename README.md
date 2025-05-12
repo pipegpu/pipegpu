@@ -22,7 +22,6 @@
 - [x] parseRenderDispatch
 - [x] parseUniform
 
-
 ### graph
 - [ ] BaseGraph
 - [ ] DirectedAcycilicGraph
@@ -62,6 +61,12 @@
 - [x] BaseAttachment (attachment)
 - [x] ColorAttachment (attachment)
 - [ ] DepthStencilAttachment (attachment)
+- [ ] BasePipeline (pipeline)
+- [ ] ComputePipeline (pipeline)
+- [ ] RenderPipeline (pipeline)
+- [ ] BaseSampler (sampler)
+- [ ] TextureSampler (sampler)
+
 
 ### state
 - [ ] AttachmentState

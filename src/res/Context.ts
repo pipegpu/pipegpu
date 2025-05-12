@@ -48,7 +48,6 @@ class Context {
     }) {
         this.contextDesc = parseContextDesc(opts);
         this.gpuContext = this.contextDesc.canvas.getContext("webgpu");
-
     }
 
     async init() {

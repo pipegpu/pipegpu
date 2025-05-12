@@ -58,6 +58,17 @@ class VertexBuffer extends BaseBuffer {
 
     /**
      * 
+     * @returns 
+     */
+    needUpdate = (): boolean => {
+        if (this.handler !== undefined) {
+            this.typedArrayData1D = this.handler();
+        }
+        return this.handler !== undefined;
+    }
+
+    /**
+     * 
      */
     createGpuBuffer = () => {
         this.needUpdate();
@@ -67,6 +78,13 @@ class VertexBuffer extends BaseBuffer {
             usage: this.bufferUsageFlags as GPUBufferUsageFlags
         };
         this.buffer = this.ctx?.getGpuDevice().createBuffer(desc);
+    }
+
+    /**
+     * 
+     */
+    override getByteLength(): number {
+        return this.byte_length;
     }
 
     /**
@@ -82,17 +100,6 @@ class VertexBuffer extends BaseBuffer {
             frameStage === "FrameBegin" && this.needUpdate() && this.updateGpuBuffer();
         }
         return this.buffer as GPUBuffer;
-    }
-
-    /**
-     * 
-     * @returns 
-     */
-    needUpdate = (): boolean => {
-        if (this.handler !== undefined) {
-            this.typedArrayData1D = this.handler();
-        }
-        return this.handler !== undefined;
     }
 }
 

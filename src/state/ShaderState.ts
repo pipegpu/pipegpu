@@ -30,13 +30,11 @@ class ShaderState {
      * @param opts 
      */
     constructor(
-        opts: {
-            ctx: Context,
-            stringState: StringState
-        }
+        ctx: Context,
+        stringState: StringState
     ) {
-        this.ctx = opts.ctx;
-        this.stringState = opts.stringState;
+        this.ctx = ctx;
+        this.stringState = stringState;
     }
 
     hasKey = (key: number): boolean => {
