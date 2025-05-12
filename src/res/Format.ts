@@ -48,6 +48,7 @@ type FrameStageFormat =
  */
 type PropertyFormat =
     | 'None'
+    | 'ComputeDispatch'
     | 'DrawCount'
     | 'DrawIndexed'
     | 'DrawIndirect'
@@ -75,7 +76,16 @@ type DepthLoadStoreFormat =
     | 'clearStore'
     ;
 
+type CullFormat =
+    | 'None'
+    | 'FrontCW'
+    | 'FrontCCW'
+    | 'BackCW'
+    | 'BackCCW'
+    ;
+
 export type {
+    CullFormat,
     ColorLoadStoreFormat,
     DepthLoadStoreFormat,
     DepthCompareFormat,

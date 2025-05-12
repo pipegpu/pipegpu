@@ -96,6 +96,14 @@ class ColorAttachment extends BaseAttachment {
      * 
      * @returns 
      */
+    getTextureFormat = (): GPUTextureFormat => {
+        return this.texture?.getTextureFormat() || this.ctx.getPreferredTextureFormat();
+    }
+
+    /**
+     * 
+     * @returns 
+     */
     getGpuBlendState = (): GPUBlendState => {
         this.updateBlendState();
         return this.blendState as GPUBlendState;

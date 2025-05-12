@@ -88,6 +88,14 @@ class Context {
         return this.limits as GPUSupportedLimits;
     }
 
+    /**
+     * 
+     * @returns 
+     */
+    getPreferredTextureFormat = (): GPUTextureFormat => {
+        return navigator.gpu.getPreferredCanvasFormat();
+    }
+
 }
 
 export {

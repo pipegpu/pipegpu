@@ -80,11 +80,11 @@ abstract class BaseShader {
     /**
      * get gpu-side shader
      */
-    getGpuShader(): GPUShaderModule | undefined {
+    getGpuShader(): GPUShaderModule {
         if (!this.shader) {
             this.reflect();
         }
-        return this.shader;
+        return this.shader as GPUShaderModule;
     }
 
     /**

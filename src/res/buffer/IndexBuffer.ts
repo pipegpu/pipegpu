@@ -18,12 +18,18 @@ class IndexBuffer extends BaseBuffer {
 
     /**
      * 
+     */
+    private indexFormat: GPUIndexFormat;
+
+    /**
+     * 
      * @param opts 
      */
     constructor(
         opts: {
             id: number,
             ctx: Context,
+            indexFormat: GPUIndexFormat,
             typedArrayData1D?: TypedArray1DFormat,
         }
     ) {
@@ -33,6 +39,7 @@ class IndexBuffer extends BaseBuffer {
             bufferUsageFlags: GPUBufferUsage.INDEX | GPUBufferUsage.COPY_DST
         });
         this.typedArrayData1D = opts.typedArrayData1D;
+        this.indexFormat = opts.indexFormat;
     }
 
     /**
@@ -72,6 +79,14 @@ class IndexBuffer extends BaseBuffer {
             0,
             this.byte_length
         );
+    }
+
+    /**
+     * 
+     * @returns 
+     */
+    getIndexFormat = (): GPUIndexFormat => {
+        return this.indexFormat;
     }
 
     /**

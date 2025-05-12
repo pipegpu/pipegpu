@@ -46,6 +46,8 @@ abstract class BaseTexture {
      */
     private extent3d: GPUExtent3D;
 
+    private textureFormat: GPUTextureFormat;
+
     /**
      * 
      * @param opts 
@@ -57,6 +59,7 @@ abstract class BaseTexture {
             textureUsageFlags: GPUTextureUsageFlags
             width: number,
             height: number,
+            textureFormat?: GPUTextureFormat,
             depthOrArrayLayers?: number,
             maxMipLevel?: number
         }
@@ -66,6 +69,7 @@ abstract class BaseTexture {
         this.textureUsageFlags = opts.textureUsageFlags;
         this.extent3d = [opts.width, opts.height, opts.depthOrArrayLayers || 1];
         this.maxMipLevel = getMaxMipmapLevel(...this.extent3d);
+        this.textureFormat = opts.textureFormat || this.ctx.getPreferredTextureFormat();
     }
 
     /**
@@ -86,6 +90,14 @@ abstract class BaseTexture {
         if (this.textureViewArray.length === 0) {
 
         }
+    }
+
+    /**
+     * 
+     * @returns 
+     */
+    getTextureFormat = (): GPUTextureFormat => {
+        return this.textureFormat;
     }
 
     /**

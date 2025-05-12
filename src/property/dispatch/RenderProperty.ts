@@ -16,7 +16,7 @@ class RenderProperty extends BaseProperty {
     /**
      * 
      */
-    private indexBufferID: number = 0;
+    private indexBuffer: IndexBuffer | undefined;
 
     /**
      * 
@@ -42,7 +42,7 @@ class RenderProperty extends BaseProperty {
             this.instanceCount = b;
         } else if (a instanceof IndexBuffer) {
             this.propertyFormat = 'DrawIndexed';
-            this.indexBufferID = a.getId();
+            this.indexBuffer = a;
         } else if (a instanceof IndirectBuffer) {
             this.propertyFormat = 'DrawIndirect'
         } else {
@@ -71,7 +71,26 @@ class RenderProperty extends BaseProperty {
      * @returns 
      */
     getIndexBufferID(): number {
-        return this.indexBufferID;
+        if (this.indexBuffer) {
+            return this.indexBuffer.getId();
+        } else {
+            console.log(`[E][RenderProperty][getIndexBufferID] missing indexBuffer in 'RenderProperty'.`);
+            return 0;
+        }
+    }
+
+    /**
+     * 
+     * @returns 
+     */
+    getIndexFormat(): GPUIndexFormat {
+        if (this.indexBuffer) {
+            return this.indexBuffer.getIndexFormat();
+        } else {
+            console.log(`[E][RenderProperty][getIndexFormat] missing indexBuffer in 'RenderProperty'.`);
+            return 'uint32';
+        }
+
     }
 }
 

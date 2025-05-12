@@ -1,6 +1,10 @@
+import type { ComputeHolder } from "../holder/ComputeHolder";
 import { RenderHolder } from "../holder/RenderHolder";
+import type { ComputeProperty } from "../property/dispatch/ComputeProperty";
 import type { RenderProperty } from "../property/dispatch/RenderProperty";
 import type { Attributes, Uniforms } from "../property/Properties";
+import type { ColorAttachment } from "../res/attachment/ColorAttachment";
+import type { DepthStencilAttachment } from "../res/attachment/DepthStencilAttachment";
 import type { Handle1D } from "../res/buffer/BaseBuffer";
 import type { UniformBuffer } from "../res/buffer/UniformBuffer";
 import type { VertexBuffer } from "../res/buffer/VertexBuffer";
@@ -15,7 +19,11 @@ import { ShaderState } from "../state/ShaderState";
 import { StringState } from "../state/StringState";
 import { TextureState } from "../state/TextureState";
 import { parseAttribute, type IAttributeRecord } from "./parseAttribute";
-import { parseMultisampleState } from "./parseMultiSampleState";
+import { parseColorAttachments } from "./parseColorAttachments";
+import { parseFragmentState } from "./parseFragmentState";
+import { parseMultisampleState } from "./parseMultisampleState";
+import { parsePipelineLayout } from "./parsePipelineLayout";
+import { parsePrimitiveState, type PrimitiveDesc } from "./parsePrimitiveState";
 import { parseRenderBindGroupLayout } from "./parseRenderBindGroupLayout";
 import { parseRenderDispatch } from "./parseRenderDispatch";
 import { parseUniform, type IUniformRecord, type UniformHandle } from "./parseUniform";
@@ -59,15 +67,45 @@ interface RenderHolderDesc {
      */
     dispatch: RenderProperty,
 
-    // colorAttachments: Coloratt
+    /**
+     * 
+     */
+    primitiveDesc: PrimitiveDesc,
+
+    /**
+     * 
+     */
+    colorAttachments: ColorAttachment[],
+
+    /**
+     * 
+     */
+    depthStencilAttachment: DepthStencilAttachment,
 }
 
 /**
  * 
  */
 interface ComputeHolderDesc {
+    /**
+     * 
+     */
     label: string,
+
+    /**
+     * 
+     */
     computeShader: ComputeShader,
+
+    /**
+     * 
+     */
+    uniforms: Uniforms,
+
+    /**
+     * 
+     */
+    dispatch: ComputeProperty
 }
 
 /**
@@ -131,6 +169,11 @@ class Compiler {
         this.textureState = new TextureState({ ctx: this.ctx });
     }
 
+    /**
+     * 
+     * @param desc 
+     * @returns 
+     */
     compileRenderHolder = (desc: RenderHolderDesc): RenderHolder | undefined => {
         const vertexShader = desc.vertexShader, fragmentShader = desc.fragmentShader;
 
@@ -181,15 +224,50 @@ class Compiler {
         );
 
         // parse multi sample state
-        let multiSampleState: GPUMultisampleState = {};
-        parseMultisampleState(
-            desc.multiSampleFormat || '1x',
-            multiSampleState
+        let multiSampleState: GPUMultisampleState = parseMultisampleState(
+            desc.multiSampleFormat || '1x'
+        );
+
+        // parse color attachments
+        const colorTargetStates: GPUColorTargetState[] = parseColorAttachments(
+            desc.colorAttachments
+        );
+
+        // parse primitive state
+        const primitiveState: GPUPrimitiveState = parsePrimitiveState(
+            desc.primitiveDesc,
+            desc.dispatch
+        );
+
+        // parse fragment state
+        const fragmentState: GPUFragmentState = parseFragmentState(
+            fragmentShader,
+            colorTargetStates
+        );
+
+        // parse pipeline layout
+        const pipelineLayout = parsePipelineLayout(
+            this.ctx,
+            bindGroupLayouts,
         );
 
 
 
 
+
+    }
+
+    /**
+     * 
+     * @param desc 
+     */
+    compileComputeHolder = (desc: ComputeHolderDesc): ComputeHolder | undefined => {
+        const computeShader = desc.computeShader;
+
+        if (!computeShader) {
+            console.log(`[E][Compiler][compileComputeHolder] missing shader, computeShader: ${computeShader}`);
+            return undefined;
+        }
     }
 
     /**

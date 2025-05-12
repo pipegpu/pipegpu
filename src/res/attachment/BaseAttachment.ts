@@ -7,7 +7,7 @@ abstract class BaseAttachment {
     /**
      * 
      */
-    private ctx: Context;
+    protected ctx: Context;
 
     /**
      * 

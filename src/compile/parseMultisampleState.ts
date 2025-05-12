@@ -5,7 +5,8 @@ import type { MultiSampleFormat } from "../res/Format"
  * @param multiSampleFormat 
  * @param multiSampleState 
  */
-const parseMultisampleState = (multiSampleFormat: MultiSampleFormat, multiSampleState: GPUMultisampleState) => {
+const parseMultisampleState = (multiSampleFormat: MultiSampleFormat): GPUMultisampleState => {
+    const multiSampleState: GPUMultisampleState = {};
     multiSampleState.mask = ~0;
     multiSampleState.alphaToCoverageEnabled = false;
     switch (multiSampleFormat) {
@@ -25,6 +26,7 @@ const parseMultisampleState = (multiSampleFormat: MultiSampleFormat, multiSample
             multiSampleState.count = 1;
             break;
     }
+    return multiSampleState;
 }
 
 export {
