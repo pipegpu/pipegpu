@@ -59,6 +59,8 @@ type PropertyFormat =
     | 'Texutre2D'
     | 'SurfaceTexture2D'
     | 'TextureStorage2D'
+    | 'RenderPipeline'
+    | 'ComputePipeline'
     ;
 
 /**

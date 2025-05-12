@@ -1,3 +1,4 @@
+import type { VariableInfo } from "wgsl_reflect";
 import type { ComputeHolder } from "../holder/ComputeHolder";
 import { RenderHolder } from "../holder/RenderHolder";
 import type { ComputeProperty } from "../property/dispatch/ComputeProperty";
@@ -18,6 +19,7 @@ import { BufferState } from "../state/BufferState";
 import { ShaderState } from "../state/ShaderState";
 import { StringState } from "../state/StringState";
 import { TextureState } from "../state/TextureState";
+import { emitAttributes } from "./emitAttributes";
 import { parseAttribute, type IAttributeRecord } from "./parseAttribute";
 import { parseColorAttachments } from "./parseColorAttachments";
 import { parseFragmentState } from "./parseFragmentState";
@@ -27,6 +29,11 @@ import { parsePrimitiveState, type PrimitiveDesc } from "./parsePrimitiveState";
 import { parseRenderBindGroupLayout } from "./parseRenderBindGroupLayout";
 import { parseRenderDispatch } from "./parseRenderDispatch";
 import { parseUniform, type IUniformRecord, type UniformHandle } from "./parseUniform";
+import { emitUniforms } from "./emitUniforms";
+import { SamplerState } from "../state/SamplerState";
+import { emitRenderPipeline } from "./emitRenderPipeline";
+import { PipelineState } from "../state/PipelineState";
+import type { RenderPipeline } from "../res/pipeline/RenderPipeline";
 
 /**
  * 
@@ -155,6 +162,16 @@ class Compiler {
 
     /**
      * 
+     */
+    private samplerState: SamplerState;
+
+    /**
+     * 
+     */
+    private pipelineState: PipelineState;
+
+    /**
+     * 
      * @param opts 
      */
     constructor(
@@ -167,6 +184,8 @@ class Compiler {
         this.bufferState = new BufferState({ ctx: this.ctx });
         this.shaderState = new ShaderState({ ctx: this.ctx, stringState: this.stringState });
         this.textureState = new TextureState({ ctx: this.ctx });
+        this.samplerState = new SamplerState({ ctx: this.ctx });
+        this.pipelineState = new PipelineState({ ctx: this.ctx });
     }
 
     /**
@@ -251,10 +270,62 @@ class Compiler {
             bindGroupLayouts,
         );
 
+        // emmit vertex state
+        let vertexBufferLayouts: GPUVertexBufferLayout[] = [];
+        let bufferVertexAttributesMap: Map<number, GPUVertexAttribute[]> = new Map();
+        let slotAttributeBufferIDMap: Map<number, number> = new Map();
+        const vertexState: GPUVertexState = emitAttributes(
+            vertexShader,
+            bufferAttributeRecordsMap,
+            vertexBufferLayouts,
+            bufferVertexAttributesMap,
+            slotAttributeBufferIDMap
+        );
 
+        // emit uniform
+        const slotBindGroupMap: Map<number, GPUBindGroup> = new Map();
+        const mergedUniformResourceMap: Map<number, VariableInfo[]> = new Map();
+        emitUniforms(
+            {
+                ctx: this.ctx,
+                vertexShader: vertexShader,
+                fragmentShader: fragmentShader,
+                bufferState: this.bufferState,
+                textureState: this.textureState,
+                samplerState: this.samplerState,
+                uniformRecordMap: uniformRecordMap,
+                bufferIDUniformRecordsMap: bufferUniformRecordsMap,
+                gourpIDWithBindGroupLayoutMap: gourpIDWithBindGroupLayoutMap,
+                gourpIDWithBindGroupLayoutDescriptorMap: gourpIDWithBindGroupLayoutDescriptorMap
+            },
+            slotBindGroupMap,
+            mergedUniformResourceMap
+        );
 
+        // emit render pipeline
+        const renderPipeline: RenderPipeline = emitRenderPipeline({
+            pipelineState: this.pipelineState,
+            depthStencilAttachment: desc.depthStencilAttachment,
+            vertexState: vertexState,
+            fragmentState: fragmentState,
+            pipelineLayout: pipelineLayout,
+            primitiveState: primitiveState,
+            multisampleState: multiSampleState
+        });
 
-
+        //
+        return new RenderHolder({
+            ctx: this.ctx,
+            renderPipeline: renderPipeline,
+            bufferState: this.bufferState,
+            texturteState: this.textureState,
+            renderHandler: renderHandler,
+            uniformHandler: unifomrHandler,
+            slotAttributeBufferIDMap: slotAttributeBufferIDMap,
+            slotBindGroupMap: slotBindGroupMap,
+            colorAttachments: desc.colorAttachments,
+            depthStencilAttachment: desc.depthStencilAttachment
+        });
     }
 
     /**

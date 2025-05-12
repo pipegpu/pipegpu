@@ -56,7 +56,7 @@ class ColorAttachment extends BaseAttachment {
             clearColor?: number[]
         }
     ) {
-        super({ ctx: opts.ctx });
+        super({ id: opts.id, ctx: opts.ctx });
         this.clearColor.r = opts.clearColor ? opts.clearColor[0] : this.clearColor.r;
         this.clearColor.g = opts.clearColor ? opts.clearColor[1] : this.clearColor.g;
         this.clearColor.b = opts.clearColor ? opts.clearColor[2] : this.clearColor.b;
@@ -173,8 +173,6 @@ class ColorAttachment extends BaseAttachment {
                 }
         }
     }
-
-
 }
 
 export {

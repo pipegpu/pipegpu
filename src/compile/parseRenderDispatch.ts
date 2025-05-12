@@ -4,6 +4,12 @@ import type { PropertyFormat } from "../res/Format";
 import type { RenderHandle } from "../res/Handle";
 import type { BufferState } from "../state/BufferState";
 
+/**
+ * 
+ * @param bufferState 
+ * @param dispatch 
+ * @param _handler 
+ */
 const parseRenderDispatch = (
     bufferState: BufferState,
     dispatch: RenderProperty,

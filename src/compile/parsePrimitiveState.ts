@@ -1,11 +1,20 @@
 import type { RenderProperty } from "../property/dispatch/RenderProperty"
 import type { CullFormat, PropertyFormat } from "../res/Format"
 
+/**
+ * 
+ */
 interface PrimitiveDesc {
     cullFormat: CullFormat,
     primitiveTopology: GPUPrimitiveTopology,
 }
 
+/**
+ * 
+ * @param primitiveDesc 
+ * @param dispatch 
+ * @returns 
+ */
 const parsePrimitiveState = (
     primitiveDesc: PrimitiveDesc,
     dispatch: RenderProperty,

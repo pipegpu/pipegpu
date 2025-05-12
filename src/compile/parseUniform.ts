@@ -6,12 +6,23 @@ import type { UniformHandle } from "../res/Handle";
 import type { BufferState } from "../state/BufferState"
 import type { TextureState } from "../state/TextureState"
 
+/**
+ * 
+ */
 interface IUniformRecord {
     name: string,
     type: PropertyFormat,
     resourceID: number
 }
 
+/**
+ * 
+ * @param _handler 
+ * @param uniforms 
+ * @param uniformRecordMap 
+ * @param bufferUniformRecordsMap 
+ * @returns 
+ */
 const parseUniform = (
     _handler: UniformHandle,
     uniforms: Uniforms,

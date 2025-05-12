@@ -46,12 +46,20 @@ class BufferState {
      * @param id 
      * @returns 
      */
-    createIndexBuffer(id: number = 0): IndexBuffer {
+    createIndexBuffer(
+        opts: {
+            indexFormat: GPUIndexFormat,
+            rawData: TypedArray1DFormat
+        },
+        id: number = -1
+    ): IndexBuffer {
         if (!BufferState.BUFFER_SET.has(id)) {
             id = uniqueID();
             const buffer: IndexBuffer = new IndexBuffer({
                 id: uniqueID(),
-                ctx: this.ctx
+                ctx: this.ctx,
+                indexFormat: opts.indexFormat,
+                typedArrayData1D: opts.rawData
             });
             BufferState.BUFFER_SET.set(id, buffer);
         }

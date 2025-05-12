@@ -1,5 +1,13 @@
 import type { Context } from "../res/Context"
 
+/**
+ * 
+ * @param ctx 
+ * @param collectedBindgroupLayoutEntriesMap 
+ * @param bindGroupLayouts 
+ * @param gourpIDWithBindGroupLayoutMap 
+ * @param gourpIDWithBindGroupLayoutDescriptorMap 
+ */
 const parseBindGroupLayout = (
     ctx: Context,
     collectedBindgroupLayoutEntriesMap: Map<number, GPUBindGroupLayoutEntry[]>,

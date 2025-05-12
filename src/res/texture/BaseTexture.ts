@@ -110,7 +110,7 @@ abstract class BaseTexture {
      * @param encoder 
      * @param frameStage 
      */
-    abstract getGpuTexture(encoder: GPUCommandEncoder, frameStage: FrameStageFormat): void;
+    abstract getGpuTexture(encoder: GPUCommandEncoder, frameStage: FrameStageFormat): GPUTexture;
 }
 
 export {

@@ -9,7 +9,7 @@ class IndexBuffer extends BaseBuffer {
     /**
      * 
      */
-    private typedArrayData1D: TypedArray1DFormat | undefined;
+    private typedArrayData1D: TypedArray1DFormat;
 
     /**
      * 
@@ -30,7 +30,7 @@ class IndexBuffer extends BaseBuffer {
             id: number,
             ctx: Context,
             indexFormat: GPUIndexFormat,
-            typedArrayData1D?: TypedArray1DFormat,
+            typedArrayData1D: TypedArray1DFormat,
         }
     ) {
         super({
@@ -71,7 +71,6 @@ class IndexBuffer extends BaseBuffer {
      * 
      */
     updateGpuBuffer = () => {
-        // this.typedArrayData1D?.byteLength
         this.ctx?.getGpuQueue().writeBuffer(
             this.buffer as GPUBuffer,
             0,

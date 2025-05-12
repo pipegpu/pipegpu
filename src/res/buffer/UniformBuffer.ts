@@ -83,6 +83,13 @@ class UniformBuffer extends BaseBuffer {
 
     /**
      * 
+     */
+    override getByteLength = (): number => {
+        return this.byte_length;
+    }
+
+    /**
+     * 
      * @returns 
      */
     needUpdate = (): boolean => {
