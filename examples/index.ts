@@ -2,6 +2,7 @@ import { Compiler, type RenderHolderDesc } from '../src/compile/Compiler.ts';
 import type { RenderHolder } from '../src/holder/RenderHolder.ts';
 import { RenderProperty } from '../src/property/dispatch/RenderProperty.ts';
 import { Attributes, Uniforms } from '../src/property/Properties.ts';
+import type { ColorAttachment } from '../src/res/attachment/ColorAttachment.ts';
 import { VertexBuffer } from '../src/res/buffer/VertexBuffer.ts';
 import { Context } from '../src/res/Context.ts';
 import { VertexShader } from '../src/res/shader/VertexShader.ts';
@@ -13,6 +14,13 @@ import { reflectShaderUniforms, type IReflectUniforms } from '../src/util/reflec
     const ctx = new Context();
     await ctx.init();
     const compiler: Compiler = new Compiler({ ctx: ctx });
+
+    const colorAttachments: ColorAttachment[];
+    {
+        const colorAttachment: ColorAttachment = compiler.ctrete
+    }
+
+
 
     let desc: RenderHolderDesc = {
         label: '[DEMO][render]',
@@ -40,7 +48,8 @@ import { reflectShaderUniforms, type IReflectUniforms } from '../src/util/reflec
         }),
         attributes: new Attributes(),
         uniforms: new Uniforms(),
-        dispatch: new RenderProperty(6, 1)
+        dispatch: new RenderProperty(6, 1),
+        colorAttachments: 
     };
 
     const vertexArr = new Float32Array([-0.15, -0.5, 0.5, -0.5, 0.0, 0.5, -0.55, -0.5, -0.05, 0.5, -0.55, 0.5]);

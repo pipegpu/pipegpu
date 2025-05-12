@@ -246,7 +246,7 @@ class Compiler {
         );
 
         // parse pipeline layout
-        const pipelineLayout = parsePipelineLayout(
+        const pipelineLayout: GPUPipelineLayout = parsePipelineLayout(
             this.ctx,
             bindGroupLayouts,
         );

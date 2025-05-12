@@ -12,15 +12,15 @@
 - [ ] emitUniforms
 - [x] parseAttribute
 - [x] parseBindGroupLayout
-- [ ] parseColorAttachments
-- [ ] parseContextDesc
-- [ ] parseFragmentState
+- [x] parseColorAttachments
+- [x] parseContextDesc
+- [x] parseFragmentState
 - [x] parseMultisampleState
-- [ ] parsePipelineLayout
-- [ ] parsePrimitiveState
+- [x] parsePipelineLayout
+- [x] parsePrimitiveState
 - [x] parseRenderBindGroupLayout
-- [ ] parseRenderDispatch
-- [ ] parseUniform
+- [x] parseRenderDispatch
+- [x] parseUniform
 
 
 ### graph
@@ -44,7 +44,6 @@
 - [ ] RenderProperty (dispatch)
 
 ### res
-- [ ] Pool
 - [ ] Format
 - [ ] Context
 - [ ] BaseTexture (texture)
@@ -60,8 +59,8 @@
 - [ ] StorageBuffer (buffer)
 - [x] UniformBuffer (buffer)
 - [x] VertexBuffer (buffer)
-- [ ] BaseAttachment (attachment)
-- [ ] ColorAttachment (attachment)
+- [x] BaseAttachment (attachment)
+- [x] ColorAttachment (attachment)
 - [ ] DepthStencilAttachment (attachment)
 
 ### state
@@ -74,7 +73,7 @@
 - [ ] TextureState
 
 ### util
-- [ ] hash32a
-- [ ] reflectShaderAttributes
-- [ ] reflectShaderUniforms
-- [ ] uniqueID
+- [x] hash32a
+- [x] reflectShaderAttributes
+- [x] reflectShaderUniforms
+- [x] uniqueID
