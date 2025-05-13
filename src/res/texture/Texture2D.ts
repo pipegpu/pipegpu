@@ -21,7 +21,7 @@ class Texture2D extends BaseTexture {
             ctx: Context,
             width: number,
             height: number,
-            textureData: TypedArray1DFormat,
+            textureData?: TypedArray1DFormat,
             textureFormat?: GPUTextureFormat,
             maxMipLevel?: number
         }
@@ -36,7 +36,7 @@ class Texture2D extends BaseTexture {
             textureFormat: opts.textureFormat,
             maxMipLevel: opts.maxMipLevel
         });
-        this.textureData = opts.textureData;
+        this.textureData = opts.textureData || new Float32Array();
     }
 
     /**

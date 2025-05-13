@@ -51,14 +51,21 @@ class Context {
 
     /**
      * 
+     */
+    private commandEncoder: GPUCommandEncoder | undefined;
+
+    /**
+     * 
      * @param opts 
      */
-    constructor(opts: IContextOpts = {
-        selector: "",
-        width: 0,
-        height: 0,
-        devicePixelRatio: 0
-    }) {
+    constructor(
+        opts: IContextOpts = {
+            selector: "",
+            width: 0,
+            height: 0,
+            devicePixelRatio: 0
+        }
+    ) {
         this.contextDesc = parseContextDesc(opts);
         this.gpuContext = this.contextDesc.canvas.getContext("webgpu");
     }
@@ -82,9 +89,17 @@ class Context {
     /**
      * 
      */
-    refreshFrameResource = () => {
+    refreshFrameResource = (): void => {
         this.frameTargetTexture = this.gpuContext?.getCurrentTexture() as GPUTexture;
         this.frameTargetTextureView = this.frameTargetTexture.createView();
+        this.commandEncoder = this.device?.createCommandEncoder() as GPUCommandEncoder;
+    }
+
+    /**
+     * 
+     */
+    getCommandEncoder = (): GPUCommandEncoder => {
+        return this.commandEncoder as GPUCommandEncoder;
     }
 
     /**
@@ -101,6 +116,20 @@ class Context {
      */
     getFrameTextureView = (): GPUTextureView => {
         return this.frameTargetTextureView as GPUTextureView;
+    }
+
+    /**
+     * 
+     */
+    getViewportWidth = (): number => {
+        return this.contextDesc.width;
+    }
+
+    /**
+     * 
+     */
+    getViewportHeight = (): number => {
+        return this.contextDesc.height;
     }
 
     /**
@@ -133,6 +162,14 @@ class Context {
      */
     getPreferredTextureFormat = (): GPUTextureFormat => {
         return navigator.gpu.getPreferredCanvasFormat();
+    }
+
+    /**
+     * 
+     * @returns 
+     */
+    getPreferredDepthTexuteFormat = (): GPUTextureFormat => {
+        return 'depth24plus';
     }
 
 }

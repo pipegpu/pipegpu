@@ -263,10 +263,10 @@ class Compiler {
         );
 
         // parse primitive state
-        const primitiveState: GPUPrimitiveState = parsePrimitiveState(
-            desc.primitiveDesc,
-            desc.dispatch
-        );
+        const primitiveState: GPUPrimitiveState = parsePrimitiveState({
+            primitiveDesc: desc.primitiveDesc,
+            dispatch: desc.dispatch
+        });
 
         // parse fragment state
         const fragmentState: GPUFragmentState = parseFragmentState(
@@ -445,7 +445,7 @@ class Compiler {
             clearColor?: number[]
         },
         id: number = 0
-    ): ColorAttachment | undefined => {
+    ): ColorAttachment => {
         return this.attachmentState.createColorAttachment(opts, id);
     }
 
@@ -466,8 +466,31 @@ class Compiler {
             stencilReadOnly?: boolean
         },
         id: number = 0
-    ): DepthStencilAttachment | undefined => {
+    ): DepthStencilAttachment => {
         return this.attachmentState.createDepthStencilAttachment(opts, id);
+    }
+
+    /**
+     * 
+     * @returns 
+     */
+    createSurfaceTexture = () => {
+        return this.textureState.createSurfaceTexture2D();
+    }
+
+    /**
+     * 
+     */
+    createTexture2D = (
+        opts: {
+            width: number,
+            height: number,
+            textureData?: TypedArray1DFormat,
+            textureFormat?: GPUTextureFormat,
+            maxMipLevel?: number
+        }
+    ) => {
+        return this.textureState.createTexutre2D(opts);
     }
 }
 

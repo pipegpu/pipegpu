@@ -13,16 +13,14 @@ class SurfaceTexture2D extends BaseTexture {
     constructor(
         opts: {
             id: number,
-            ctx: Context,
-            width: number,
-            height: number,
+            ctx: Context
         }
     ) {
         super({
             id: opts.id,
             ctx: opts.ctx,
-            width: opts.width,
-            height: opts.height,
+            width: opts.ctx.getViewportWidth(),
+            height: opts.ctx.getViewportHeight(),
             textureUsageFlags: GPUTextureUsage.RENDER_ATTACHMENT,
             textureFormat: opts.ctx.getPreferredTextureFormat(),
         });

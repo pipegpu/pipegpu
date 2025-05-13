@@ -54,7 +54,7 @@ class AttachmentState {
             clearColor?: number[]
         },
         id: number = 0
-    ): ColorAttachment | undefined => {
+    ): ColorAttachment => {
         if (!AttachmentState.ATTACHMENT_SET.has(id)) {
             id = uniqueID();
             const colorAttachment: ColorAttachment = new ColorAttachment({
@@ -86,7 +86,7 @@ class AttachmentState {
             stencilReadOnly?: boolean
         },
         id: number = 0
-    ): DepthStencilAttachment | undefined => {
+    ): DepthStencilAttachment => {
         if (!AttachmentState.ATTACHMENT_SET.has(id)) {
             id = uniqueID();
             const depthStencilAttachment: DepthStencilAttachment = new DepthStencilAttachment({

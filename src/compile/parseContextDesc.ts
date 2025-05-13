@@ -2,8 +2,7 @@
  * @description
  * pipegup context descriptor
  */
-interface IContextOpts 
-{
+interface IContextOpts {
     /**
      * selector for the element to be used as a context
      * for example: 'canvas'
@@ -65,40 +64,41 @@ const createCanvasElement = (
  * @param height 
  * @param devicePixelRatio  
  */
-interface ContextDesc extends IContextOpts 
-{
+interface ContextDesc extends IContextOpts {
     /**
      * @description
      * @param container the container element to be used as a context
      */
-    container:HTMLElement;
+    container: HTMLElement;
 
     /**
      * @description
      * @param canvas the canvas element to be used as a context
      */
-    canvas:HTMLCanvasElement;
+    canvas: HTMLCanvasElement;
 }
 
 /**
  * @description
  * @param opts 
  */
-const parseContextDesc = (opts: IContextOpts = {
-    selector: "",
-    width: 0,
-    height: 0,
-    devicePixelRatio: 0
-}): ContextDesc => {
+const parseContextDesc = (
+    opts: IContextOpts = {
+        selector: "",
+        width: 0,
+        height: 0,
+        devicePixelRatio: 0
+    }
+): ContextDesc => {
     const container = document.body;
     const canvas = createCanvasElement(container, opts.width, opts.height, opts.devicePixelRatio);
-    let desc:ContextDesc = {
+    let desc: ContextDesc = {
         selector: "",
         width: 0,
         height: 0,
         devicePixelRatio: opts.devicePixelRatio || devicePixelRatio || 1.0,
-        container:container,
-        canvas:canvas
+        container: container,
+        canvas: canvas
     };
     return desc;
 }

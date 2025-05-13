@@ -1,6 +1,7 @@
 import type { Context } from "../res/Context"
 import type { TypedArray1DFormat } from "../res/Format";
 import type { BaseTexture } from "../res/texture/BaseTexture";
+import { SurfaceTexture2D } from "../res/texture/SurfaceTexture2D";
 import { Texture2D } from "../res/texture/Texture2D";
 import { uniqueID } from "../util/uniqueID";
 
@@ -48,7 +49,7 @@ class TextureState {
         opts: {
             width: number,
             height: number,
-            textureData: TypedArray1DFormat,
+            textureData?: TypedArray1DFormat,
             textureFormat?: GPUTextureFormat,
             maxMipLevel?: number
         },
@@ -70,6 +71,23 @@ class TextureState {
         return TextureState.TEXTURE_SET.get(id) as Texture2D;
     }
 
+    /**
+     * 
+     * @param opts 
+     * @param id 
+     * @returns 
+     */
+    createSurfaceTexture2D = (id: number = 0): SurfaceTexture2D => {
+        if (!TextureState.TEXTURE_SET.has(id)) {
+            id = uniqueID();
+            const texture = new SurfaceTexture2D({
+                id: id,
+                ctx: this.ctx
+            });
+            TextureState.TEXTURE_SET.set(id, texture);
+        }
+        return TextureState.TEXTURE_SET.get(id) as SurfaceTexture2D;
+    }
 }
 
 export {

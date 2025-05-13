@@ -5,8 +5,15 @@ import type { CullFormat, PropertyFormat } from "../res/Format"
  * 
  */
 interface PrimitiveDesc {
-    cullFormat: CullFormat,
-    primitiveTopology: GPUPrimitiveTopology,
+    /**
+     * 
+     */
+    cullFormat: CullFormat;
+
+    /**
+     * 
+     */
+    primitiveTopology: GPUPrimitiveTopology;
 }
 
 /**
@@ -16,24 +23,32 @@ interface PrimitiveDesc {
  * @returns 
  */
 const parsePrimitiveState = (
-    primitiveDesc: PrimitiveDesc,
-    dispatch: RenderProperty,
+    opts: {
+        primitiveDesc?: PrimitiveDesc,
+        dispatch: RenderProperty,
+    }
 ) => {
     const primitiveState: GPUPrimitiveState = {};
-    primitiveState.topology = primitiveDesc.primitiveTopology;
+    primitiveState.topology = opts.primitiveDesc?.primitiveTopology || 'triangle-list';
 
-    const t: PropertyFormat = dispatch.getPropertyFormat();
+    const t: PropertyFormat = opts.dispatch.getPropertyFormat();
     switch (t) {
         case 'drawIndexed':
             {
-                primitiveState.stripIndexFormat = dispatch.getIndexFormat();
+                primitiveState.stripIndexFormat = opts.dispatch.getIndexFormat();
                 break;
             }
         default:
             break;
     }
 
-    switch (primitiveDesc.cullFormat) {
+    const cullFormat = opts.primitiveDesc?.cullFormat || 'none';
+    switch (cullFormat) {
+        case 'none':
+            {
+                primitiveState.cullMode = 'none';
+                break;
+            }
         case 'frontCCW':
             {
                 primitiveState.frontFace = 'ccw';
@@ -60,11 +75,11 @@ const parsePrimitiveState = (
             }
         default:
             {
+                console.log(`[E][parsePrimitiveState] unsupported cullFormat: ${cullFormat}`);
                 primitiveState.cullMode = 'none';
                 break;
             }
     }
-
     return primitiveState;
 }
 
