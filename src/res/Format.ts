@@ -39,35 +39,30 @@ type MultiSampleFormat =
  * 
  */
 type FrameStageFormat =
-    | 'FrameBegin'
-    | 'FrameFinish'
+    | 'frameBegin'
+    | 'frameFinish'
     ;
 
 /**
  * 
  */
 type PropertyFormat =
-    | 'None'
-    | 'ComputeDispatch'
-    | 'DrawCount'
-    | 'DrawIndexed'
-    | 'DrawIndirect'
-    | 'VertexBuffer'
-    | 'UniformBuffer'
-    | 'IndexBuffer'
-    | 'StorageBuffer'
-    | 'Texutre2D'
-    | 'SurfaceTexture2D'
-    | 'TextureStorage2D'
-    | 'RenderPipeline'
-    | 'ComputePipeline'
-    ;
-
-/**
- * 
- */
-type DepthCompareFormat =
-    | 'lessEqual'
+    | 'none'
+    | 'computeDispatch'
+    | 'drawCount'
+    | 'drawIndexed'
+    | 'drawIndirect'
+    | 'vertexBuffer'
+    | 'uniformBuffer'
+    | 'indexBuffer'
+    | 'storageBuffer'
+    | 'texutre2D'
+    | 'surfaceTexture2D'
+    | 'textureStorage2D'
+    | 'renderPipeline'
+    | 'computePipeline'
+    | 'renderHolder'
+    | 'computeHolder'
     ;
 
 /**
@@ -78,19 +73,38 @@ type DepthLoadStoreFormat =
     | 'clearStore'
     ;
 
+/**
+ * 
+ */
+type StencilLoadStoreFormat =
+    | 'loadStore'
+    | 'clearStore'
+    ;
+
+/**
+ * 
+ */
+type StencilStateFormat =
+    | 'alwaysKeep'
+    ;
+
+/**
+ * 
+ */
 type CullFormat =
-    | 'None'
-    | 'FrontCW'
-    | 'FrontCCW'
-    | 'BackCW'
-    | 'BackCCW'
+    | 'none'
+    | 'frontCW'
+    | 'frontCCW'
+    | 'backCW'
+    | 'backCCW'
     ;
 
 export type {
     CullFormat,
+    StencilStateFormat,
     ColorLoadStoreFormat,
     DepthLoadStoreFormat,
-    DepthCompareFormat,
+    StencilLoadStoreFormat,
     BlendFormat,
     MultiSampleFormat,
     PropertyFormat,

@@ -19,7 +19,7 @@ class BaseProperty {
      * @param propertyName 
      * @param supportedProperty 
      */
-    constructor(propertyName: string, propertyFormat: PropertyFormat = 'None') {
+    constructor(propertyName: string, propertyFormat: PropertyFormat = 'none') {
         this.propertyName = propertyName;
         this.propertyFormat = propertyFormat;
     }

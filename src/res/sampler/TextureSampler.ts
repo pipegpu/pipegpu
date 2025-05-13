@@ -36,7 +36,7 @@ class TextureSampler extends BaseSampler {
      * @param _frameStage 
      * @returns 
      */
-    override getGpuSampler = (_encoder: GPUCommandEncoder | null = null, _frameStage: FrameStageFormat = 'FrameBegin'): GPUSampler => {
+    override getGpuSampler = (_encoder: GPUCommandEncoder | null = null, _frameStage: FrameStageFormat = 'frameBegin'): GPUSampler => {
         if (!this.sampler) {
             this.createGpuSampler();
         }

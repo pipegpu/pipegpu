@@ -97,7 +97,7 @@ class VertexBuffer extends BaseBuffer {
             this.createGpuBuffer();
         } else {
             // vertex buffer only need update once in each frame at begin stage
-            frameStage === "FrameBegin" && this.needUpdate() && this.updateGpuBuffer();
+            frameStage === "frameBegin" && this.needUpdate() && this.updateGpuBuffer();
         }
         return this.buffer as GPUBuffer;
     }

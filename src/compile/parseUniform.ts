@@ -49,7 +49,7 @@ const parseUniform = (
     propertyMap.forEach((propertyBase: BaseProperty, propertyName: string) => {
         const t: PropertyFormat = propertyBase.getPropertyFormat();
         switch (t) {
-            case "UniformBuffer":
+            case "uniformBuffer":
                 {
                     const uniformBufferProperty: UniformBufferProperty = propertyBase as UniformBufferProperty;
                     const bufferID: number = uniformBufferProperty.getUniformBufferID();

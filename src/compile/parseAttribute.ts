@@ -41,7 +41,7 @@ const parseAttribute = (
     propertyMap.forEach((propertyBase: BaseProperty, propertyName: string) => {
         const t: PropertyFormat = propertyBase.getPropertyFormat();
         switch (t) {
-            case "VertexBuffer":
+            case "vertexBuffer":
                 {
                     const vertexBufferProperty: VertexBufferProperty = propertyBase as VertexBufferProperty;
                     const bufferID: number = vertexBufferProperty.getVertexBufferID();

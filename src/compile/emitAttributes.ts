@@ -83,7 +83,7 @@ const emitAttributes = (
             const stride: number = getVertexFormatStride(att.format);
             const t: PropertyFormat = r.type;
             switch (t) {
-                case 'VertexBuffer':
+                case 'vertexBuffer':
                     {
                         att.offset = offset;
                         offset += stride;

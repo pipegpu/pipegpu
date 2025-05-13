@@ -5,16 +5,12 @@ import type { RenderHandle, UniformHandle } from "../res/Handle"
 import type { RenderPipeline } from "../res/pipeline/RenderPipeline"
 import type { BufferState } from "../state/BufferState"
 import type { TextureState } from "../state/TextureState"
+import { BaseHolder } from "./BaseHolder"
 
 /**
  * 
  */
-class RenderHolder {
-    /**
-     * 
-     */
-    private ctx: Context;
-
+class RenderHolder extends BaseHolder {
     /**
      * 
      */
@@ -66,6 +62,7 @@ class RenderHolder {
      */
     constructor(
         opts: {
+            id: number,
             ctx: Context,
             renderPipeline: RenderPipeline,
             bufferState: BufferState,
@@ -78,7 +75,7 @@ class RenderHolder {
             depthStencilAttachment?: DepthStencilAttachment,
         }
     ) {
-        this.ctx = opts.ctx;
+        super({ id: opts.id, ctx: opts.ctx, poropertyFormat: 'renderHolder' });
         this.renderPipeline = opts.renderPipeline;
         this.bufferState = opts.bufferState;
         this.texturteState = opts.texturteState;
@@ -88,6 +85,14 @@ class RenderHolder {
         this.slotBindGroupMap = opts.slotBindGroupMap;
         this.colorAttachments = opts.colorAttachments;
         this.depthStencilAttachment = opts.depthStencilAttachment;
+    }
+
+    /**
+     * 
+     * @param encoder 
+     */
+    override build(encoder: GPUCommandEncoder): void {
+        throw new Error("Method not implemented.")
     }
 
 }

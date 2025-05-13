@@ -37,14 +37,14 @@ class RenderProperty extends BaseProperty {
     constructor(a?: IndexBuffer | IndirectBuffer | number, b?: number) {
         super('[RenderProperty][constructor]');
         if (typeof a === "number" && typeof b === "number") {
-            this.propertyFormat = 'DrawCount';
+            this.propertyFormat = 'drawCount';
             this.maxDrawCount = a;
             this.instanceCount = b;
         } else if (a instanceof IndexBuffer) {
-            this.propertyFormat = 'DrawIndexed';
+            this.propertyFormat = 'drawIndexed';
             this.indexBuffer = a;
         } else if (a instanceof IndirectBuffer) {
-            this.propertyFormat = 'DrawIndirect'
+            this.propertyFormat = 'drawIndirect'
         } else {
 
         }

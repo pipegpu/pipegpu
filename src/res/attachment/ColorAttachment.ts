@@ -25,7 +25,7 @@ class ColorAttachment extends BaseAttachment {
     /**
      * 
      */
-    private loadStoreFormat: ColorLoadStoreFormat;
+    private colorLoadStoreFormat: ColorLoadStoreFormat;
 
     /**
      * 
@@ -52,16 +52,19 @@ class ColorAttachment extends BaseAttachment {
             ctx: Context,
             texture: BaseTexture,
             blendFormat?: BlendFormat,
-            loadStoreFormat?: ColorLoadStoreFormat
+            colorLoadStoreFormat?: ColorLoadStoreFormat
             clearColor?: number[]
         }
     ) {
-        super({ id: opts.id, ctx: opts.ctx });
+        super({
+            id: opts.id,
+            ctx: opts.ctx
+        });
         this.clearColor.r = opts.clearColor ? opts.clearColor[0] : this.clearColor.r;
         this.clearColor.g = opts.clearColor ? opts.clearColor[1] : this.clearColor.g;
         this.clearColor.b = opts.clearColor ? opts.clearColor[2] : this.clearColor.b;
         this.clearColor.a = opts.clearColor ? opts.clearColor[3] : this.clearColor.a;
-        this.loadStoreFormat = opts.loadStoreFormat ? opts.loadStoreFormat : 'clearStore';
+        this.colorLoadStoreFormat = opts.colorLoadStoreFormat ? opts.colorLoadStoreFormat : 'clearStore';
         this.blendFormat = opts.blendFormat ? opts.blendFormat : 'opaque';
         this.texture = opts.texture;
     }
@@ -116,7 +119,7 @@ class ColorAttachment extends BaseAttachment {
         if (!this.renderPassColorAttachment) {
             return;
         }
-        switch (this.loadStoreFormat) {
+        switch (this.colorLoadStoreFormat) {
             case 'clearStore':
                 {
                     this.renderPassColorAttachment.loadOp = 'clear';

@@ -21,7 +21,7 @@ const parseRenderDispatch = (
 
     const t: PropertyFormat = dispatch.getPropertyFormat();
     switch (t) {
-        case 'DrawCount':
+        case 'drawCount':
             {
                 _handler = (encoder: GPURenderPassEncoder): void => {
                     const maxDrawCount: number = dispatch.getMaxDrawCount();
@@ -30,7 +30,7 @@ const parseRenderDispatch = (
                 };
                 break;
             }
-        case 'DrawIndexed':
+        case 'drawIndexed':
             {
                 _handler = (encoder: GPURenderPassEncoder): void => {
                     const indexBufferID: number = dispatch.getIndexBufferID();

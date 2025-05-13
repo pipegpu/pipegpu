@@ -1,5 +1,5 @@
 import type { Context } from "../Context";
-import type { DepthCompareFormat, DepthLoadStoreFormat } from "../Format";
+import type { DepthLoadStoreFormat, StencilLoadStoreFormat, StencilStateFormat } from "../Format";
 import type { BaseTexture } from "../texture/BaseTexture";
 import type { Texture2D } from "../texture/Texture2D";
 import { BaseAttachment } from "./BaseAttachment";
@@ -31,7 +31,27 @@ class DepthStencilAttachment extends BaseAttachment {
     /**
      * 
      */
-    private depthCompareFormat: DepthCompareFormat;
+    private depthCompareFunction: GPUCompareFunction;
+
+    /**
+     * 
+     */
+    private stencilStateFormat: StencilStateFormat;
+
+    /**
+     * 
+     */
+    private stencilLoadStoreFormat: StencilLoadStoreFormat;
+
+    /**
+     * 
+     */
+    private depthReadOnly: boolean;
+
+    /**
+     * 
+     */
+    private stencilReadOnly: boolean;
 
     /**
      * 
@@ -44,7 +64,11 @@ class DepthStencilAttachment extends BaseAttachment {
             ctx: Context,
             texture: Texture2D,
             depthLoadStoreFormat?: DepthLoadStoreFormat,
-            depthCompareFormat?: DepthCompareFormat,
+            depthCompareFunction?: GPUCompareFunction,
+            stencilFunctionFormat?: StencilStateFormat,
+            stencilLoadStoreFormat?: StencilLoadStoreFormat,
+            depthReadOnly?: boolean,
+            stencilReadOnly?: boolean
         }
     ) {
         super(
@@ -55,13 +79,129 @@ class DepthStencilAttachment extends BaseAttachment {
         );
         this.texture = opts.texture;
         this.depthLoadStoreFormat = opts.depthLoadStoreFormat || 'loadStore';
-        this.depthCompareFormat = opts.depthCompareFormat || 'lessEqual';
+        this.depthCompareFunction = opts.depthCompareFunction || 'less-equal';
+        this.stencilStateFormat = opts.stencilFunctionFormat || 'alwaysKeep';
+        this.stencilLoadStoreFormat = opts.stencilLoadStoreFormat || 'loadStore';
+        this.depthReadOnly = opts.depthReadOnly || true;
+        this.stencilReadOnly = opts.stencilReadOnly || true;
     }
 
     /**
      * 
      */
-    getDepthStencilState = () => {
+    private updateDepthStencilState = (): void => {
+        // depth compare
+        switch (this.depthCompareFunction) {
+            case 'never':
+                {
+                    this.depthStencilState.depthWriteEnabled = false;
+                    this.depthStencilState.depthCompare = this.depthCompareFunction;
+                    this.depthStencilState.format = this.texture?.getTextureFormat();
+                    break;
+                }
+            case 'equal':
+            case 'greater':
+            case 'greater-equal':
+            case 'less':
+            case 'not-equal':
+            case 'always':
+            case 'less-equal':
+                {
+                    this.depthStencilState.depthWriteEnabled = true;
+                    this.depthStencilState.depthCompare = this.depthCompareFunction;
+                    this.depthStencilState.format = this.texture?.getTextureFormat();
+                    break;
+                }
+            default:
+                {
+                    console.log(`[E][DepthStencilAttachment][updateDepthStencilState] unsupported depth compare function, type:${this.depthCompareFunction}`);
+                    break;
+                }
+        }
+        // stencil
+        switch (this.stencilStateFormat) {
+            case 'alwaysKeep':
+                {
+                    const stencilFraceState: GPUStencilFaceState = {};
+                    stencilFraceState.compare = 'always';
+                    stencilFraceState.passOp = 'keep';
+                    stencilFraceState.failOp = 'keep';
+                    stencilFraceState.depthFailOp = 'keep';
+                    this.depthStencilState.stencilFront = stencilFraceState;
+                    this.depthStencilState.stencilBack = stencilFraceState;
+                    this.depthStencilState.stencilReadMask = 0;
+                    this.depthStencilState.stencilWriteMask = 0;
+                    break;
+                }
+            default:
+                {
+                    console.log(`[E][DepthStencilAttachment][updateDepthStencilState] unsupported depth stencil state format function, type:${this.stencilStateFormat}`);
+                    break;
+                }
+        }
+    }
+
+    /**
+     * 
+     */
+    private updateRenderPassDepthStencilAttachment = () => {
+        // depth load store op
+        switch (this.depthLoadStoreFormat) {
+            case 'clearStore':
+                {
+                    this.depthStencilAttachment.view = this.texture.getTextureView();
+                    this.depthStencilAttachment.depthClearValue = 1.0;
+                    this.depthStencilAttachment.depthLoadOp = 'clear';
+                    this.depthStencilAttachment.depthStoreOp = 'store';
+                    this.depthStencilAttachment.depthReadOnly = this.depthReadOnly;
+                    break;
+                }
+            case 'loadStore':
+                {
+                    this.depthStencilAttachment.view = this.texture.getTextureView();
+                    break;
+                }
+            default:
+                {
+                    break;
+                }
+        }
+        // stencil load store op
+        switch (this.stencilLoadStoreFormat) {
+            case 'clearStore':
+                {
+                    this.depthStencilAttachment.stencilClearValue = 1.0;
+                    this.depthStencilAttachment.stencilLoadOp = 'clear';
+                    this.depthStencilAttachment.stencilStoreOp = 'store';
+                    this.depthStencilAttachment.stencilReadOnly = this.stencilReadOnly;
+                    break;
+                }
+            case 'loadStore':
+                {
+                    this.depthStencilAttachment.stencilClearValue = 1.0;
+                    this.depthStencilAttachment.stencilLoadOp = 'load';
+                    this.depthStencilAttachment.stencilStoreOp = 'store';
+                    this.depthStencilAttachment.stencilReadOnly = this.stencilReadOnly;
+                    break;
+                }
+            default:
+                {
+                    break;
+                }
+        }
+    }
+
+    /**
+     * 
+     */
+    getGpuRenderPassDepthStencilAttachment = (): GPURenderPassDepthStencilAttachment => {
+
+    };
+
+    /**
+     * 
+     */
+    getDepthStencilState = (): GPUDepthStencilState => {
         return this.depthStencilState;
     }
 }

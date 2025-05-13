@@ -11,7 +11,7 @@ class ComputePipeline extends BasePipeline {
         super({
             id: opts.id,
             ctx: opts.ctx,
-            propertyFormat: 'ComputePipeline'
+            propertyFormat: 'computePipeline'
         });
     }
 }

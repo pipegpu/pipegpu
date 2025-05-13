@@ -8,7 +8,12 @@ abstract class BaseHolder {
     /**
      * 
      */
-    private ctx: Context;
+    private id: number;
+
+    /**
+     * 
+     */
+    protected ctx: Context;
 
     /**
      * 
@@ -21,12 +26,22 @@ abstract class BaseHolder {
      */
     constructor(
         opts: {
+            id: number,
             ctx: Context,
             poropertyFormat: PropertyFormat
         }
     ) {
+        this.id = opts.id;
         this.ctx = opts.ctx;
         this.poropertyFormat = opts.poropertyFormat;
+    }
+
+    /**
+     * 
+     * @returns 
+     */
+    getID = (): number => {
+        return this.id;
     }
 
     /**

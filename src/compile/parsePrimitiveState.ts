@@ -24,7 +24,7 @@ const parsePrimitiveState = (
 
     const t: PropertyFormat = dispatch.getPropertyFormat();
     switch (t) {
-        case 'DrawIndexed':
+        case 'drawIndexed':
             {
                 primitiveState.stripIndexFormat = dispatch.getIndexFormat();
                 break;
@@ -34,25 +34,25 @@ const parsePrimitiveState = (
     }
 
     switch (primitiveDesc.cullFormat) {
-        case 'FrontCCW':
+        case 'frontCCW':
             {
                 primitiveState.frontFace = 'ccw';
                 primitiveState.cullMode = 'front';
                 break;
             }
-        case 'FrontCW':
+        case 'frontCW':
             {
                 primitiveState.frontFace = 'cw';
                 primitiveState.cullMode = 'front';
                 break;
             }
-        case 'BackCCW':
+        case 'backCCW':
             {
                 primitiveState.frontFace = 'cw';
                 primitiveState.cullMode = 'back';
                 break;
             }
-        case 'BackCW':
+        case 'backCW':
             {
                 primitiveState.frontFace = 'ccw';
                 primitiveState.cullMode = 'back';

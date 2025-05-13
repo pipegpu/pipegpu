@@ -181,11 +181,11 @@ class Compiler {
     ) {
         this.ctx = opts.ctx;
         this.stringState = new StringState();
-        this.bufferState = new BufferState({ ctx: this.ctx });
-        this.shaderState = new ShaderState({ ctx: this.ctx, stringState: this.stringState });
-        this.textureState = new TextureState({ ctx: this.ctx });
-        this.samplerState = new SamplerState({ ctx: this.ctx });
-        this.pipelineState = new PipelineState({ ctx: this.ctx });
+        this.bufferState = new BufferState(this.ctx);
+        this.shaderState = new ShaderState(this.ctx, this.stringState);
+        this.textureState = new TextureState(this.ctx);
+        this.samplerState = new SamplerState(this.ctx);
+        this.pipelineState = new PipelineState(this.ctx);
     }
 
     /**

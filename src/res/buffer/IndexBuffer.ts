@@ -101,7 +101,7 @@ class IndexBuffer extends BaseBuffer {
      * @param _encoder 
      * @param frameStage 
      */
-    override getGpuBuffer = (_encoder: GPUCommandEncoder | null = null, _frameStage: FrameStageFormat = 'FrameBegin'): GPUBuffer => {
+    override getGpuBuffer = (_encoder: GPUCommandEncoder | null = null, _frameStage: FrameStageFormat = 'frameBegin'): GPUBuffer => {
         if (!this.buffer) {
             this.createGpuBuffer();
         }

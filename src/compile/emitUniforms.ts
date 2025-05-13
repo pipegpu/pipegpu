@@ -49,7 +49,6 @@ const emitUniforms = (
                 const cpResourceBindings = vsMap.get(k) || [];
                 resourceBindings.concat(cpResourceBindings);
             }
-            // 
             if (resourceBindings.length) {
                 mergedUniformResourceMap.set(k, resourceBindings);
             }
@@ -82,7 +81,7 @@ const emitUniforms = (
                             return;
                         }
                         const gpuBufferBinding: GPUBufferBinding = {
-                            buffer: buffer.getGpuBuffer(null, 'FrameBegin'),
+                            buffer: buffer.getGpuBuffer(null, 'frameBegin'),
                             offset: offset,
                             size: buffer.getByteLength(),
 
@@ -114,7 +113,7 @@ const emitUniforms = (
                 case ResourceType.Sampler:
                     {
                         const resourcID = record?.resourceID as number;
-                        const sampler = opts.samplerState.getSampler(resourcID)?.getGpuSampler(null, 'FrameBegin');
+                        const sampler = opts.samplerState.getSampler(resourcID)?.getGpuSampler(null, 'frameBegin');
                         if (!sampler) {
                             console.log(`[E][emitUniforms] missing uniforms, id:${resourcID}`);
                             return;

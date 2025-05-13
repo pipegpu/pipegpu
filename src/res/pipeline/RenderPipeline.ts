@@ -29,7 +29,7 @@ class RenderPipeline extends BasePipeline {
         super({
             id: opts.id,
             ctx: opts.ctx,
-            propertyFormat: 'RenderPipeline'
+            propertyFormat: 'renderPipeline'
         });
         this.renderPipelineDescriptor = opts.renderPipelineDescriptor;
     }
