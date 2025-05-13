@@ -1,8 +1,8 @@
 import type { BaseAttachment } from "../res/attachment/BaseAttachment";
 import { ColorAttachment } from "../res/attachment/ColorAttachment";
-import type { DepthStencilAttachment } from "../res/attachment/DepthStencilAttachment";
+import { DepthStencilAttachment } from "../res/attachment/DepthStencilAttachment";
 import type { Context } from "../res/Context";
-import type { BlendFormat, ColorLoadStoreFormat } from "../res/Format";
+import type { BlendFormat, ColorLoadStoreFormat, DepthLoadStoreFormat, StencilLoadStoreFormat, StencilStateFormat } from "../res/Format";
 import type { BaseTexture } from "../res/texture/BaseTexture";
 import type { Texture2D } from "../res/texture/Texture2D";
 import { uniqueID } from "../util/uniqueID";
@@ -77,7 +77,13 @@ class AttachmentState {
      */
     createDepthStencilAttachment = (
         opts: {
-
+            texture: Texture2D,
+            depthLoadStoreFormat?: DepthLoadStoreFormat,
+            depthCompareFunction?: GPUCompareFunction,
+            stencilFunctionFormat?: StencilStateFormat,
+            stencilLoadStoreFormat?: StencilLoadStoreFormat,
+            depthReadOnly?: boolean,
+            stencilReadOnly?: boolean
         },
         id: number = 0
     ): DepthStencilAttachment | undefined => {
@@ -87,9 +93,12 @@ class AttachmentState {
                 id: id,
                 ctx: this.ctx,
                 texture: opts.texture,
-                blendFormat: opts.blendFormat,
-                colorLoadStoreFormat: opts.colorLoadStoreFormat,
-                clearColor: opts.clearColor
+                depthLoadStoreFormat: opts.depthLoadStoreFormat,
+                depthCompareFunction: opts.depthCompareFunction,
+                stencilFunctionFormat: opts.stencilFunctionFormat,
+                stencilLoadStoreFormat: opts.stencilLoadStoreFormat,
+                depthReadOnly: opts.depthReadOnly,
+                stencilReadOnly: opts.stencilReadOnly
             });
             AttachmentState.ATTACHMENT_SET.set(id, depthStencilAttachment);
         }

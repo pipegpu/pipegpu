@@ -44,9 +44,27 @@ abstract class BaseTexture {
     /**
      * 
      */
-    private extent3d: GPUExtent3D;
+    protected extent3d: GPUExtent3D;
 
-    private textureFormat: GPUTextureFormat;
+    /**
+     * 
+     */
+    protected textureFormat: GPUTextureFormat;
+
+    /**
+     * 
+     */
+    protected width: number;
+
+    /**
+     * 
+     */
+    protected height: number;
+
+    /**
+     * 
+     */
+    protected depthOrArrayLayers: number;
 
     /**
      * 
@@ -67,6 +85,9 @@ abstract class BaseTexture {
         this.id = opts.id;
         this.ctx = opts.ctx;
         this.textureUsageFlags = opts.textureUsageFlags;
+        this.width = opts.width;
+        this.height = opts.height;
+        this.depthOrArrayLayers = opts.depthOrArrayLayers || 1;
         this.extent3d = [opts.width, opts.height, opts.depthOrArrayLayers || 1];
         this.maxMipLevel = getMaxMipmapLevel(...this.extent3d);
         this.textureFormat = opts.textureFormat || this.ctx.getPreferredTextureFormat();
@@ -76,20 +97,8 @@ abstract class BaseTexture {
      * 
      * @returns 
      */
-    getId = (): number => {
+    getID = (): number => {
         return this.id;
-    }
-
-    /**
-     * 
-     */
-    getTextureView = (): GPUTextureView => {
-        if (!this.texture) {
-            this.createGpuTexture();
-        }
-        if (this.textureViewArray.length === 0) {
-
-        }
     }
 
     /**
@@ -104,6 +113,11 @@ abstract class BaseTexture {
      * 
      */
     protected abstract createGpuTexture(): void;
+
+    /**
+     * 
+     */
+    abstract getGpuTextureView(): GPUTextureView;
 
     /**
      * 

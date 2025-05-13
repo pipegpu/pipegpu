@@ -1,5 +1,8 @@
 import { type IContextOpts, type ContextDesc, parseContextDesc } from "../compile/parseContextDesc.ts";
 
+/**
+ * 
+ */
 class Context {
     /**
      * 
@@ -38,6 +41,16 @@ class Context {
 
     /**
      * 
+     */
+    private frameTargetTexture: GPUTexture | undefined;
+
+    /**
+     * 
+     */
+    private frameTargetTextureView: GPUTextureView | undefined;
+
+    /**
+     * 
      * @param opts 
      */
     constructor(opts: IContextOpts = {
@@ -50,6 +63,9 @@ class Context {
         this.gpuContext = this.contextDesc.canvas.getContext("webgpu");
     }
 
+    /**
+     * 
+     */
     async init() {
         this.adapter = await navigator.gpu.requestAdapter();
         this.device = await this.adapter?.requestDevice();
@@ -61,6 +77,30 @@ class Context {
         this.limits = this.adapter?.limits;
         this.features = this.adapter?.features;
         this.queue = this.device?.queue;
+    }
+
+    /**
+     * 
+     */
+    refreshFrameResource = () => {
+        this.frameTargetTexture = this.gpuContext?.getCurrentTexture() as GPUTexture;
+        this.frameTargetTextureView = this.frameTargetTexture.createView();
+    }
+
+    /**
+     * 
+     * @returns 
+     */
+    getFrameTexture = (): GPUTexture => {
+        return this.frameTargetTexture as GPUTexture;
+    }
+
+    /**
+     * 
+     * @returns 
+     */
+    getFrameTextureView = (): GPUTextureView => {
+        return this.frameTargetTextureView as GPUTextureView;
     }
 
     /**

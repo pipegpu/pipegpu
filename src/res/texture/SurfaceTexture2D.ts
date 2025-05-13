@@ -2,6 +2,9 @@ import type { Context } from "../Context";
 import type { FrameStageFormat } from "../Format";
 import { BaseTexture } from "./BaseTexture";
 
+/**
+ * 
+ */
 class SurfaceTexture2D extends BaseTexture {
     /**
      * 
@@ -10,15 +13,33 @@ class SurfaceTexture2D extends BaseTexture {
     constructor(
         opts: {
             id: number,
-            ctx: Context
+            ctx: Context,
+            width: number,
+            height: number,
         }
     ) {
-
         super({
             id: opts.id,
             ctx: opts.ctx,
-            textureUsageFlags: GPUTextureUsage.RENDER_ATTACHMENT
+            width: opts.width,
+            height: opts.height,
+            textureUsageFlags: GPUTextureUsage.RENDER_ATTACHMENT,
+            textureFormat: opts.ctx.getPreferredTextureFormat(),
         });
+    }
+
+    /**
+     * 
+     */
+    protected createGpuTexture(): void {
+        this.texture = this.ctx.getFrameTexture();
+    }
+
+    /**
+     * surface texture do nothing.
+     */
+    override getGpuTextureView = (): GPUTextureView => {
+        return this.ctx.getFrameTextureView();
     }
 
     /**
@@ -26,9 +47,9 @@ class SurfaceTexture2D extends BaseTexture {
      * @param encoder 
      * @param frameStage 
      */
-    getGpuTexture = (encoder: GPUCommandEncoder, frameStage: FrameStageFormat): void => {
-
-
+    override getGpuTexture = (_encoder: GPUCommandEncoder | null = null, _frameStage: FrameStageFormat = 'frameBegin'): GPUTexture => {
+        this.createGpuTexture();
+        return this.texture as GPUTexture;
     }
 }
 

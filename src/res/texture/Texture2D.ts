@@ -1,8 +1,16 @@
 import type { Context } from "../Context";
-import type { FrameStageFormat } from "../Format";
+import type { FrameStageFormat, TypedArray1DFormat } from "../Format";
 import { BaseTexture } from "./BaseTexture";
 
+/**
+ * 
+ */
 class Texture2D extends BaseTexture {
+    /**
+     * 
+     */
+    private textureData: TypedArray1DFormat;
+
     /**
      * 
      * @param opts 
@@ -13,6 +21,8 @@ class Texture2D extends BaseTexture {
             ctx: Context,
             width: number,
             height: number,
+            textureData: TypedArray1DFormat,
+            textureFormat?: GPUTextureFormat,
             maxMipLevel?: number
         }
     ) {
@@ -23,15 +33,28 @@ class Texture2D extends BaseTexture {
             width: opts.width,
             height: opts.height,
             depthOrArrayLayers: 1,
+            textureFormat: opts.textureFormat,
             maxMipLevel: opts.maxMipLevel
         });
+        this.textureData = opts.textureData;
     }
 
     /**
      * 
      */
     protected override createGpuTexture(): void {
-        throw new Error("Method not implemented.");
+        const desc: GPUTextureDescriptor = {
+            size: this.extent3d,
+            format: this.textureFormat,
+            usage: this.textureUsageFlags
+        };
+        // write texture
+        this.texture = this.ctx.getGpuDevice().createTexture(desc);
+        const destination: GPUTexelCopyTextureInfo = {
+            texture: this.texture
+        };
+        const dataLayout: GPUTexelCopyBufferLayout = {};
+        this.ctx.getGpuQueue().writeTexture(destination, this.textureData, dataLayout, this.extent3d);
     }
 
     /**
@@ -39,11 +62,18 @@ class Texture2D extends BaseTexture {
      * @param encoder 
      * @param frameStage 
      */
-    override getGpuTexture = (encoder: GPUCommandEncoder, frameStage: FrameStageFormat): GPUTexture => {
+    override getGpuTexture = (_encoder: GPUCommandEncoder, _frameStage: FrameStageFormat): GPUTexture => {
         if (!this.texture) {
             this.createGpuTexture();
         }
         return this.texture as GPUTexture;
+    }
+
+    /**
+     * 
+     */
+    override getGpuTextureView(): GPUTextureView {
+        throw new Error("Method not implemented.");
     }
 }
 

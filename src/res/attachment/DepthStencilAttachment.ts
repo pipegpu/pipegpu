@@ -1,6 +1,5 @@
 import type { Context } from "../Context";
 import type { DepthLoadStoreFormat, StencilLoadStoreFormat, StencilStateFormat } from "../Format";
-import type { BaseTexture } from "../texture/BaseTexture";
 import type { Texture2D } from "../texture/Texture2D";
 import { BaseAttachment } from "./BaseAttachment";
 
@@ -11,12 +10,12 @@ class DepthStencilAttachment extends BaseAttachment {
     /**
      * 
      */
-    private depthStencilState: GPUDepthStencilState;
+    private depthStencilState: GPUDepthStencilState | undefined;
 
     /**
      * 
      */
-    private depthStencilAttachment: GPURenderPassDepthStencilAttachment;
+    private depthStencilAttachment: GPURenderPassDepthStencilAttachment | undefined;
 
     /**
      * 
@@ -89,14 +88,16 @@ class DepthStencilAttachment extends BaseAttachment {
     /**
      * 
      */
-    private updateDepthStencilState = (): void => {
-        // depth compare
+    protected override updateState = (): void => {
+        // depthStencilState
+        this.depthStencilState = this.depthStencilState || {
+            format: this.texture.getTextureFormat()
+        };
         switch (this.depthCompareFunction) {
             case 'never':
                 {
                     this.depthStencilState.depthWriteEnabled = false;
                     this.depthStencilState.depthCompare = this.depthCompareFunction;
-                    this.depthStencilState.format = this.texture?.getTextureFormat();
                     break;
                 }
             case 'equal':
@@ -109,7 +110,6 @@ class DepthStencilAttachment extends BaseAttachment {
                 {
                     this.depthStencilState.depthWriteEnabled = true;
                     this.depthStencilState.depthCompare = this.depthCompareFunction;
-                    this.depthStencilState.format = this.texture?.getTextureFormat();
                     break;
                 }
             default:
@@ -144,12 +144,15 @@ class DepthStencilAttachment extends BaseAttachment {
     /**
      * 
      */
-    private updateRenderPassDepthStencilAttachment = () => {
-        // depth load store op
+    protected override updateAttachment = () => {
+        // depthStencilAttachment
+        this.depthStencilAttachment = {
+            view: this.texture.getTextureView()
+        };
+        // depth 
         switch (this.depthLoadStoreFormat) {
             case 'clearStore':
                 {
-                    this.depthStencilAttachment.view = this.texture.getTextureView();
                     this.depthStencilAttachment.depthClearValue = 1.0;
                     this.depthStencilAttachment.depthLoadOp = 'clear';
                     this.depthStencilAttachment.depthStoreOp = 'store';
@@ -158,15 +161,19 @@ class DepthStencilAttachment extends BaseAttachment {
                 }
             case 'loadStore':
                 {
-                    this.depthStencilAttachment.view = this.texture.getTextureView();
+                    this.depthStencilAttachment.depthClearValue = 1.0;
+                    this.depthStencilAttachment.depthLoadOp = 'load';
+                    this.depthStencilAttachment.depthStoreOp = 'store';
+                    this.depthStencilAttachment.depthReadOnly = this.depthReadOnly;
                     break;
                 }
             default:
                 {
+                    console.log(`[E][DepthStencilAttachment][updateRenderPassDepthStencilAttachment] unsupported depthLoadStoreFormat: ${this.depthLoadStoreFormat}`);
                     break;
                 }
         }
-        // stencil load store op
+        // stencil
         switch (this.stencilLoadStoreFormat) {
             case 'clearStore':
                 {
@@ -186,6 +193,7 @@ class DepthStencilAttachment extends BaseAttachment {
                 }
             default:
                 {
+                    console.log(`[E][DepthStencilAttachment][updateRenderPassDepthStencilAttachment] unsupported stencilLoadStoreFormat: ${this.stencilLoadStoreFormat}`);
                     break;
                 }
         }
@@ -195,14 +203,16 @@ class DepthStencilAttachment extends BaseAttachment {
      * 
      */
     getGpuRenderPassDepthStencilAttachment = (): GPURenderPassDepthStencilAttachment => {
-
+        this.updateAttachment();
+        return this.depthStencilAttachment as GPURenderPassDepthStencilAttachment;
     };
 
     /**
      * 
      */
     getDepthStencilState = (): GPUDepthStencilState => {
-        return this.depthStencilState;
+        this.updateState();
+        return this.depthStencilState as GPUDepthStencilState;
     }
 }
 

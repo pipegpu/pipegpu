@@ -10,7 +10,7 @@ import type { Handle1D } from "../res/buffer/BaseBuffer";
 import type { UniformBuffer } from "../res/buffer/UniformBuffer";
 import type { VertexBuffer } from "../res/buffer/VertexBuffer";
 import type { Context } from "../res/Context";
-import type { FrameStageFormat, MultiSampleFormat, TypedArray1DFormat } from "../res/Format";
+import type { BlendFormat, ColorLoadStoreFormat, DepthLoadStoreFormat, FrameStageFormat, MultiSampleFormat, StencilLoadStoreFormat, StencilStateFormat, TypedArray1DFormat } from "../res/Format";
 import type { RenderHandle } from "../res/Handle";
 import type { ComputeShader } from "../res/shader/ComputeShader";
 import type { FragmentShader } from "../res/shader/FragmentShader";
@@ -34,6 +34,10 @@ import { SamplerState } from "../state/SamplerState";
 import { emitRenderPipeline } from "./emitRenderPipeline";
 import { PipelineState } from "../state/PipelineState";
 import type { RenderPipeline } from "../res/pipeline/RenderPipeline";
+import type { BaseTexture } from "../res/texture/BaseTexture";
+import { AttachmentState } from "../state/AttachmentState";
+import type { Texture2D } from "../res/texture/Texture2D";
+import { uniqueID } from "../util/uniqueID";
 
 /**
  * 
@@ -172,6 +176,11 @@ class Compiler {
 
     /**
      * 
+     */
+    private attachmentState: AttachmentState;
+
+    /**
+     * 
      * @param opts 
      */
     constructor(
@@ -186,6 +195,7 @@ class Compiler {
         this.textureState = new TextureState(this.ctx);
         this.samplerState = new SamplerState(this.ctx);
         this.pipelineState = new PipelineState(this.ctx);
+        this.attachmentState = new AttachmentState(this.ctx);
     }
 
     /**
@@ -315,6 +325,7 @@ class Compiler {
 
         //
         return new RenderHolder({
+            id: uniqueID(),
             ctx: this.ctx,
             renderPipeline: renderPipeline,
             bufferState: this.bufferState,
@@ -334,7 +345,6 @@ class Compiler {
      */
     compileComputeHolder = (desc: ComputeHolderDesc): ComputeHolder | undefined => {
         const computeShader = desc.computeShader;
-
         if (!computeShader) {
             console.log(`[E][Compiler][compileComputeHolder] missing shader, computeShader: ${computeShader}`);
             return undefined;
@@ -357,6 +367,12 @@ class Compiler {
         return this.bufferState.createVertexBuffer(opts, id);
     }
 
+    /**
+     * 
+     * @param opts 
+     * @param id 
+     * @returns 
+     */
     createUniformBuffer = (
         opts: {
             rawData?: TypedArray1DFormat,
@@ -415,6 +431,44 @@ class Compiler {
         return this.shaderState.createComputeShader(opts, id);
     }
 
+    /**
+     * 
+     * @param opts 
+     * @param id 
+     * @returns 
+     */
+    createColorAttachment = (
+        opts: {
+            texture: BaseTexture,
+            blendFormat?: BlendFormat,
+            colorLoadStoreFormat?: ColorLoadStoreFormat,
+            clearColor?: number[]
+        },
+        id: number = 0
+    ): ColorAttachment | undefined => {
+        return this.attachmentState.createColorAttachment(opts, id);
+    }
+
+    /**
+     * 
+     * @param opts 
+     * @param id 
+     * @returns 
+     */
+    createDepthStencilAttachment = (
+        opts: {
+            texture: Texture2D,
+            depthLoadStoreFormat?: DepthLoadStoreFormat,
+            depthCompareFunction?: GPUCompareFunction,
+            stencilFunctionFormat?: StencilStateFormat,
+            stencilLoadStoreFormat?: StencilLoadStoreFormat,
+            depthReadOnly?: boolean,
+            stencilReadOnly?: boolean
+        },
+        id: number = 0
+    ): DepthStencilAttachment | undefined => {
+        return this.attachmentState.createDepthStencilAttachment(opts, id);
+    }
 }
 
 export {

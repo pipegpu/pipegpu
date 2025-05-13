@@ -72,53 +72,12 @@ class ColorAttachment extends BaseAttachment {
     /**
      * 
      */
-    getGpuColorAttachment = (): GPURenderPassColorAttachment => {
-        // surface texture view need refresh in each frame
-        // call GetTextureView at frame start
-        if (!this.renderPassColorAttachment) {
-            this.renderPassColorAttachment = {
-                view: this.texture.getTextureView(),
-                loadOp: 'clear',
-                storeOp: 'store',
-                clearValue: this.clearColor,
-                depthSlice: -1
-            };
-        } else {
-            // TODO:: mult sampler support. this.renderPassColorAttachment.resolveTarget
-            this.renderPassColorAttachment.view = this.texture.getTextureView();
-            this.renderPassColorAttachment.clearValue = this.clearColor;
-            this.renderPassColorAttachment.depthSlice = -1;
-        }
-        this.updateAttachmentLoadStore();
-        this.updateBlendState();
-
-        return this.renderPassColorAttachment;
-    }
-
-    /**
-     * 
-     * @returns 
-     */
-    getTextureFormat = (): GPUTextureFormat => {
-        return this.texture?.getTextureFormat() || this.ctx.getPreferredTextureFormat();
-    }
-
-    /**
-     * 
-     * @returns 
-     */
-    getGpuBlendState = (): GPUBlendState => {
-        this.updateBlendState();
-        return this.blendState as GPUBlendState;
-    }
-
-    /**
-     * 
-     */
-    private updateAttachmentLoadStore = (): void => {
-        if (!this.renderPassColorAttachment) {
-            return;
-        }
+    protected override updateAttachment = (): void => {
+        this.renderPassColorAttachment = {
+            view: this.texture.getTextureView(),
+            loadOp: 'clear',
+            storeOp: 'store'
+        };
         switch (this.colorLoadStoreFormat) {
             case 'clearStore':
                 {
@@ -144,10 +103,11 @@ class ColorAttachment extends BaseAttachment {
     /**
      * 
      */
-    private updateBlendState = (): void => {
-        if (!this.blendState) {
-            return;
-        }
+    protected override updateState = (): void => {
+        this.blendState = {
+            color: {},
+            alpha: {},
+        };
         switch (this.blendFormat) {
             case 'addAlphaSrcOneDst':
                 {
@@ -175,6 +135,33 @@ class ColorAttachment extends BaseAttachment {
                     break;
                 }
         }
+    }
+
+    /**
+     * 
+     */
+    getGpuColorAttachment = (): GPURenderPassColorAttachment => {
+        // surface texture view need refresh in each frame
+        // call GetTextureView at frame start
+        this.updateAttachment();
+        return this.renderPassColorAttachment as GPURenderPassColorAttachment;
+    }
+
+    /**
+     * 
+     * @returns 
+     */
+    getGpuBlendState = (): GPUBlendState => {
+        this.updateState();
+        return this.blendState as GPUBlendState;
+    }
+
+    /**
+     * 
+     * @returns 
+     */
+    getTextureFormat = (): GPUTextureFormat => {
+        return this.texture?.getTextureFormat() || this.ctx.getPreferredTextureFormat();
     }
 }
 
