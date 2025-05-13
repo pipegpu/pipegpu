@@ -58,14 +58,7 @@ class Context {
      * 
      * @param opts 
      */
-    constructor(
-        opts: IContextOpts = {
-            selector: "",
-            width: 0,
-            height: 0,
-            devicePixelRatio: 0
-        }
-    ) {
+    constructor(opts: IContextOpts) {
         this.contextDesc = parseContextDesc(opts);
         this.gpuContext = this.contextDesc.canvas.getContext("webgpu");
     }

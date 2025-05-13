@@ -8,7 +8,7 @@ import { Context } from '../src/res/Context.ts';
 
 (async () => {
     const ctx: Context = new Context({
-        selector: "canvasPad",
+        selector: "pad",
         width: 800,
         height: 600,
         devicePixelRatio: devicePixelRatio
