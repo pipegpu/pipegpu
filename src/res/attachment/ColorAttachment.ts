@@ -74,7 +74,7 @@ class ColorAttachment extends BaseAttachment {
      */
     protected override updateAttachment = (): void => {
         this.renderPassColorAttachment = {
-            view: this.texture.getTextureView(),
+            view: this.texture.getGpuTextureView(),
             loadOp: 'clear',
             storeOp: 'store'
         };

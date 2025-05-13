@@ -22,6 +22,7 @@ class SurfaceTexture2D extends BaseTexture {
             width: opts.ctx.getViewportWidth(),
             height: opts.ctx.getViewportHeight(),
             textureUsageFlags: GPUTextureUsage.RENDER_ATTACHMENT,
+            propertyFormat: 'texture2D',
             textureFormat: opts.ctx.getPreferredTextureFormat(),
         });
     }

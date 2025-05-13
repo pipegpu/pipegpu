@@ -16,7 +16,7 @@ class UniformBufferProperty extends BaseProperty {
      * @param buffer 
      */
     constructor(propertyName: string, buffer: UniformBuffer) {
-        super(propertyName, "UniformBuffer");
+        super(propertyName, 'uniformBuffer');
         this.uniformBuffer = buffer;
     }
 

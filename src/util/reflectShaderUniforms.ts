@@ -18,7 +18,6 @@ const getSamplerBindingType = (binding: VariableInfo): GPUSamplerBindingType | u
     if (binding.resourceType === ResourceType.Sampler) {
         return "filtering";
     }
-
 }
 
 /**

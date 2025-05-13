@@ -16,7 +16,7 @@ class VertexBufferProperty extends BaseProperty {
      * @param vertexBuffer 
      */
     constructor(propertyName: string, vertexBuffer: VertexBuffer) {
-        super(propertyName, "VertexBuffer")
+        super(propertyName, 'vertexBuffer')
         this.vertexBuffer = vertexBuffer;
     }
 

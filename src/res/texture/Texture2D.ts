@@ -34,7 +34,8 @@ class Texture2D extends BaseTexture {
             height: opts.height,
             depthOrArrayLayers: 1,
             textureFormat: opts.textureFormat,
-            maxMipLevel: opts.maxMipLevel
+            maxMipLevel: opts.maxMipLevel,
+            propertyFormat: 'texture2D'
         });
         this.textureData = opts.textureData || new Float32Array();
     }
@@ -71,9 +72,13 @@ class Texture2D extends BaseTexture {
 
     /**
      * 
+     * @returns 
      */
-    override getGpuTextureView(): GPUTextureView {
-        throw new Error("Method not implemented.");
+    override getGpuTextureView = (): GPUTextureView => {
+        if (this.textureViews.length === 0) {
+            this.createGpuTextureViews();
+        }
+        return this.textureViews[this.mipCurosr];
     }
 }
 

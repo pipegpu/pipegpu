@@ -77,16 +77,14 @@ class TextureState {
      * @param id 
      * @returns 
      */
-    createSurfaceTexture2D = (id: number = 0): SurfaceTexture2D => {
-        if (!TextureState.TEXTURE_SET.has(id)) {
-            id = uniqueID();
-            const texture = new SurfaceTexture2D({
-                id: id,
-                ctx: this.ctx
-            });
-            TextureState.TEXTURE_SET.set(id, texture);
-        }
-        return TextureState.TEXTURE_SET.get(id) as SurfaceTexture2D;
+    createSurfaceTexture2D = (): SurfaceTexture2D => {
+        const idx: number = uniqueID();
+        const texture = new SurfaceTexture2D({
+            id: idx,
+            ctx: this.ctx
+        });
+        TextureState.TEXTURE_SET.set(idx, texture);
+        return texture;
     }
 }
 

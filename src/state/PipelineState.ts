@@ -32,7 +32,7 @@ class PipelineState {
      */
     getPipeline = (id: number): BasePipeline | undefined => {
         if (!PipelineState.PIPELINE_SET.has(id)) {
-            console.log(`[E][SamplerState][getPipeline] find pipeline failed, id: ${id}`);
+            console.log(`[E][PipelineState][getPipeline] find pipeline failed, id: ${id}`);
         } else {
             return PipelineState.PIPELINE_SET.get(id);
         }
@@ -42,15 +42,15 @@ class PipelineState {
      * 
      */
     createRenderPipeline = (renderPipelineDescriptor: GPURenderPipelineDescriptor, id: number = -1): RenderPipeline => {
-        let pipeline = this.getPipeline(id);
-        if (!pipeline) {
+        if (!PipelineState.PIPELINE_SET.has(id)) {
             id = uniqueID();
-            pipeline = new RenderPipeline({
+            const pipeline = new RenderPipeline({
                 id: id,
                 ctx: this.ctx,
                 renderPipelineDescriptor: renderPipelineDescriptor
             });
             PipelineState.PIPELINE_SET.set(id, pipeline);
+
         }
         return this.getPipeline(id) as RenderPipeline;
     }

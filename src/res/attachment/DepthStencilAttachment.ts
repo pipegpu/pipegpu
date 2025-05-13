@@ -147,7 +147,7 @@ class DepthStencilAttachment extends BaseAttachment {
     protected override updateAttachment = () => {
         // depthStencilAttachment
         this.depthStencilAttachment = {
-            view: this.texture.getTextureView()
+            view: this.texture.getGpuTextureView()
         };
         // depth 
         switch (this.depthLoadStoreFormat) {

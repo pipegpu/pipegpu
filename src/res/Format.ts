@@ -63,6 +63,12 @@ type PropertyFormat =
     | 'computePipeline'
     | 'renderHolder'
     | 'computeHolder'
+    | 'texture1D'
+    | 'texture2D'
+    | 'texutre3D'
+    | 'textureCube'
+    | 'texture2DArray'
+    | 'textureCubeArray'
     ;
 
 /**

@@ -93,9 +93,9 @@ const parseContextDesc = (
     const container = document.body;
     const canvas = createCanvasElement(container, opts.width, opts.height, opts.devicePixelRatio);
     let desc: ContextDesc = {
-        selector: "",
-        width: 0,
-        height: 0,
+        selector: opts.selector,
+        width: opts.width,
+        height: opts.height,
         devicePixelRatio: opts.devicePixelRatio || devicePixelRatio || 1.0,
         container: container,
         canvas: canvas

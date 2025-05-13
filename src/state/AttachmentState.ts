@@ -7,8 +7,6 @@ import type { BaseTexture } from "../res/texture/BaseTexture";
 import type { Texture2D } from "../res/texture/Texture2D";
 import { uniqueID } from "../util/uniqueID";
 
-
-
 /**
  * 
  */

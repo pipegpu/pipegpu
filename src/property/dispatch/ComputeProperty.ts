@@ -26,7 +26,7 @@ class ComputeProperty extends BaseProperty {
      * @param z 
      */
     constructor(x: number, y: number, z: number) {
-        super('compute property', 'ComputeDispatch');
+        super('compute property', 'computeDispatch');
         this.groupX = x;
         this.groupY = y;
         this.groupZ = z;

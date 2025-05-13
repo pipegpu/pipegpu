@@ -91,8 +91,49 @@ class RenderHolder extends BaseHolder {
      * 
      * @param encoder 
      */
-    override build(encoder: GPUCommandEncoder): void {
-        throw new Error("Method not implemented.")
+    override build = (encoder: GPUCommandEncoder): void => {
+        // support:
+        // uniform update
+        // texture update
+        // stage - frameBegin
+        this.uniformHandler('frameBegin', encoder, this.bufferState, this.texturteState);
+
+        if (this.colorAttachments.length === 0) {
+            console.log(`[E][RenderHolder][build] missing color attachment.`);
+            return;
+        }
+
+        const colorAttachments: GPURenderPassColorAttachment[] = [];
+        this.colorAttachments.forEach(element => {
+            colorAttachments.push(element.getGpuColorAttachment());
+        });
+
+        const desc: GPURenderPassDescriptor = {
+            colorAttachments: colorAttachments
+        };
+
+        if (this.depthStencilAttachment) {
+            desc.depthStencilAttachment = this.depthStencilAttachment.getGpuRenderPassDepthStencilAttachment();
+        }
+
+        const renderPass: GPURenderPassEncoder = encoder.beginRenderPass(desc);
+
+        // assign vertex by slot index
+        this.slotAttributeBufferIDMap.forEach((bufferID, slotID) => {
+            renderPass.setVertexBuffer(slotID, this.bufferState.getBuffer(bufferID)?.getGpuBuffer(encoder, 'frameBegin'));
+        });
+
+        // uniform slot
+        this.slotBindGroupMap.forEach((bindGroup, slotID) => {
+            renderPass.setBindGroup(slotID, bindGroup);
+        })
+
+        // dispatch
+        this.renderHandler(renderPass);
+
+        // update handler
+        // stage - frameFinish
+        this.uniformHandler('frameFinish', encoder, this.bufferState, this.texturteState);
     }
 
 }

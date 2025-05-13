@@ -3,6 +3,10 @@ const max = (...args: number[]) => {
     return args.reduce((prev, current) => (prev > current ? prev : current));
 }
 
+const min = (...args: number[]) => {
+    return args.reduce((prev, current) => (prev < current ? prev : current));
+}
+
 /**
  * 
  * @param extent3d 
@@ -14,5 +18,7 @@ const getMaxMipmapLevel = (...args: number[]): number => {
 }
 
 export {
+    max,
+    min,
     getMaxMipmapLevel
 }

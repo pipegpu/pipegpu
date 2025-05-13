@@ -81,7 +81,7 @@ interface RenderHolderDesc {
     /**
      * 
      */
-    primitiveDesc: PrimitiveDesc,
+    primitiveDesc?: PrimitiveDesc,
 
     /**
      * 

@@ -7,8 +7,12 @@ import type { ColorAttachment } from '../src/res/attachment/ColorAttachment.ts';
 import { Context } from '../src/res/Context.ts';
 
 (async () => {
-
-    const ctx = new Context();
+    const ctx: Context = new Context({
+        selector: "canvasPad",
+        width: 800,
+        height: 600,
+        devicePixelRatio: devicePixelRatio
+    });
     await ctx.init();
     const compiler: Compiler = new Compiler({ ctx: ctx });
 
@@ -46,9 +50,9 @@ import { Context } from '../src/res/Context.ts';
         }),
         fragmentShader: compiler.createFragmentShader({
             code: `
-    @group(1) @binding(0) var<uniform> uColorR:f32;
-    @group(1) @binding(1) var<uniform> uColorG:f32;
-    @group(1) @binding(2) var<uniform> uColorB:f32;
+    @group(0) @binding(0) var<uniform> uColorR:f32;
+    @group(0) @binding(1) var<uniform> uColorG:f32;
+    @group(0) @binding(2) var<uniform> uColorB:f32;
 
     @fragment
     fn fs_main() -> @location(0) vec4f {
@@ -62,10 +66,6 @@ import { Context } from '../src/res/Context.ts';
         dispatch: new RenderProperty(6, 1),
         colorAttachments: colorAttachments,
         depthStencilAttachment: depthStencilAttachment,
-        primitiveDesc: {
-            cullFormat: 'none',
-            primitiveTopology: 'triangle-list'
-        }
     };
 
     const vertexArr = new Float32Array([-0.15, -0.5, 0.5, -0.5, 0.0, 0.5, -0.55, -0.5, -0.05, 0.5, -0.55, 0.5]);
@@ -92,6 +92,7 @@ import { Context } from '../src/res/Context.ts';
     };
 
     requestAnimationFrame(renderLoop);
+
 })();
 
 
