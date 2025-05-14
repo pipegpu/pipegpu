@@ -58,7 +58,7 @@ const emitAttributes = (
     const orderedAttributes: GPUVertexAttribute[] | undefined = vertexShader.getOrderedAttribute();
 
     const appendAttributeByBufferID = (bufferID: number, att: GPUVertexAttribute): void => {
-        if (vertexBufferIDAttributesMap.has(bufferID)) {
+        if (!vertexBufferIDAttributesMap.has(bufferID)) {
             let attrs: GPUVertexAttribute[] = [];
             vertexBufferIDAttributesMap.set(bufferID, attrs);
         }

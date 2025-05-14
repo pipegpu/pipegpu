@@ -70,19 +70,17 @@ class DepthStencilAttachment extends BaseAttachment {
             stencilReadOnly?: boolean
         }
     ) {
-        super(
-            {
-                id: opts.id,
-                ctx: opts.ctx
-            }
-        );
+        super({
+            id: opts.id,
+            ctx: opts.ctx
+        });
         this.texture = opts.texture;
         this.depthLoadStoreFormat = opts.depthLoadStoreFormat || 'loadStore';
         this.depthCompareFunction = opts.depthCompareFunction || 'less-equal';
         this.stencilStateFormat = opts.stencilFunctionFormat || 'alwaysKeep';
         this.stencilLoadStoreFormat = opts.stencilLoadStoreFormat || 'loadStore';
-        this.depthReadOnly = opts.depthReadOnly || true;
-        this.stencilReadOnly = opts.stencilReadOnly || true;
+        this.depthReadOnly = opts.depthReadOnly || false;
+        this.stencilReadOnly = opts.stencilReadOnly || false;
     }
 
     /**
@@ -149,53 +147,56 @@ class DepthStencilAttachment extends BaseAttachment {
         this.depthStencilAttachment = {
             view: this.texture.getGpuTextureView()
         };
-        // depth 
-        switch (this.depthLoadStoreFormat) {
-            case 'clearStore':
-                {
-                    this.depthStencilAttachment.depthClearValue = 1.0;
-                    this.depthStencilAttachment.depthLoadOp = 'clear';
-                    this.depthStencilAttachment.depthStoreOp = 'store';
-                    this.depthStencilAttachment.depthReadOnly = this.depthReadOnly;
-                    break;
-                }
-            case 'loadStore':
-                {
-                    this.depthStencilAttachment.depthClearValue = 1.0;
-                    this.depthStencilAttachment.depthLoadOp = 'load';
-                    this.depthStencilAttachment.depthStoreOp = 'store';
-                    this.depthStencilAttachment.depthReadOnly = this.depthReadOnly;
-                    break;
-                }
-            default:
-                {
-                    console.log(`[E][DepthStencilAttachment][updateRenderPassDepthStencilAttachment] unsupported depthLoadStoreFormat: ${this.depthLoadStoreFormat}`);
-                    break;
-                }
+        // depth attachment state
+        if (this.texture.isDetphTexture()) {
+            switch (this.depthLoadStoreFormat) {
+                case 'clearStore':
+                    {
+                        this.depthStencilAttachment.depthClearValue = 1.0;
+                        this.depthStencilAttachment.depthLoadOp = 'clear';
+                        this.depthStencilAttachment.depthStoreOp = 'store';
+                        this.depthStencilAttachment.depthReadOnly = this.depthReadOnly;
+                        break;
+                    }
+                case 'loadStore':
+                    {
+                        this.depthStencilAttachment.depthClearValue = 1.0;
+                        this.depthStencilAttachment.depthLoadOp = 'load';
+                        this.depthStencilAttachment.depthStoreOp = 'store';
+                        this.depthStencilAttachment.depthReadOnly = this.depthReadOnly;
+                        break;
+                    }
+                default:
+                    {
+                        throw new Error(`[E][DepthStencilAttachment][updateRenderPassDepthStencilAttachment] unsupported depthLoadStoreFormat: ${this.depthLoadStoreFormat}`);
+                    }
+            }
         }
-        // stencil
-        switch (this.stencilLoadStoreFormat) {
-            case 'clearStore':
-                {
-                    this.depthStencilAttachment.stencilClearValue = 1.0;
-                    this.depthStencilAttachment.stencilLoadOp = 'clear';
-                    this.depthStencilAttachment.stencilStoreOp = 'store';
-                    this.depthStencilAttachment.stencilReadOnly = this.stencilReadOnly;
-                    break;
-                }
-            case 'loadStore':
-                {
-                    this.depthStencilAttachment.stencilClearValue = 1.0;
-                    this.depthStencilAttachment.stencilLoadOp = 'load';
-                    this.depthStencilAttachment.stencilStoreOp = 'store';
-                    this.depthStencilAttachment.stencilReadOnly = this.stencilReadOnly;
-                    break;
-                }
-            default:
-                {
-                    console.log(`[E][DepthStencilAttachment][updateRenderPassDepthStencilAttachment] unsupported stencilLoadStoreFormat: ${this.stencilLoadStoreFormat}`);
-                    break;
-                }
+
+        // stencil attachment state
+        if (this.texture.isStencilTexture()) {
+            switch (this.stencilLoadStoreFormat) {
+                case 'clearStore':
+                    {
+                        this.depthStencilAttachment.stencilClearValue = 1.0;
+                        this.depthStencilAttachment.stencilLoadOp = 'clear';
+                        this.depthStencilAttachment.stencilStoreOp = 'store';
+                        this.depthStencilAttachment.stencilReadOnly = this.stencilReadOnly;
+                        break;
+                    }
+                case 'loadStore':
+                    {
+                        this.depthStencilAttachment.stencilClearValue = 1.0;
+                        this.depthStencilAttachment.stencilLoadOp = 'load';
+                        this.depthStencilAttachment.stencilStoreOp = 'discard';
+                        this.depthStencilAttachment.stencilReadOnly = this.stencilReadOnly;
+                        break;
+                    }
+                default:
+                    {
+                        throw new Error(`[E][DepthStencilAttachment][updateRenderPassDepthStencilAttachment] unsupported stencilLoadStoreFormat: ${this.stencilLoadStoreFormat}`);
+                    }
+            }
         }
     }
 

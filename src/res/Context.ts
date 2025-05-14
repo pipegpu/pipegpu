@@ -91,6 +91,15 @@ class Context {
     /**
      * 
      */
+    submitFrameResource = (): void => {
+        const desc: GPUCommandBufferDescriptor = {};
+        const frameCommandBuffers: GPUCommandBuffer[] = [this.commandEncoder?.finish(desc) as GPUCommandBuffer];
+        this.queue?.submit(frameCommandBuffers);
+    }
+
+    /**
+     * 
+     */
     getCommandEncoder = (): GPUCommandEncoder => {
         return this.commandEncoder as GPUCommandEncoder;
     }
@@ -115,14 +124,14 @@ class Context {
      * 
      */
     getViewportWidth = (): number => {
-        return this.contextDesc.width;
+        return this.contextDesc.width * this.contextDesc.devicePixelRatio;
     }
 
     /**
      * 
      */
     getViewportHeight = (): number => {
-        return this.contextDesc.height;
+        return this.contextDesc.height * this.contextDesc.devicePixelRatio;
     }
 
     /**

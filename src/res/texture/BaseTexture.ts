@@ -94,10 +94,10 @@ abstract class BaseTexture {
         opts: {
             id: number,
             ctx: Context,
-            textureUsageFlags: GPUTextureUsageFlags
             width: number,
             height: number,
             propertyFormat: PropertyFormat,
+            textureUsageFlags: number,
             textureFormat?: GPUTextureFormat,
             depthOrArrayLayers?: number,
             maxMipLevel?: number
@@ -105,15 +105,16 @@ abstract class BaseTexture {
     ) {
         this.id = opts.id;
         this.ctx = opts.ctx;
-        this.textureUsageFlags = opts.textureUsageFlags;
         this.width = opts.width;
         this.height = opts.height;
         this.depthOrArrayLayers = opts.depthOrArrayLayers || 1;
+        this.textureUsageFlags = opts.textureUsageFlags;
         this.extent3d = [opts.width, opts.height, opts.depthOrArrayLayers || 1];
         this.textureFormat = opts.textureFormat || this.ctx.getPreferredTextureFormat();
         this.propertyFormat = opts.propertyFormat;
         if (this.isDetphTexture()) {
             this.maxMipLevel = 1;
+            this.textureUsageFlags |= GPUTextureUsage.RENDER_ATTACHMENT;
         } else {
             this.maxMipLevel = opts.maxMipLevel || getMaxMipmapLevel(...this.extent3d);
         }
@@ -146,11 +147,21 @@ abstract class BaseTexture {
     /**
     * depth texture default 
     */
-    protected isDetphTexture = () => {
+    isDetphTexture = () => {
         return this.textureFormat === 'depth16unorm' ||
             this.textureFormat === 'depth24plus' ||
             this.textureFormat === 'depth24plus-stencil8' ||
             this.textureFormat == 'depth32float' ||
+            this.textureFormat == 'depth32float-stencil8';
+    }
+
+    /**
+     * 
+     * @returns 
+     */
+    isStencilTexture = () => {
+        return this.textureFormat === 'stencil8' ||
+            this.textureFormat === 'depth24plus-stencil8' ||
             this.textureFormat == 'depth32float-stencil8';
     }
 

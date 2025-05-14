@@ -5,6 +5,7 @@ import { RenderProperty } from '../src/property/dispatch/RenderProperty.ts';
 import { Attributes, Uniforms } from '../src/property/Properties.ts';
 import type { ColorAttachment } from '../src/res/attachment/ColorAttachment.ts';
 import { Context } from '../src/res/Context.ts';
+import type { TypedArray1DFormat } from '../src/res/Format.ts';
 
 (async () => {
     const ctx: Context = new Context({
@@ -17,9 +18,9 @@ import { Context } from '../src/res/Context.ts';
     const compiler: Compiler = new Compiler({ ctx: ctx });
 
     // color attachment
-    const sufraTexture = compiler.createSurfaceTexture2D();
+    const surfaceTexture = compiler.createSurfaceTexture2D();
     const surfaceColorAttachment = compiler.createColorAttachment({
-        texture: sufraTexture,
+        texture: surfaceTexture,
         blendFormat: 'opaque',
         colorLoadStoreFormat: 'clearStore',
         clearColor: [0.0, 0.0, 0.0, 1.0]
@@ -68,13 +69,21 @@ import { Context } from '../src/res/Context.ts';
         depthStencilAttachment: depthStencilAttachment,
     };
 
-    const vertexArr = new Float32Array([-0.15, -0.5, 0.5, -0.5, 0.0, 0.5, -0.55, -0.5, -0.05, 0.5, -0.55, 0.5]);
+    let seed: number = 0;
+    // const vertexArr = new Float32Array([-0.15, -0.5, 0.5, -0.5, 0.0, 0.5, -0.55, -0.5, -0.05, 0.5, -0.55, 0.5]);
     const vertexBuffer = compiler.createVertexBuffer({
-        rawData: vertexArr
+        handler: (): TypedArray1DFormat => {
+            return new Float32Array([-0.15 + Math.sin((seed++) * 0.01), -0.5, 0.5, -0.5, 0.0, 0.5, -0.55, -0.5, -0.05, 0.5, -0.55, 0.5]);
+        }
     });
     desc.attributes?.assign("in_vertex_position", vertexBuffer);
 
-    const uniformBufferR = compiler.createUniformBuffer({ rawData: new Float32Array([1.0]) });
+    const uniformBufferR = compiler.createUniformBuffer({
+        // rawData: new Float32Array([1.0]) 
+        handler: () => {
+            return new Float32Array([Math.cos(seed * 0.01)]);
+        }
+    });
     const uniformBufferG = compiler.createUniformBuffer({ rawData: new Float32Array([0.2]) });
     const uniformBufferB = compiler.createUniformBuffer({ rawData: new Float32Array([0.0]) });
 

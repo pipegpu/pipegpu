@@ -10,14 +10,39 @@ class TextureStorage2D extends BaseTexture {
     constructor(
         opts: {
             id: number,
-            ctx: Context
+            ctx: Context,
+            width: number,
+            height: number,
+            maxMipLevel?: number,
+            textureUsageFlags?: number,
+            textureFormat?: GPUTextureFormat,
         }
     ) {
         super({
             id: opts.id,
             ctx: opts.ctx,
-            textureUsageFlags: GPUTextureUsage.STORAGE_BINDING | GPUTextureUsage.COPY_DST | GPUTextureUsage.COPY_SRC
+            width: opts.width,
+            height: opts.height,
+            depthOrArrayLayers: 1,
+            textureUsageFlags: (opts.textureUsageFlags || 0) | GPUTextureUsage.STORAGE_BINDING | GPUTextureUsage.COPY_DST | GPUTextureUsage.COPY_SRC,
+            textureFormat: opts.textureFormat,
+            maxMipLevel: opts.maxMipLevel,
+            propertyFormat: 'textureStorage2D'
         });
+    }
+
+    /**
+     * 
+     */
+    protected createGpuTexture(): void {
+        throw new Error("Method not implemented.");
+    }
+
+    /**
+     * 
+     */
+    override getGpuTextureView(): GPUTextureView {
+        throw new Error("Method not implemented.");
     }
 
     /**
@@ -25,9 +50,11 @@ class TextureStorage2D extends BaseTexture {
      * @param encoder 
      * @param frameStage 
      */
-    getGpuTexture = (encoder: GPUCommandEncoder, frameStage: FrameStageFormat): void => {
-
-
+    getGpuTexture = (_encoder: GPUCommandEncoder, _frameStage: FrameStageFormat): GPUTexture => {
+        if (!this.texture) {
+            this.createGpuTexture();
+        }
+        return this.texture as GPUTexture;
     }
 }
 

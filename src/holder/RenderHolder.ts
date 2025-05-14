@@ -116,20 +116,24 @@ class RenderHolder extends BaseHolder {
             desc.depthStencilAttachment = this.depthStencilAttachment.getGpuRenderPassDepthStencilAttachment();
         }
 
-        const renderPass: GPURenderPassEncoder = encoder.beginRenderPass(desc);
+        const encoderRenderPass: GPURenderPassEncoder = encoder.beginRenderPass(desc);
+        encoderRenderPass.setPipeline(this.renderPipeline.getGpuRenderPipeline());
 
         // assign vertex by slot index
         this.slotAttributeBufferIDMap.forEach((bufferID, slotID) => {
-            renderPass.setVertexBuffer(slotID, this.bufferState.getBuffer(bufferID)?.getGpuBuffer(encoder, 'frameBegin'));
+            encoderRenderPass.setVertexBuffer(slotID, this.bufferState.getBuffer(bufferID)?.getGpuBuffer(encoder, 'frameBegin'));
         });
 
         // uniform slot
         this.slotBindGroupMap.forEach((bindGroup, slotID) => {
-            renderPass.setBindGroup(slotID, bindGroup);
+            encoderRenderPass.setBindGroup(slotID, bindGroup);
         })
 
         // dispatch
-        this.renderHandler(renderPass);
+        this.renderHandler(encoderRenderPass);
+
+        // 
+        encoderRenderPass.end();
 
         // update handler
         // stage - frameFinish

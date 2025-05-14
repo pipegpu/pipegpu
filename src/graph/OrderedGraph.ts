@@ -33,6 +33,7 @@ class OrderedGraph extends BaseGraph {
         // clear resource
         this.holderMap.clear();
         holders.length = 0;
+        this.ctx.submitFrameResource();
     }
 }
 

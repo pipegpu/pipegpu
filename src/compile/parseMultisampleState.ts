@@ -7,7 +7,7 @@ import type { MultiSampleFormat } from "../res/Format"
  */
 const parseMultisampleState = (multiSampleFormat: MultiSampleFormat): GPUMultisampleState => {
     const multiSampleState: GPUMultisampleState = {};
-    multiSampleState.mask = ~0;
+    // multiSampleState.mask = ~0;
     multiSampleState.alphaToCoverageEnabled = false;
     switch (multiSampleFormat) {
         case '1x':

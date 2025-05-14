@@ -50,7 +50,8 @@ class TextureState {
             height: number,
             textureData?: TypedArray1DFormat,
             textureFormat?: GPUTextureFormat,
-            maxMipLevel?: number
+            maxMipLevel?: number,
+            appendixTextureUsages?: number,
         }
     ): Texture2D => {
         const textureID: number = uniqueID();
@@ -61,7 +62,8 @@ class TextureState {
             height: opts.height,
             textureData: opts.textureData,
             textureFormat: opts.textureFormat,
-            maxMipLevel: opts.maxMipLevel
+            maxMipLevel: opts.maxMipLevel,
+            appendixTextureUsages: opts.appendixTextureUsages,
         });
         TextureState.TEXTURE_SET.set(textureID, texture);
         return TextureState.TEXTURE_SET.get(textureID) as Texture2D;

@@ -21,6 +21,7 @@ class Texture2D extends BaseTexture {
             ctx: Context,
             width: number,
             height: number,
+            appendixTextureUsages?: number,
             textureData?: TypedArray1DFormat,
             textureFormat?: GPUTextureFormat,
             maxMipLevel?: number
@@ -29,10 +30,10 @@ class Texture2D extends BaseTexture {
         super({
             id: opts.id,
             ctx: opts.ctx,
-            textureUsageFlags: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST,
             width: opts.width,
             height: opts.height,
             depthOrArrayLayers: 1,
+            textureUsageFlags: (opts.appendixTextureUsages || 0) | GPUTextureUsage.COPY_DST | GPUTextureUsage.TEXTURE_BINDING,
             textureFormat: opts.textureFormat,
             maxMipLevel: opts.maxMipLevel,
             propertyFormat: 'texture2D'
