@@ -34,11 +34,11 @@ const parseRenderBindGroupLayout = (
         const resourceBindings: GPUBindGroupLayoutEntry[] = [];
         if (vsMap.has(bindGroupID)) {
             const bindings: GPUBindGroupLayoutEntry[] = vsMap.get(bindGroupID) as GPUBindGroupLayoutEntry[];
-            resourceBindings.concat(bindings);
+            resourceBindings.push(...bindings);
         }
         if (fsMap.has(bindGroupID)) {
             const bindings: GPUBindGroupLayoutEntry[] = fsMap.get(bindGroupID) as GPUBindGroupLayoutEntry[];
-            resourceBindings.concat(bindings);
+            resourceBindings.push(...bindings);
         }
         if (resourceBindings.length) {
             collectedBindgroupLayoutEntriesMap.set(bindGroupID, resourceBindings);

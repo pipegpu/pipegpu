@@ -9,7 +9,7 @@ class Texture2D extends BaseTexture {
     /**
      * 
      */
-    private textureData: TypedArray1DFormat;
+    private textureData?: TypedArray1DFormat;
 
     /**
      * 
@@ -37,7 +37,7 @@ class Texture2D extends BaseTexture {
             maxMipLevel: opts.maxMipLevel,
             propertyFormat: 'texture2D'
         });
-        this.textureData = opts.textureData || new Float32Array();
+        this.textureData = opts.textureData;
     }
 
     /**
@@ -54,8 +54,11 @@ class Texture2D extends BaseTexture {
         const destination: GPUTexelCopyTextureInfo = {
             texture: this.texture
         };
-        const dataLayout: GPUTexelCopyBufferLayout = {};
-        this.ctx.getGpuQueue().writeTexture(destination, this.textureData, dataLayout, this.extent3d);
+        // depth texture not allow texture write from cpu as default.
+        if (this.textureData && !this.isDetphTexture()) {
+            const dataLayout: GPUTexelCopyBufferLayout = {};
+            this.ctx.getGpuQueue().writeTexture(destination, this.textureData, dataLayout, this.extent3d);
+        }
     }
 
     /**

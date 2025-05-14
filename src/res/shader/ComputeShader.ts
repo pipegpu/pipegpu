@@ -3,7 +3,10 @@ import type { Context } from "../Context";
 import { BaseShader } from "./BaseShader";
 
 class ComputeShader extends BaseShader {
-
+    /**
+     * 
+     * @param opts 
+     */
     constructor(
         opts: {
             ctx: Context,

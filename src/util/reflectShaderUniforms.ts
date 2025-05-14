@@ -72,12 +72,12 @@ const reflectShaderUniforms = (code: string, entryPoint: string, shaderStage: GP
             });
             break;
         default:
-            console.log(`[E][reflectShaderUniforms] unsupported shader stage ${shaderStage}`);
-            break;
+            {
+                throw new Error(`[E][reflectShaderUniforms] unsupported shader stage ${shaderStage}`);
+            }
+
     }
-
-
-    if (!rawEntry) {
+    if (rawEntry === undefined) {
         throw new Error(`entry point "${entryPoint}" not found in the shader code.`);
     }
 
@@ -106,18 +106,20 @@ const reflectShaderUniforms = (code: string, entryPoint: string, shaderStage: GP
             binding: binding.binding,
             visibility: shaderStage
         };
-        let groups = getBindGroupLayoutEntries(binding.group);
-        let resourceBindings = getResourceBindingsByGroupID(binding.binding);
+        const groupID: number = binding.group;
+        let groups = getBindGroupLayoutEntries(groupID);
+        let resourceBindings = getResourceBindingsByGroupID(groupID);
         switch (binding.resourceType) {
             case ResourceType.Uniform:
             case ResourceType.Storage:
-                if (bindGroupLayoutEntry.buffer) {
+                {
+                    bindGroupLayoutEntry.buffer = {};
                     bindGroupLayoutEntry.buffer.type = getBufferBindingType(binding);
                     bindGroupLayoutEntry.buffer.minBindingSize = binding.size;
                     groups.push(bindGroupLayoutEntry);
                     resourceBindings.push(binding);
+                    break;
                 }
-                break;
             case ResourceType.Texture:
                 if (bindGroupLayoutEntry.texture) {
 
@@ -139,7 +141,6 @@ const reflectShaderUniforms = (code: string, entryPoint: string, shaderStage: GP
         }
 
     });
-
 
     let reflectUniforms: IReflectUniforms = {
         bindGroupCount: groupIDwithBindGroupLayoutEntriesMap.size,

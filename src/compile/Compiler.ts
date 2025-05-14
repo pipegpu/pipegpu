@@ -323,7 +323,7 @@ class Compiler {
             multisampleState: multiSampleState
         });
 
-        //
+        // render holder
         return new RenderHolder({
             id: uniqueID(),
             ctx: this.ctx,
@@ -361,10 +361,9 @@ class Compiler {
         opts: {
             rawData?: TypedArray1DFormat,
             handler?: Handle1D,
-        },
-        id: number = -1
+        }
     ): VertexBuffer => {
-        return this.bufferState.createVertexBuffer(opts, id);
+        return this.bufferState.createVertexBuffer(opts);
     }
 
     /**
@@ -377,10 +376,9 @@ class Compiler {
         opts: {
             rawData?: TypedArray1DFormat,
             handler?: Handle1D
-        },
-        id: number = -1
+        }
     ): UniformBuffer => {
-        return this.bufferState.createUniformBuffer(opts, id);
+        return this.bufferState.createUniformBuffer(opts);
     }
 
     /**
@@ -393,10 +391,9 @@ class Compiler {
         opts: {
             code: string,
             entryPoint: string
-        },
-        id: number = -1
+        }
     ): VertexShader => {
-        return this.shaderState.createVertexShader(opts, id);
+        return this.shaderState.createVertexShader(opts);
     }
 
     /**
@@ -409,10 +406,9 @@ class Compiler {
         opts: {
             code: string,
             entryPoint: string
-        },
-        id: number = -1
+        }
     ): FragmentShader => {
-        return this.shaderState.createFragmentShader(opts, id);
+        return this.shaderState.createFragmentShader(opts);
     }
 
     /**
@@ -425,10 +421,9 @@ class Compiler {
         opts: {
             code: string,
             entryPoint: string
-        },
-        id: number = -1
+        }
     ): ComputeShader => {
-        return this.shaderState.createComputeShader(opts, id);
+        return this.shaderState.createComputeShader(opts);
     }
 
     /**
@@ -443,10 +438,9 @@ class Compiler {
             blendFormat?: BlendFormat,
             colorLoadStoreFormat?: ColorLoadStoreFormat,
             clearColor?: number[]
-        },
-        id: number = 0
+        }
     ): ColorAttachment => {
-        return this.attachmentState.createColorAttachment(opts, id);
+        return this.attachmentState.createColorAttachment(opts);
     }
 
     /**
@@ -464,17 +458,16 @@ class Compiler {
             stencilLoadStoreFormat?: StencilLoadStoreFormat,
             depthReadOnly?: boolean,
             stencilReadOnly?: boolean
-        },
-        id: number = 0
+        }
     ): DepthStencilAttachment => {
-        return this.attachmentState.createDepthStencilAttachment(opts, id);
+        return this.attachmentState.createDepthStencilAttachment(opts);
     }
 
     /**
      * 
      * @returns 
      */
-    createSurfaceTexture = () => {
+    createSurfaceTexture2D = () => {
         return this.textureState.createSurfaceTexture2D();
     }
 

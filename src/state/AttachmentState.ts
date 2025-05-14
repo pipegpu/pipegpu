@@ -31,14 +31,13 @@ class AttachmentState {
 
     /**
      * 
-     * @param id 
+     * @param attachmentID 
      */
-    getAttachment = (id: number): BaseAttachment | undefined => {
-        if (!AttachmentState.ATTACHMENT_SET.has(id)) {
-            console.log(`[E]][AttachmentState][getAttachment] find attachment id: ${id} failed.`);
-            return;
+    getAttachment = (attachmentID: number): BaseAttachment | undefined => {
+        if (!AttachmentState.ATTACHMENT_SET.has(attachmentID)) {
+            throw new Error(`[E]][AttachmentState][getAttachment] find attachment id: ${attachmentID} failed.`);
         }
-        return AttachmentState.ATTACHMENT_SET.get(id);
+        return AttachmentState.ATTACHMENT_SET.get(attachmentID);
     }
 
     /**
@@ -50,22 +49,21 @@ class AttachmentState {
             blendFormat?: BlendFormat,
             colorLoadStoreFormat?: ColorLoadStoreFormat,
             clearColor?: number[]
-        },
-        id: number = 0
+        }
     ): ColorAttachment => {
-        if (!AttachmentState.ATTACHMENT_SET.has(id)) {
-            id = uniqueID();
+        const colorAttachmentID: number = uniqueID();
+        if (!AttachmentState.ATTACHMENT_SET.has(colorAttachmentID)) {
             const colorAttachment: ColorAttachment = new ColorAttachment({
-                id: id,
+                id: colorAttachmentID,
                 ctx: this.ctx,
                 texture: opts.texture,
                 blendFormat: opts.blendFormat,
                 colorLoadStoreFormat: opts.colorLoadStoreFormat,
                 clearColor: opts.clearColor
             });
-            AttachmentState.ATTACHMENT_SET.set(id, colorAttachment);
+            AttachmentState.ATTACHMENT_SET.set(colorAttachmentID, colorAttachment);
         }
-        return AttachmentState.ATTACHMENT_SET.get(id) as ColorAttachment;
+        return AttachmentState.ATTACHMENT_SET.get(colorAttachmentID) as ColorAttachment;
     }
 
     /**
@@ -82,13 +80,12 @@ class AttachmentState {
             stencilLoadStoreFormat?: StencilLoadStoreFormat,
             depthReadOnly?: boolean,
             stencilReadOnly?: boolean
-        },
-        id: number = 0
+        }
     ): DepthStencilAttachment => {
-        if (!AttachmentState.ATTACHMENT_SET.has(id)) {
-            id = uniqueID();
+        const depthStencilAttachmentID: number = uniqueID();
+        if (!AttachmentState.ATTACHMENT_SET.has(depthStencilAttachmentID)) {
             const depthStencilAttachment: DepthStencilAttachment = new DepthStencilAttachment({
-                id: id,
+                id: depthStencilAttachmentID,
                 ctx: this.ctx,
                 texture: opts.texture,
                 depthLoadStoreFormat: opts.depthLoadStoreFormat,
@@ -98,9 +95,9 @@ class AttachmentState {
                 depthReadOnly: opts.depthReadOnly,
                 stencilReadOnly: opts.stencilReadOnly
             });
-            AttachmentState.ATTACHMENT_SET.set(id, depthStencilAttachment);
+            AttachmentState.ATTACHMENT_SET.set(depthStencilAttachmentID, depthStencilAttachment);
         }
-        return AttachmentState.ATTACHMENT_SET.get(id) as DepthStencilAttachment;
+        return AttachmentState.ATTACHMENT_SET.get(depthStencilAttachmentID) as DepthStencilAttachment;
     }
 }
 

@@ -33,12 +33,11 @@ class TextureState {
      * @param id 
      * @returns 
      */
-    getTexture = (id: number): BaseTexture | undefined => {
-        if (!TextureState.TEXTURE_SET.has(id)) {
-            console.log(`[E][TextureState][getTexture] find texture failed, id: ${id}`);
-        } else {
-            return TextureState.TEXTURE_SET.get(id);
+    getTexture = (textureID: number): BaseTexture | undefined => {
+        if (!TextureState.TEXTURE_SET.has(textureID)) {
+            throw new Error(`[E][TextureState][getTexture] find texture failed, id: ${textureID}`);
         }
+        return TextureState.TEXTURE_SET.get(textureID);
     }
 
     /**
@@ -52,23 +51,20 @@ class TextureState {
             textureData?: TypedArray1DFormat,
             textureFormat?: GPUTextureFormat,
             maxMipLevel?: number
-        },
-        id: number = 0
-    ): Texture2D => {
-        if (!TextureState.TEXTURE_SET.has(id)) {
-            id = uniqueID();
-            const texture = new Texture2D({
-                id: id,
-                ctx: this.ctx,
-                width: opts.width,
-                height: opts.height,
-                textureData: opts.textureData,
-                textureFormat: opts.textureFormat,
-                maxMipLevel: opts.maxMipLevel
-            });
-            TextureState.TEXTURE_SET.set(id, texture);
         }
-        return TextureState.TEXTURE_SET.get(id) as Texture2D;
+    ): Texture2D => {
+        const textureID: number = uniqueID();
+        const texture = new Texture2D({
+            id: textureID,
+            ctx: this.ctx,
+            width: opts.width,
+            height: opts.height,
+            textureData: opts.textureData,
+            textureFormat: opts.textureFormat,
+            maxMipLevel: opts.maxMipLevel
+        });
+        TextureState.TEXTURE_SET.set(textureID, texture);
+        return TextureState.TEXTURE_SET.get(textureID) as Texture2D;
     }
 
     /**
@@ -78,12 +74,12 @@ class TextureState {
      * @returns 
      */
     createSurfaceTexture2D = (): SurfaceTexture2D => {
-        const idx: number = uniqueID();
+        const textureID: number = uniqueID();
         const texture = new SurfaceTexture2D({
-            id: idx,
+            id: textureID,
             ctx: this.ctx
         });
-        TextureState.TEXTURE_SET.set(idx, texture);
+        TextureState.TEXTURE_SET.set(textureID, texture);
         return texture;
     }
 }

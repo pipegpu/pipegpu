@@ -39,15 +39,15 @@ const emitUniforms = (
             const resourceBindings: VariableInfo[] = [];
             if (vsMap.has(k)) {
                 const vsResourceBindings = vsMap.get(k) || [];
-                resourceBindings.concat(vsResourceBindings);
+                resourceBindings.push(...vsResourceBindings);
             }
             if (fsMap.has(k)) {
-                const fsResourceBindings = vsMap.get(k) || [];
-                resourceBindings.concat(fsResourceBindings);
+                const fsResourceBindings = fsMap.get(k) || [];
+                resourceBindings.push(...fsResourceBindings);
             }
             if (cpMap.has(k)) {
-                const cpResourceBindings = vsMap.get(k) || [];
-                resourceBindings.concat(cpResourceBindings);
+                const cpResourceBindings = cpMap.get(k) || [];
+                resourceBindings.push(...cpResourceBindings);
             }
             if (resourceBindings.length) {
                 mergedUniformResourceMap.set(k, resourceBindings);
@@ -63,12 +63,11 @@ const emitUniforms = (
             let offset: number = 0;
             const key: string = resourceBinding.name;
             if (!opts.uniformRecordMap.has(key)) {
-                console.log(`[E][emitUniforms] uniforms ${key} not exists.`);
-                return;
+                throw new Error(`[E][emitUniforms] uniforms ${key} not exists.`);
             }
             const record = opts.uniformRecordMap.get(key);
             if (!record) {
-                return;
+                throw new Error(`[E][emitUniforms] uniforms record: ${key} is not assigned.`);
             }
             const t = resourceBinding.resourceType;
             switch (t) {
@@ -78,7 +77,7 @@ const emitUniforms = (
                         const resourcID = record?.resourceID as number;
                         const buffer = opts.bufferState.getBuffer(resourcID);
                         if (!buffer) {
-                            return;
+                            throw new Error(`[E][emitUniforms] emit resource buffer (id:${resourcID}) is undefined.`);
                         }
                         const gpuBufferBinding: GPUBufferBinding = {
                             buffer: buffer.getGpuBuffer(null, 'frameBegin'),
@@ -98,10 +97,9 @@ const emitUniforms = (
                 case ResourceType.StorageTexture:
                     {
                         const resourcID = record?.resourceID as number;
-                        const textureView = opts.textureState.getTexture(resourcID)?.getTextureView() as GPUTextureView;
+                        const textureView = opts.textureState.getTexture(resourcID)?.getGpuTextureView();
                         if (!textureView) {
-                            console.log(`[E][emitUniforms] missing texture view, id:${resourcID}`);
-                            return;
+                            throw new Error(`[E][emitUniforms] missing texture view, id:${resourcID}`);
                         }
                         const bindGroupEntry: GPUBindGroupEntry = {
                             binding: resourceBinding.binding,
@@ -115,8 +113,7 @@ const emitUniforms = (
                         const resourcID = record?.resourceID as number;
                         const sampler = opts.samplerState.getSampler(resourcID)?.getGpuSampler(null, 'frameBegin');
                         if (!sampler) {
-                            console.log(`[E][emitUniforms] missing uniforms, id:${resourcID}`);
-                            return;
+                            throw new Error(`[E][emitUniforms] emit resource sampler (id: ${resourcID}) is undfined.`);
                         }
                         const bindGroupEntry: GPUBindGroupEntry = {
                             binding: resourceBinding.binding,
@@ -127,22 +124,20 @@ const emitUniforms = (
                     }
                 default:
                     {
-                        console.log(`[E][emitUniforms] missing uniforms, resourceBindings: ${resourceBindings}`);
-                        break;
+                        throw new Error(`[E][emitUniforms] missing uniforms, resourceBindings: ${resourceBindings}`);
                     }
             }
-            const bindGroupLayoutDescriptor: GPUBindGroupLayoutDescriptor = opts.gourpIDWithBindGroupLayoutDescriptorMap.get(bindGroupID) as GPUBindGroupLayoutDescriptor;
-            if ((bindGroupLayoutDescriptor.entries as GPUBindGroupLayoutEntry[]).length !== bindGroupEntries.length) {
-                console.log("[E][emitUniforms] analysis bind_group_entries error.");
-                return;
-            }
-            const bindGroupDescriptor: GPUBindGroupDescriptor = {
-                layout: opts.gourpIDWithBindGroupLayoutMap.get(bindGroupID) as GPUBindGroupLayout,
-                entries: bindGroupEntries
-            };
-            const bindGroup = opts.ctx.getGpuDevice().createBindGroup(bindGroupDescriptor);
-            slotBindGroupMap.set(bindGroupID, bindGroup);
         });
+        const bindGroupLayoutDescriptor: GPUBindGroupLayoutDescriptor = opts.gourpIDWithBindGroupLayoutDescriptorMap.get(bindGroupID) as GPUBindGroupLayoutDescriptor;
+        if ((bindGroupLayoutDescriptor.entries as GPUBindGroupLayoutEntry[]).length !== bindGroupEntries.length) {
+            throw new Error(`[E][emitUniforms] analysis bind_group_entries error.`);
+        }
+        const bindGroupDescriptor: GPUBindGroupDescriptor = {
+            layout: opts.gourpIDWithBindGroupLayoutMap.get(bindGroupID) as GPUBindGroupLayout,
+            entries: bindGroupEntries
+        };
+        const bindGroup = opts.ctx.getGpuDevice().createBindGroup(bindGroupDescriptor);
+        slotBindGroupMap.set(bindGroupID, bindGroup);
     });
 }
 

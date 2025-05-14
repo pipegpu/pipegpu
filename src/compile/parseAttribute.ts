@@ -27,7 +27,6 @@ const parseAttribute = (
         console.log(`[I][parseAttribute] input 'attributes' is empty.`);
         return;
     }
-
     const appendBufferIDWithAttributeRecords = (bufferID: number, record: IAttributeRecord): void => {
         if (!bufferAttributeRecordsMap.has(bufferID)) {
             const records: Map<string, IAttributeRecord> = new Map();
@@ -36,7 +35,6 @@ const parseAttribute = (
         const records = bufferAttributeRecordsMap.get(bufferID);
         records?.set(record.name, record);
     }
-
     const propertyMap: Map<string, BaseProperty> = attributes.getPropertyMap();
     propertyMap.forEach((propertyBase: BaseProperty, propertyName: string) => {
         const t: PropertyFormat = propertyBase.getPropertyFormat();
@@ -63,7 +61,6 @@ const parseAttribute = (
                 }
         }
     });
-
 }
 
 export {

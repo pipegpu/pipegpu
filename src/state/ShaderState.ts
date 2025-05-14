@@ -1,5 +1,5 @@
 import type { Context } from "../res/Context"
-import type { BaseShader } from "../res/shader/BaseShader";
+import { BaseShader } from "../res/shader/BaseShader";
 import { ComputeShader } from "../res/shader/ComputeShader";
 import { FragmentShader } from "../res/shader/FragmentShader";
 import { VertexShader } from "../res/shader/VertexShader";
@@ -37,31 +37,34 @@ class ShaderState {
         this.stringState = stringState;
     }
 
+    /**
+     * 
+     * @param key 
+     * @returns 
+     */
     hasKey = (key: number): boolean => {
         return ShaderState.CACHE.has(key);
     }
 
     /**
-     * hash32a return uint32, ensure id = -1 is empty
+     * hash32a return uint32
      */
     createVertexShader = (
         opts: {
             code: string,
             entryPoint: string
-        },
-        id: number = -1
+        }
     ): VertexShader => {
-        if (!this.hasKey(id)) {
-            const vertexShader = new VertexShader({
+        const shaderID: number = BaseShader.hash32aID(opts.code, opts.entryPoint);
+        if (!ShaderState.CACHE.has(shaderID)) {
+            const shader = new VertexShader({
                 ctx: this.ctx,
                 code: opts.code,
                 entryPoint: opts.entryPoint
-            })
-            id = vertexShader.getID();
-            ShaderState.CACHE.set(id, vertexShader);
-
+            });
+            ShaderState.CACHE.set(shaderID, shader);
         }
-        return ShaderState.CACHE.get(id) as VertexShader;
+        return ShaderState.CACHE.get(shaderID) as VertexShader;
     }
 
     /**
@@ -71,19 +74,18 @@ class ShaderState {
         opts: {
             code: string,
             entryPoint: string
-        },
-        id: number = -1
+        }
     ): FragmentShader => {
-        if (!this.hasKey(id)) {
-            const vertexShader = new FragmentShader({
+        const shaderID: number = BaseShader.hash32aID(opts.code, opts.entryPoint);
+        if (!ShaderState.CACHE.has(shaderID)) {
+            const shader = new FragmentShader({
                 ctx: this.ctx,
                 code: opts.code,
                 entryPoint: opts.entryPoint
-            })
-            id = vertexShader.getID();
-            ShaderState.CACHE.set(id, vertexShader);
+            });
+            ShaderState.CACHE.set(shaderID, shader);
         }
-        return ShaderState.CACHE.get(id) as FragmentShader;
+        return ShaderState.CACHE.get(shaderID) as FragmentShader;
     }
 
     /**
@@ -93,19 +95,18 @@ class ShaderState {
         opts: {
             code: string,
             entryPoint: string
-        },
-        id: number = -1
+        }
     ): ComputeShader => {
-        if (!this.hasKey(id)) {
-            const vertexShader = new ComputeShader({
+        const shaderID: number = BaseShader.hash32aID(opts.code, opts.entryPoint);
+        if (!ShaderState.CACHE.has(shaderID)) {
+            const shader = new ComputeShader({
                 ctx: this.ctx,
                 code: opts.code,
                 entryPoint: opts.entryPoint
-            })
-            id = vertexShader.getID();
-            ShaderState.CACHE.set(id, vertexShader);
+            });
+            ShaderState.CACHE.set(shaderID, shader);
         }
-        return ShaderState.CACHE.get(id) as ComputeShader;
+        return ShaderState.CACHE.get(shaderID) as ComputeShader;
     }
 
 }

@@ -17,7 +17,7 @@ import { Context } from '../src/res/Context.ts';
     const compiler: Compiler = new Compiler({ ctx: ctx });
 
     // color attachment
-    const sufraTexture = compiler.createSurfaceTexture();
+    const sufraTexture = compiler.createSurfaceTexture2D();
     const surfaceColorAttachment = compiler.createColorAttachment({
         texture: sufraTexture,
         blendFormat: 'opaque',
@@ -90,7 +90,6 @@ import { Context } from '../src/res/Context.ts';
         graph.build();
         requestAnimationFrame(renderLoop);
     };
-
     requestAnimationFrame(renderLoop);
 
 })();

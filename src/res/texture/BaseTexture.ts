@@ -110,9 +110,13 @@ abstract class BaseTexture {
         this.height = opts.height;
         this.depthOrArrayLayers = opts.depthOrArrayLayers || 1;
         this.extent3d = [opts.width, opts.height, opts.depthOrArrayLayers || 1];
-        this.maxMipLevel = opts.maxMipLevel || getMaxMipmapLevel(...this.extent3d);
         this.textureFormat = opts.textureFormat || this.ctx.getPreferredTextureFormat();
         this.propertyFormat = opts.propertyFormat;
+        if (this.isDetphTexture()) {
+            this.maxMipLevel = 1;
+        } else {
+            this.maxMipLevel = opts.maxMipLevel || getMaxMipmapLevel(...this.extent3d);
+        }
     }
 
     /**
@@ -140,6 +144,17 @@ abstract class BaseTexture {
     }
 
     /**
+    * depth texture default 
+    */
+    protected isDetphTexture = () => {
+        return this.textureFormat === 'depth16unorm' ||
+            this.textureFormat === 'depth24plus' ||
+            this.textureFormat === 'depth24plus-stencil8' ||
+            this.textureFormat == 'depth32float' ||
+            this.textureFormat == 'depth32float-stencil8';
+    }
+
+    /**
      * 
      */
     protected createGpuTextureViews = (): void => {
@@ -152,6 +167,7 @@ abstract class BaseTexture {
             desc.baseArrayLayer = 0;
             desc.arrayLayerCount = 1;
             desc.baseMipLevel = k;
+
             switch (this.textureFormat) {
                 case 'depth24plus':
                 case 'depth16unorm':

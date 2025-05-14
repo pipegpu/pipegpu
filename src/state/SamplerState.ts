@@ -28,12 +28,11 @@ class SamplerState {
      * @param id 
      * @returns 
      */
-    getSampler = (id: number): BaseSampler | undefined => {
-        if (!SamplerState.SAMPLER_SET.has(id)) {
-            console.log(`[E][SamplerState][getSampler] find sampler failed, id: ${id}`);
-        } else {
-            return SamplerState.SAMPLER_SET.get(id);
+    getSampler = (samplerID: number): BaseSampler | undefined => {
+        if (!SamplerState.SAMPLER_SET.has(samplerID)) {
+            throw new Error(`[E][SamplerState][getSampler] find sampler failed, id: ${samplerID}`);
         }
+        return SamplerState.SAMPLER_SET.get(samplerID);
     }
 }
 

@@ -54,11 +54,21 @@ abstract class BaseShader {
             entryPoint: string
         }
     ) {
-        this.id = hash32a(`${opts.code}-${opts.entryPoint}`);
+        this.id = BaseShader.hash32aID(opts.code, opts.entryPoint);
         this.ctx = opts.ctx;
         this.shaderStage = opts.shaderStage;
         this.code = opts.code;
         this.entryPoint = opts.entryPoint;
+    }
+
+    /**
+     * 
+     * @param code 
+     * @param entryPoint 
+     * @returns 
+     */
+    static hash32aID = (code: string, entryPoint: string) => {
+        return hash32a(`${code}-${entryPoint}`);
     }
 
     /**

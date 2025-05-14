@@ -30,29 +30,26 @@ class PipelineState {
      * @param id 
      * @returns 
      */
-    getPipeline = (id: number): BasePipeline | undefined => {
-        if (!PipelineState.PIPELINE_SET.has(id)) {
-            console.log(`[E][PipelineState][getPipeline] find pipeline failed, id: ${id}`);
+    getPipeline = (pipelineID: number): BasePipeline | undefined => {
+        if (!PipelineState.PIPELINE_SET.has(pipelineID)) {
+            throw new Error(`[E][PipelineState][getPipeline] find pipeline failed, id: ${pipelineID}`);
         } else {
-            return PipelineState.PIPELINE_SET.get(id);
+            return PipelineState.PIPELINE_SET.get(pipelineID);
         }
     }
 
     /**
      * 
      */
-    createRenderPipeline = (renderPipelineDescriptor: GPURenderPipelineDescriptor, id: number = -1): RenderPipeline => {
-        if (!PipelineState.PIPELINE_SET.has(id)) {
-            id = uniqueID();
-            const pipeline = new RenderPipeline({
-                id: id,
-                ctx: this.ctx,
-                renderPipelineDescriptor: renderPipelineDescriptor
-            });
-            PipelineState.PIPELINE_SET.set(id, pipeline);
-
-        }
-        return this.getPipeline(id) as RenderPipeline;
+    createRenderPipeline = (renderPipelineDescriptor: GPURenderPipelineDescriptor): RenderPipeline => {
+        const renderPipelineID: number = uniqueID();
+        const pipeline = new RenderPipeline({
+            id: renderPipelineID,
+            ctx: this.ctx,
+            renderPipelineDescriptor: renderPipelineDescriptor
+        });
+        PipelineState.PIPELINE_SET.set(renderPipelineID, pipeline);
+        return this.getPipeline(renderPipelineID) as RenderPipeline;
     }
 
 }
