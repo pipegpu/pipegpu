@@ -13,17 +13,15 @@ import type { BufferState } from "../state/BufferState";
 const parseRenderDispatch = (
     bufferState: BufferState,
     dispatch: RenderProperty,
-    _handler: RenderHandle
-): void => {
+): RenderHandle => {
     if (!dispatch) {
-        console.log(`[E][parseRenderDispatch] missing render 'dispatch' in 'RenderHolderDesc'`);
+        throw new Error(`[E][parseRenderDispatch] missing render 'dispatch' in 'RenderHolderDesc'`)
     }
-
     const t: PropertyFormat = dispatch.getPropertyFormat();
     switch (t) {
         case 'drawCount':
             {
-                _handler = (encoder: GPURenderPassEncoder): void => {
+                return (encoder: GPURenderPassEncoder): void => {
                     const maxDrawCount: number = dispatch.getMaxDrawCount();
                     const instanceCount: number = dispatch.getInstanceCount();
                     encoder.draw(maxDrawCount, instanceCount);
@@ -32,7 +30,7 @@ const parseRenderDispatch = (
             }
         case 'drawIndexed':
             {
-                _handler = (encoder: GPURenderPassEncoder): void => {
+                return (encoder: GPURenderPassEncoder): void => {
                     const indexBufferID: number = dispatch.getIndexBufferID();
                     const indexBuffer: IndexBuffer = bufferState.getBuffer(indexBufferID) as IndexBuffer;
                     const instanceCount: number = dispatch.getInstanceCount();
@@ -42,7 +40,9 @@ const parseRenderDispatch = (
                 break;
             }
         default:
-            break;
+            {
+                throw new Error(`[E][parseRenderDispatch] unsupport render dispatch type:${t} in render 'RenderHolderDesc'`)
+            }
     }
 }
 

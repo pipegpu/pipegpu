@@ -8,6 +8,15 @@ import type { TextureState } from "../state/TextureState"
 
 /**
  * 
+ * @param _frameStage 
+ * @param _encoder 
+ * @param _bufferState 
+ * @param _textureState 
+ */
+const emptyUniformHandler: UniformHandle = (_frameStage: FrameStageFormat, _encoder: GPUCommandEncoder, _bufferState: BufferState, _textureState: TextureState): void => { }
+
+/**
+ * 
  */
 interface IUniformRecord {
     name: string,
@@ -24,29 +33,30 @@ interface IUniformRecord {
  * @returns 
  */
 const parseUniform = (
-    _handler: UniformHandle,
-    uniforms: Uniforms,
-    uniformRecordMap: Map<string, IUniformRecord>,
-    bufferUniformRecordsMap: Map<number, Map<string, IUniformRecord>>
-) => {
-    if (uniforms.isEmpty()) {
+    opts: {
+        uniforms?: Uniforms,
+        uniformRecordMap: Map<string, IUniformRecord>,
+        bufferUniformRecordsMap: Map<number, Map<string, IUniformRecord>>
+    }
+): UniformHandle => {
+    if (opts.uniforms?.isEmpty()) {
         console.log(`[I][parseUniform] input 'uniforms' is empty.`);
-        return;
+        return emptyUniformHandler;
     }
 
     const appendBufferIDWithAttributeRecords = (bufferID: number, record: IUniformRecord) => {
-        if (!bufferUniformRecordsMap.has(bufferID)) {
+        if (!opts.bufferUniformRecordsMap.has(bufferID)) {
             const records: Map<string, IUniformRecord> = new Map();
-            bufferUniformRecordsMap.set(bufferID, records);
+            opts.bufferUniformRecordsMap.set(bufferID, records);
         }
-        const records = bufferUniformRecordsMap.get(bufferID);
+        const records = opts.bufferUniformRecordsMap.get(bufferID);
         records?.set(record.name, record);
     }
 
     const bc: number[] = [], tc: number[] = [];
 
-    const propertyMap: Map<string, BaseProperty> = uniforms.getPropertyMap();
-    propertyMap.forEach((propertyBase: BaseProperty, propertyName: string) => {
+    const propertyMap: Map<string, BaseProperty> | undefined = opts.uniforms?.getPropertyMap();
+    propertyMap?.forEach((propertyBase: BaseProperty, propertyName: string) => {
         const t: PropertyFormat = propertyBase.getPropertyFormat();
         switch (t) {
             case "uniformBuffer":
@@ -60,20 +70,22 @@ const parseUniform = (
 
                     };
                     appendBufferIDWithAttributeRecords(bufferID, record);
-                    uniformRecordMap.set(propertyName, record);
+                    opts.uniformRecordMap.set(propertyName, record);
                     bc.push(bufferID);
                     break;
                 }
             default:
-                console.log(`[E][parseUniform] unsupported property type: ${t}`);
-                break;
+                {
+                    throw new Error(`[E][parseUniform] unsupported property type: ${t}`);
+                }
         }
     });
 
-    // support:
-    // handler
+    // support cpu-side update:
+    // - buffer update
+    // - texture update
     if (bc.length || tc.length) {
-        _handler = (frameStage: FrameStageFormat, encoder: GPUCommandEncoder, bufferState: BufferState, textureState: TextureState) => {
+        return (frameStage: FrameStageFormat, encoder: GPUCommandEncoder, bufferState: BufferState, textureState: TextureState) => {
             bc.forEach(bufferID => {
                 bufferState.getBuffer(bufferID)?.getGpuBuffer(encoder, frameStage);
             });
@@ -81,8 +93,9 @@ const parseUniform = (
                 textureState.getTexture(textureID)?.getGpuTexture(encoder, frameStage);
             });
         }
+    } else {
+        return emptyUniformHandler;
     }
-
 }
 
 export {

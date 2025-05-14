@@ -19,24 +19,26 @@ interface IAttributeRecord {
  * @param opts 
  */
 const parseAttribute = (
-    attributes: Attributes,
-    attributeRecordMap: Map<string, IAttributeRecord>,
-    bufferAttributeRecordsMap: Map<number, Map<string, IAttributeRecord>>
+    opts: {
+        attributes?: Attributes,
+        attributeRecordMap: Map<string, IAttributeRecord>,
+        bufferAttributeRecordsMap: Map<number, Map<string, IAttributeRecord>>
+    }
 ): void => {
-    if (attributes.isEmpty()) {
+    if (opts.attributes?.isEmpty()) {
         console.log(`[I][parseAttribute] input 'attributes' is empty.`);
         return;
     }
     const appendBufferIDWithAttributeRecords = (bufferID: number, record: IAttributeRecord): void => {
-        if (!bufferAttributeRecordsMap.has(bufferID)) {
+        if (!opts.bufferAttributeRecordsMap.has(bufferID)) {
             const records: Map<string, IAttributeRecord> = new Map();
-            bufferAttributeRecordsMap.set(bufferID, records);
+            opts.bufferAttributeRecordsMap.set(bufferID, records);
         }
-        const records = bufferAttributeRecordsMap.get(bufferID);
+        const records = opts.bufferAttributeRecordsMap.get(bufferID);
         records?.set(record.name, record);
     }
-    const propertyMap: Map<string, BaseProperty> = attributes.getPropertyMap();
-    propertyMap.forEach((propertyBase: BaseProperty, propertyName: string) => {
+    const propertyMap: Map<string, BaseProperty> | undefined = opts.attributes?.getPropertyMap();
+    propertyMap?.forEach((propertyBase: BaseProperty, propertyName: string) => {
         const t: PropertyFormat = propertyBase.getPropertyFormat();
         switch (t) {
             case "vertexBuffer":
@@ -51,13 +53,12 @@ const parseAttribute = (
                         normalized: false
                     };
                     appendBufferIDWithAttributeRecords(bufferID, record);
-                    attributeRecordMap.set(propertyName, record);
+                    opts.attributeRecordMap.set(propertyName, record);
                     break;
                 }
             default:
                 {
-                    console.log(`[E][ParseAttribute] unsupport property type: ${t}`);
-                    break;
+                    throw new Error(`[E][ParseAttribute] unsupport property type: ${t}`);
                 }
         }
     });

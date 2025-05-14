@@ -61,12 +61,12 @@ interface RenderHolderDesc {
     /**
      * 
      */
-    attributes: Attributes,
+    attributes?: Attributes,
 
     /**
      * 
      */
-    uniforms: Uniforms,
+    uniforms?: Uniforms,
 
     /**
      * 
@@ -118,21 +118,6 @@ interface ComputeHolderDesc {
      */
     dispatch: ComputeProperty
 }
-
-/**
- * 
- * @param _frameStage 
- * @param _encoder 
- * @param _bufferState 
- * @param _textureState 
- */
-const _emptyUniformHandler: UniformHandle = (_frameStage: FrameStageFormat, _encoder: GPUCommandEncoder, _bufferState: BufferState, _textureState: TextureState): void => { }
-
-/**
- * 
- * @param encoder 
- */
-const _emptyRenderHandler: RenderHandle = (_encoder: GPURenderPassEncoder): void => { };
 
 /**
  * 
@@ -205,31 +190,28 @@ class Compiler {
      */
     compileRenderHolder = (desc: RenderHolderDesc): RenderHolder | undefined => {
         const vertexShader = desc.vertexShader, fragmentShader = desc.fragmentShader;
-
+        // vaildation shader
         if (!vertexShader || !fragmentShader) {
-            console.log(`[E][Compiler][compileRenderHolder] missing shader, vertexShader: ${vertexShader}; fragmentShader:${fragmentShader}`);
-            return undefined;
+            throw new Error(`[E][Compiler][compileRenderHolder] missing shader, vertexShader: ${vertexShader}; fragmentShader:${fragmentShader}`);
         }
 
         // parse attribute
         const attributeRecordMap: Map<string, IAttributeRecord> = new Map();
         const bufferAttributeRecordsMap: Map<number, Map<string, IAttributeRecord>> = new Map();
-        parseAttribute(
-            desc.attributes,
-            attributeRecordMap,
-            bufferAttributeRecordsMap
-        );
+        parseAttribute({
+            attributes: desc.attributes,
+            attributeRecordMap: attributeRecordMap,
+            bufferAttributeRecordsMap: bufferAttributeRecordsMap
+        });
 
         // parse uniform
-        let unifomrHandler: UniformHandle = _emptyUniformHandler;
         const uniformRecordMap: Map<string, IUniformRecord> = new Map();
         const bufferUniformRecordsMap: Map<number, Map<string, IUniformRecord>> = new Map();
-        parseUniform(
-            unifomrHandler,
-            desc.uniforms,
-            uniformRecordMap,
-            bufferUniformRecordsMap
-        );
+        const unifomrHandler: UniformHandle = parseUniform({
+            uniforms: desc.uniforms,
+            uniformRecordMap: uniformRecordMap,
+            bufferUniformRecordsMap: bufferUniformRecordsMap
+        });
 
         // parse render holder bindgrouplayout
         const bindGroupLayouts: GPUBindGroupLayout[] = [];
@@ -245,15 +227,13 @@ class Compiler {
         );
 
         // parse render dispatch
-        let renderHandler: RenderHandle = _emptyRenderHandler;
-        parseRenderDispatch(
+        const renderHandler: RenderHandle = parseRenderDispatch(
             this.bufferState,
-            desc.dispatch,
-            renderHandler
+            desc.dispatch
         );
 
         // parse multi sample state
-        let multiSampleState: GPUMultisampleState = parseMultisampleState(
+        const multiSampleState: GPUMultisampleState = parseMultisampleState(
             desc.multiSampleFormat || '1x'
         );
 

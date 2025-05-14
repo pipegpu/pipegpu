@@ -40,6 +40,9 @@ class UniformBuffer extends BaseBuffer {
         });
         this.handler = opts.handler;
         this.typedArrayData1D = opts.typedArrayData1D;
+        if (this.handler === undefined && this.typedArrayData1D === undefined) {
+            throw new Error(`[E][UniformBuffer] constructor error, opts.typedArrayData1D or opts.handler must be assign at least 1.`);
+        }
     }
 
     /**
@@ -60,13 +63,16 @@ class UniformBuffer extends BaseBuffer {
      * 
      */
     createGpuBuffer = () => {
-        this.needUpdate();
+        if (this.handler) {
+            this.typedArrayData1D = this.handler();
+        }
         this.byte_length = this.typedArrayData1D?.byteLength as number;
         let desc: GPUBufferDescriptor = {
             size: this.byte_length,
             usage: this.bufferUsageFlags as GPUBufferUsageFlags
         };
         this.buffer = this.ctx?.getGpuDevice().createBuffer(desc);
+        this.updateGpuBuffer();
     }
 
     /**
@@ -79,7 +85,10 @@ class UniformBuffer extends BaseBuffer {
             this.createGpuBuffer();
         } else {
             // vertex buffer only need update once in each frame at begin stage
-            frameStage === "frameBegin" && this.needUpdate() && this.updateGpuBuffer();
+            if (frameStage === "frameBegin" && this.handler) {
+                this.typedArrayData1D = this.handler();
+                this.updateGpuBuffer();
+            }
         }
         return this.buffer as GPUBuffer;
     }
@@ -89,17 +98,6 @@ class UniformBuffer extends BaseBuffer {
      */
     override getByteLength = (): number => {
         return this.byte_length;
-    }
-
-    /**
-     * 
-     * @returns 
-     */
-    needUpdate = (): boolean => {
-        if (this.handler !== undefined) {
-            this.typedArrayData1D = this.handler();
-        }
-        return this.handler !== undefined;
     }
 }
 

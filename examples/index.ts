@@ -72,15 +72,15 @@ import { Context } from '../src/res/Context.ts';
     const vertexBuffer = compiler.createVertexBuffer({
         rawData: vertexArr
     });
-    desc.attributes.assign("in_vertex_position", vertexBuffer);
+    desc.attributes?.assign("in_vertex_position", vertexBuffer);
 
     const uniformBufferR = compiler.createUniformBuffer({ rawData: new Float32Array([1.0]) });
     const uniformBufferG = compiler.createUniformBuffer({ rawData: new Float32Array([0.2]) });
     const uniformBufferB = compiler.createUniformBuffer({ rawData: new Float32Array([0.0]) });
 
-    desc.uniforms.assign("uColorR", uniformBufferR);
-    desc.uniforms.assign("uColorG", uniformBufferG);
-    desc.uniforms.assign("uColorB", uniformBufferB);
+    desc.uniforms?.assign("uColorR", uniformBufferR);
+    desc.uniforms?.assign("uColorG", uniformBufferG);
+    desc.uniforms?.assign("uColorB", uniformBufferB);
 
     const holder: RenderHolder | undefined = compiler.compileRenderHolder(desc);
     const graph: OrderedGraph = new OrderedGraph(ctx);
