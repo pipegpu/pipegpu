@@ -1,5 +1,5 @@
 import type { VariableInfo } from "wgsl_reflect";
-import type { ComputeHolder } from "../holder/ComputeHolder";
+import { ComputeHolder } from "../holder/ComputeHolder";
 import { RenderHolder } from "../holder/RenderHolder";
 import type { ComputeProperty } from "../property/dispatch/ComputeProperty";
 import type { RenderProperty } from "../property/dispatch/RenderProperty";
@@ -9,9 +9,9 @@ import type { DepthStencilAttachment } from "../res/attachment/DepthStencilAttac
 import type { Handle1D } from "../res/buffer/BaseBuffer";
 import type { UniformBuffer } from "../res/buffer/UniformBuffer";
 import type { VertexBuffer } from "../res/buffer/VertexBuffer";
-import type { Context } from "../res/Context";
-import type { BlendFormat, ColorLoadStoreFormat, DepthLoadStoreFormat, FrameStageFormat, MultiSampleFormat, StencilLoadStoreFormat, StencilStateFormat, TypedArray1DFormat } from "../res/Format";
-import type { RenderHandle } from "../res/Handle";
+import { Context } from "../res/Context";
+import type { BlendFormat, ColorLoadStoreFormat, DepthLoadStoreFormat, MultiSampleFormat, StencilLoadStoreFormat, StencilStateFormat, TypedArray1DFormat } from "../res/Format";
+import type { ComputeHandle, RenderHandle } from "../res/Handle";
 import type { ComputeShader } from "../res/shader/ComputeShader";
 import type { FragmentShader } from "../res/shader/FragmentShader";
 import type { VertexShader } from "../res/shader/VertexShader";
@@ -38,9 +38,15 @@ import type { BaseTexture } from "../res/texture/BaseTexture";
 import { AttachmentState } from "../state/AttachmentState";
 import type { Texture2D } from "../res/texture/Texture2D";
 import { uniqueID } from "../util/uniqueID";
+import { parseComputeBindGroupLayout } from "./parseComputeBindGroupLayout";
+import { parseComputeDispatch } from "./parseComputeDispatch";
+import { parseComputeProgrammableStage } from "./parseComputeProgrammableStage";
+import { emitComputePipeline } from "./emitComputePipeline";
 
 /**
- * 
+ * render holde descriptor
+ * @param label {String} 
+ * @param vertexShader {VertexShader}
  */
 interface RenderHolderDesc {
     /**
@@ -95,7 +101,8 @@ interface RenderHolderDesc {
 }
 
 /**
- * 
+ * support:
+ * gpu-driven style
  */
 interface ComputeHolderDesc {
     /**
@@ -188,7 +195,7 @@ class Compiler {
      * @param desc 
      * @returns 
      */
-    compileRenderHolder = (desc: RenderHolderDesc): RenderHolder | undefined => {
+    compileRenderHolder = (desc: RenderHolderDesc): RenderHolder => {
         const vertexShader = desc.vertexShader, fragmentShader = desc.fragmentShader;
         // vaildation shader
         if (!vertexShader || !fragmentShader) {
@@ -303,6 +310,11 @@ class Compiler {
             multisampleState: multiSampleState
         });
 
+        //
+        // TODO::   
+        // dependeicese, includes input/output
+        //
+
         // render holder
         return new RenderHolder({
             id: uniqueID(),
@@ -323,12 +335,91 @@ class Compiler {
      * 
      * @param desc 
      */
-    compileComputeHolder = (desc: ComputeHolderDesc): ComputeHolder | undefined => {
+    compileComputeHolder = (desc: ComputeHolderDesc): ComputeHolder => {
         const computeShader = desc.computeShader;
+
         if (!computeShader) {
-            console.log(`[E][Compiler][compileComputeHolder] missing shader, computeShader: ${computeShader}`);
-            return undefined;
+            throw new Error(`[E][Compiler][compileComputeHolder] missing shader, computeShader: ${computeShader}`);
         }
+
+        // parse uniform
+        const uniformRecordMap: Map<string, IUniformRecord> = new Map();
+        const bufferUniformRecordsMap: Map<number, Map<string, IUniformRecord>> = new Map();
+        const unifomrHandler: UniformHandle = parseUniform({
+            uniforms: desc.uniforms,
+            uniformRecordMap: uniformRecordMap,
+            bufferUniformRecordsMap: bufferUniformRecordsMap
+        });
+
+        // parse render holder bindgrouplayout
+        const bindGroupLayouts: GPUBindGroupLayout[] = [];
+        const gourpIDWithBindGroupLayoutMap: Map<number, GPUBindGroupLayout> = new Map();
+        const gourpIDWithBindGroupLayoutDescriptorMap: Map<number, GPUBindGroupLayoutDescriptor> = new Map();
+        parseComputeBindGroupLayout(
+            this.ctx,
+            computeShader,
+            bindGroupLayouts,
+            gourpIDWithBindGroupLayoutMap,
+            gourpIDWithBindGroupLayoutDescriptorMap
+        );
+
+        // parse render dispatch
+        const computeHandler: ComputeHandle = parseComputeDispatch(
+            desc.dispatch
+        );
+
+        // parse compute program stage
+        const computeProgrammableStage: GPUProgrammableStage = parseComputeProgrammableStage(
+            computeShader
+        );
+
+        // parse pipeline layout
+        const pipelineLayout: GPUPipelineLayout = parsePipelineLayout(
+            this.ctx,
+            bindGroupLayouts,
+        );
+
+        // emit uniform
+        const slotBindGroupMap: Map<number, GPUBindGroup> = new Map();
+        const mergedUniformResourceMap: Map<number, VariableInfo[]> = new Map();
+        emitUniforms(
+            {
+                ctx: this.ctx,
+                computeShader: computeShader,
+                bufferState: this.bufferState,
+                textureState: this.textureState,
+                samplerState: this.samplerState,
+                uniformRecordMap: uniformRecordMap,
+                bufferIDUniformRecordsMap: bufferUniformRecordsMap,
+                gourpIDWithBindGroupLayoutMap: gourpIDWithBindGroupLayoutMap,
+                gourpIDWithBindGroupLayoutDescriptorMap: gourpIDWithBindGroupLayoutDescriptorMap
+            },
+            slotBindGroupMap,
+            mergedUniformResourceMap
+        );
+
+        // emit compute pipeline
+        const computePipeline = emitComputePipeline({
+            computeProgrammableStage: computeProgrammableStage,
+            pipelineLayout: pipelineLayout,
+            pipelineState: this.pipelineState
+        });
+
+        //
+        // TODO::   
+        // dependeicese, includes input/output
+        //
+
+        return new ComputeHolder({
+            id: uniqueID(),
+            ctx: this.ctx,
+            computePipeline: computePipeline,
+            bufferState: this.bufferState,
+            textureState: this.textureState,
+            computeHandler: computeHandler,
+            uniformHandler: unifomrHandler,
+            slotBindGroupMap: slotBindGroupMap
+        });
     }
 
     /**

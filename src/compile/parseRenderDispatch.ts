@@ -26,7 +26,6 @@ const parseRenderDispatch = (
                     const instanceCount: number = dispatch.getInstanceCount();
                     encoder.draw(maxDrawCount, instanceCount);
                 };
-                break;
             }
         case 'drawIndexed':
             {
@@ -37,7 +36,6 @@ const parseRenderDispatch = (
                     encoder.setIndexBuffer(indexBuffer.getGpuBuffer(), 'uint32');
                     encoder.drawIndexed(indexBuffer.getIndexCount(), instanceCount, 0, 0, 0);
                 };
-                break;
             }
         default:
             {

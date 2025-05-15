@@ -32,14 +32,26 @@ class ComputeProperty extends BaseProperty {
         this.groupZ = z;
     }
 
+    /**
+     * 
+     * @returns 
+     */
     getGroupX = (): number => {
         return this.groupX;
     }
 
+    /**
+     * 
+     * @returns 
+     */
     getGroupY = (): number => {
         return this.groupY;
     }
 
+    /**
+     * 
+     * @returns 
+     */
     getGroupZ = (): number => {
         return this.groupZ;
     }

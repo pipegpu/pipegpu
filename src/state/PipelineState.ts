@@ -1,5 +1,6 @@
 import type { Context } from "../res/Context"
 import type { BasePipeline } from "../res/pipeline/BasePipeline";
+import { ComputePipeline } from "../res/pipeline/ComputePipeline";
 import { RenderPipeline } from "../res/pipeline/RenderPipeline";
 import { uniqueID } from "../util/uniqueID";
 
@@ -50,6 +51,21 @@ class PipelineState {
         });
         PipelineState.PIPELINE_SET.set(renderPipelineID, pipeline);
         return this.getPipeline(renderPipelineID) as RenderPipeline;
+    }
+
+    /**
+     * 
+     * @param computePipelineDescriptor 
+     */
+    createComputePipeline = (computePipelineDescriptor: GPUComputePipelineDescriptor): ComputePipeline => {
+        const computePipelineID: number = uniqueID();
+        const pipeline = new ComputePipeline({
+            id: computePipelineID,
+            ctx: this.ctx,
+            computePipelineDescriptor: computePipelineDescriptor
+        });
+        PipelineState.PIPELINE_SET.set(computePipelineID, pipeline);
+        return this.getPipeline(computePipelineID) as ComputePipeline;
     }
 
 }

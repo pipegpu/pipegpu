@@ -12,7 +12,13 @@ type UniformHandle = (frameStage: FrameStageFormat, encoder: GPUCommandEncoder, 
  */
 type RenderHandle = (encoder: GPURenderPassEncoder) => void;
 
+/**
+ * 
+ */
+type ComputeHandle = (encoder: GPUComputePassEncoder) => void;
+
 export {
     type UniformHandle,
-    type RenderHandle
+    type RenderHandle,
+    type ComputeHandle
 }

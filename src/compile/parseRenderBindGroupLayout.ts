@@ -21,7 +21,7 @@ const parseRenderBindGroupLayout = (
     gourpIDWithBindGroupLayoutMap: Map<number, GPUBindGroupLayout>,
     gourpIDWithBindGroupLayoutDescriptorMap: Map<number, GPUBindGroupLayoutDescriptor>
 ) => {
-    const collectedBindgroupLayoutEntriesMap: Map<number, GPUBindGroupLayoutEntry[]> = new Map();
+    const collectedBindGroupLayoutEntriesMap: Map<number, GPUBindGroupLayoutEntry[]> = new Map();
 
     const maxBindGroups: number = ctx.getLimits().maxBindGroups;
     const vsMap = vertexShader.getBindGroupWithGroupLayoutEntriesMap(), fsMap = fragmentShader.getBindGroupWithGroupLayoutEntriesMap();
@@ -41,10 +41,10 @@ const parseRenderBindGroupLayout = (
             resourceBindings.push(...bindings);
         }
         if (resourceBindings.length) {
-            collectedBindgroupLayoutEntriesMap.set(bindGroupID, resourceBindings);
-            if (collectedBindgroupLayoutEntriesMap.size != bindGroupID + 1) {
+            collectedBindGroupLayoutEntriesMap.set(bindGroupID, resourceBindings);
+            if (collectedBindGroupLayoutEntriesMap.size != bindGroupID + 1) {
                 console.log(`[E][parseRenderBindGroupLayout] binding group should use in order from start [0 to ${maxBindGroups}], please check shader binding group index.`);
-                collectedBindgroupLayoutEntriesMap.clear();
+                collectedBindGroupLayoutEntriesMap.clear();
                 return;
             }
         }
@@ -52,7 +52,7 @@ const parseRenderBindGroupLayout = (
 
     parseBindGroupLayout(
         ctx,
-        collectedBindgroupLayoutEntriesMap,
+        collectedBindGroupLayoutEntriesMap,
         bindGroupLayouts,
         gourpIDWithBindGroupLayoutMap,
         gourpIDWithBindGroupLayoutDescriptorMap

@@ -75,7 +75,11 @@ class RenderHolder extends BaseHolder {
             depthStencilAttachment?: DepthStencilAttachment,
         }
     ) {
-        super({ id: opts.id, ctx: opts.ctx, poropertyFormat: 'renderHolder' });
+        super({
+            id: opts.id,
+            ctx: opts.ctx,
+            poropertyFormat: 'renderHolder'
+        });
         this.renderPipeline = opts.renderPipeline;
         this.bufferState = opts.bufferState;
         this.texturteState = opts.texturteState;
