@@ -1,5 +1,5 @@
 import { reflectShaderAttributes, type IReflectAttributes } from "../../util/reflectShaderAttributes";
-import { reflectShaderUniforms, type IReflectUniforms } from "../../util/reflectShaderUniforms";
+import { reflectShaderUniforms } from "../../util/reflectShaderUniforms";
 import type { Context } from "../Context";
 import { BaseShader } from "./BaseShader";
 

@@ -2,7 +2,14 @@ import type { Context } from "../Context";
 import type { FrameStageFormat } from "../Format";
 import { BaseBuffer } from "./BaseBuffer";
 
+/**
+ * 
+ */
 class StorageBuffer extends BaseBuffer {
+    /**
+     * 
+     * @param opts 
+     */
     constructor(
         opts: {
             id: number,
@@ -14,6 +21,13 @@ class StorageBuffer extends BaseBuffer {
             ctx: opts.ctx,
             bufferUsageFlags: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST
         });
+    }
+
+    /**
+     * 
+     */
+    getByteLength(): number {
+        throw new Error("Method not implemented.");
     }
 
     /**

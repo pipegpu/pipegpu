@@ -82,6 +82,13 @@ class Context {
     /**
      * 
      */
+    getSupportedFeatures = () => {
+        return this.features;
+    }
+
+    /**
+     * 
+     */
     refreshFrameResource = (): void => {
         this.frameTargetTexture = this.gpuContext?.getCurrentTexture() as GPUTexture;
         this.frameTargetTextureView = this.frameTargetTexture.createView();

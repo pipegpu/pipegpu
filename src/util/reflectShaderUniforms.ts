@@ -9,7 +9,6 @@ interface IReflectUniforms {
     groupIDwithResourceBindingsMap: Map<number, Array<VariableInfo>>
 }
 
-
 /**
  * 
  * @param t 

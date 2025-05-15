@@ -1,9 +1,14 @@
 import type { Context } from "../Context";
-import { BaseBuffer } from "./BaseBuffer";
 import { StorageBuffer } from "./StorageBuffer";
 
+/**
+ * 
+ */
 class IndirectBuffer extends StorageBuffer {
-
+    /**
+     * 
+     * @param opts 
+     */
     constructor(
         opts: {
             id: number,
@@ -17,6 +22,12 @@ class IndirectBuffer extends StorageBuffer {
         this.bufferUsageFlags |= GPUBufferUsage.INDIRECT;
     }
 
+    /**
+     * 
+     */
+    getByteLength(): number {
+        throw new Error("Method not implemented.");
+    }
 }
 
 export {

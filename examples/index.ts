@@ -1,5 +1,4 @@
 import { Compiler, type RenderHolderDesc } from '../src/compile/Compiler.ts';
-import { OrderedGraph } from '../src/graph/OrderedGraph.ts';
 import type { RenderHolder } from '../src/holder/RenderHolder.ts';
 import { RenderProperty } from '../src/property/dispatch/RenderProperty.ts';
 import { Attributes, Uniforms } from '../src/property/Properties.ts';
@@ -92,11 +91,16 @@ import type { TypedArray1DFormat } from '../src/res/Format.ts';
     desc.uniforms?.assign("uColorB", uniformBufferB);
 
     const holder: RenderHolder | undefined = compiler.compileRenderHolder(desc);
-    const graph: OrderedGraph = new OrderedGraph(ctx);
+
+    // const graph: OrderedGraph = new OrderedGraph(ctx);
+    // graph.append(holder);
+    // graph.build();
 
     const renderLoop = () => {
-        graph.append(holder);
-        graph.build();
+        ctx.refreshFrameResource();
+        const encoder = ctx.getCommandEncoder();
+        holder.build(encoder);
+        ctx.submitFrameResource();
         requestAnimationFrame(renderLoop);
     };
     requestAnimationFrame(renderLoop);

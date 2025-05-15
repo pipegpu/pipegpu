@@ -3,7 +3,6 @@ import { BaseShader } from "../res/shader/BaseShader";
 import { ComputeShader } from "../res/shader/ComputeShader";
 import { FragmentShader } from "../res/shader/FragmentShader";
 import { VertexShader } from "../res/shader/VertexShader";
-import type { StringState } from "./StringState";
 
 /**
  * 
@@ -22,19 +21,12 @@ class ShaderState {
 
     /**
      * 
-     */
-    private stringState: StringState;
-
-    /**
-     * 
      * @param opts 
      */
     constructor(
         ctx: Context,
-        stringState: StringState
     ) {
         this.ctx = ctx;
-        this.stringState = stringState;
     }
 
     /**

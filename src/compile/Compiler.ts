@@ -17,7 +17,6 @@ import type { FragmentShader } from "../res/shader/FragmentShader";
 import type { VertexShader } from "../res/shader/VertexShader";
 import { BufferState } from "../state/BufferState";
 import { ShaderState } from "../state/ShaderState";
-import { StringState } from "../state/StringState";
 import { TextureState } from "../state/TextureState";
 import { emitAttributes } from "./emitAttributes";
 import { parseAttribute, type IAttributeRecord } from "./parseAttribute";
@@ -144,11 +143,6 @@ class Compiler {
     /**
      * 
      */
-    private stringState: StringState;
-
-    /**
-     * 
-     */
     private shaderState: ShaderState;
 
     /**
@@ -181,9 +175,8 @@ class Compiler {
         }
     ) {
         this.ctx = opts.ctx;
-        this.stringState = new StringState();
         this.bufferState = new BufferState(this.ctx);
-        this.shaderState = new ShaderState(this.ctx, this.stringState);
+        this.shaderState = new ShaderState(this.ctx);
         this.textureState = new TextureState(this.ctx);
         this.samplerState = new SamplerState(this.ctx);
         this.pipelineState = new PipelineState(this.ctx);
@@ -560,5 +553,6 @@ class Compiler {
 
 export {
     type RenderHolderDesc,
+    type ComputeHolderDesc,
     Compiler
 }
