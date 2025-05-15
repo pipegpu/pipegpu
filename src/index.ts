@@ -6,11 +6,13 @@ export * from './res/Context'
 export * from './res/Format'
 export * from './res/Handle'
 export * from './compile/Compiler'
+
 /**
  * holder:
  * - compute holder
  * - render holder
  */
+export * from './holder/BaseHolder'
 export * from './holder/ComputeHolder'
 export * from './holder/RenderHolder'
 
