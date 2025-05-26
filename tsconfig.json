@@ -30,6 +30,7 @@
   },
   "include": [
     "src",
-    "examples"
+    "examples",
+    "packages"
   ]
 }
