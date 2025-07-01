@@ -1,4 +1,3 @@
-import { OrderedGraph } from '../packages/frameGraph/OrderedGraph.ts';
 import { Compiler, type RenderHolderDesc } from '../src/compile/Compiler.ts';
 import type { RenderHolder } from '../src/holder/RenderHolder.ts';
 import { RenderProperty } from '../src/property/dispatch/RenderProperty.ts';
@@ -92,24 +91,23 @@ import type { TypedArray1DFormat } from '../src/res/Format.ts';
     desc.uniforms?.assign("uColorB", uniformBufferB);
 
     const holder: RenderHolder | undefined = compiler.compileRenderHolder(desc);
-    const graph: OrderedGraph = new OrderedGraph(ctx);
-
-    const renderLoop = () => {
-        graph.append(holder);
-        graph.build();
-        requestAnimationFrame(renderLoop);
-    };
-    requestAnimationFrame(renderLoop);
-
-
+    // const graph: OrderedGraph = new OrderedGraph(ctx);
     // const renderLoop = () => {
-    //     ctx.refreshFrameResource();
-    //     const encoder = ctx.getCommandEncoder();
-    //     holder.build(encoder);
-    //     ctx.submitFrameResource();
+    //     graph.append(holder);
+    //     graph.build();
     //     requestAnimationFrame(renderLoop);
     // };
     // requestAnimationFrame(renderLoop);
+
+
+    const renderLoop = () => {
+        ctx.refreshFrameResource();
+        const encoder = ctx.getCommandEncoder();
+        holder.build(encoder);
+        ctx.submitFrameResource();
+        requestAnimationFrame(renderLoop);
+    };
+    requestAnimationFrame(renderLoop);
 
 })();
 
