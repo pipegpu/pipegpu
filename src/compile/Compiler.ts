@@ -6,11 +6,11 @@ import type { RenderProperty } from "../property/dispatch/RenderProperty";
 import type { Attributes, Uniforms } from "../property/Properties";
 import type { ColorAttachment } from "../res/attachment/ColorAttachment";
 import type { DepthStencilAttachment } from "../res/attachment/DepthStencilAttachment";
-import type { Handle1D } from "../res/buffer/BaseBuffer";
+import type { Handle1D, Handle2D } from "../res/buffer/BaseBuffer";
 import type { UniformBuffer } from "../res/buffer/UniformBuffer";
 import type { VertexBuffer } from "../res/buffer/VertexBuffer";
 import { Context } from "../res/Context";
-import type { BlendFormat, ColorLoadStoreFormat, DepthLoadStoreFormat, MultiSampleFormat, StencilLoadStoreFormat, StencilStateFormat, TypedArray1DFormat } from "../res/Format";
+import type { BlendFormat, ColorLoadStoreFormat, DepthLoadStoreFormat, MultiSampleFormat, StencilLoadStoreFormat, StencilStateFormat, TypedArray1DFormat, TypedArray2DFormat } from "../res/Format";
 import type { ComputeHandle, RenderHandle } from "../res/Handle";
 import type { ComputeShader } from "../res/shader/ComputeShader";
 import type { FragmentShader } from "../res/shader/FragmentShader";
@@ -41,6 +41,8 @@ import { parseComputeBindGroupLayout } from "./parseComputeBindGroupLayout";
 import { parseComputeDispatch } from "./parseComputeDispatch";
 import { parseComputeProgrammableStage } from "./parseComputeProgrammableStage";
 import { emitComputePipeline } from "./emitComputePipeline";
+import type { StorageBuffer } from "../res/buffer/StorageBuffer";
+import type { MapBuffer } from "../res/buffer/Mapbuffer";
 
 /**
  * render holde descriptor
@@ -443,6 +445,34 @@ class Compiler {
         }
     ): UniformBuffer => {
         return this.bufferState.createUniformBuffer(opts);
+    }
+
+    /**
+     * 
+     * @param opts 
+     * @returns 
+     */
+    createStorageBuffer = (
+        opts: {
+            rawData?: TypedArray2DFormat,
+            handler?: Handle2D
+        }
+    ): StorageBuffer => {
+        return this.bufferState.createStorageBuffer(opts);
+    }
+
+    /**
+     * 
+     * @param opts 
+     * @returns 
+     */
+    createMapBuffer = (
+        opts: {
+            rawData?: TypedArray2DFormat,
+            handler?: Handle2D
+        }
+    ): MapBuffer => {
+        return this.bufferState.createMapBuffer(opts)
     }
 
     /**

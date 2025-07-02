@@ -1,10 +1,11 @@
-import type { BaseBuffer, Handle1D } from "../res/buffer/BaseBuffer";
+import type { BaseBuffer, Handle1D, Handle2D } from "../res/buffer/BaseBuffer";
 import { IndexBuffer } from "../res/buffer/IndexBuffer";
+import { MapBuffer } from "../res/buffer/Mapbuffer";
 import { StorageBuffer } from "../res/buffer/StorageBuffer";
 import { UniformBuffer } from "../res/buffer/UniformBuffer";
 import { VertexBuffer } from "../res/buffer/VertexBuffer";
 import type { Context } from "../res/Context";
-import type { TypedArray1DFormat } from "../res/Format";
+import type { TypedArray1DFormat, TypedArray2DFormat } from "../res/Format";
 import { uniqueID } from "../util/uniqueID";
 
 /**
@@ -65,21 +66,6 @@ class BufferState {
 
     /**
      * 
-     * @param id 
-     * @returns 
-     */
-    createStorageBuffer(): StorageBuffer {
-        const storageBufferID: number = uniqueID();
-        const buffer: StorageBuffer = new StorageBuffer({
-            id: storageBufferID,
-            ctx: this.ctx
-        });
-        BufferState.BUFFER_SET.set(storageBufferID, buffer);
-        return BufferState.BUFFER_SET.get(storageBufferID) as StorageBuffer;
-    }
-
-    /**
-     * 
      * @param opts 
      * @param id 
      */
@@ -98,6 +84,50 @@ class BufferState {
         });
         BufferState.BUFFER_SET.set(uniformBufferID, buffer);
         return BufferState.BUFFER_SET.get(uniformBufferID) as UniformBuffer;
+    }
+
+    /**
+     * 
+     * @param opts 
+     * @returns 
+     */
+    createMapBuffer = (
+        opts: {
+            rawData?: TypedArray2DFormat,
+            handler?: Handle2D
+        }
+    ): MapBuffer => {
+        const mapBufferID: number = uniqueID();
+        const buffer: MapBuffer = new MapBuffer({
+            id: mapBufferID,
+            ctx: this.ctx,
+            typedArrayData2D: opts.rawData,
+            handler: opts.handler
+        });
+        BufferState.BUFFER_SET.set(mapBufferID, buffer);
+        return BufferState.BUFFER_SET.get(mapBufferID) as MapBuffer;
+    }
+
+    /**
+     * 
+     * @param opts 
+     * @returns 
+     */
+    createStorageBuffer = (
+        opts: {
+            rawData?: TypedArray2DFormat,
+            handler?: Handle2D
+        }
+    ): StorageBuffer => {
+        const storageBufferID: number = uniqueID();
+        const buffer: StorageBuffer = new StorageBuffer({
+            id: storageBufferID,
+            ctx: this.ctx,
+            typedArrayData2D: opts.rawData,
+            handler: opts.handler
+        });
+        BufferState.BUFFER_SET.set(storageBufferID, buffer);
+        return BufferState.BUFFER_SET.get(storageBufferID) as StorageBuffer;
     }
 
     /**
