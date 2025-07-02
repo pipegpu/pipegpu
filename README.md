@@ -35,14 +35,14 @@
 - [x] UniformBufferProperty (uniforms)
 - [x] VertexBufferProperty (attribute)
 - [ ] ComputeProperty (dispatch)
-- [ ] RenderProperty (dispatch)
+- [x] RenderProperty (dispatch)
 
 ### res
-- [ ] Format
-- [ ] Context
-- [ ] BaseTexture (texture)
-- [ ] SurfaceTexture2D (texture)
-- [ ] Texture2D (texture)
+- [x] Format
+- [x] Context
+- [x] BaseTexture (texture)
+- [x] SurfaceTexture2D (texture)
+- [x] Texture2D (texture)
 - [ ] TextureStorage2D (texture)
 - [x] BaseShader (shader)
 - [x] ComputeShader (shader)
