@@ -215,6 +215,14 @@ class DepthStencilAttachment extends BaseAttachment {
         this.updateState();
         return this.depthStencilState as GPUDepthStencilState;
     }
+
+    /**
+     * 
+     * @returns {Texture2D}
+     */
+    getTexture = (): Texture2D => {
+        return this.texture;
+    }
 }
 
 export {
