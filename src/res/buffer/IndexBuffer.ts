@@ -63,7 +63,7 @@ class IndexBuffer extends BaseBuffer {
             size: this.byte_length,
             usage: this.bufferUsageFlags as GPUBufferUsageFlags
         };
-        this.buffer = this.ctx?.getGpuDevice().createBuffer(desc);
+        this.buffer = this.ctx!.getGpuDevice().createBuffer(desc);
         this.updateGpuBuffer();
     }
 
@@ -71,7 +71,7 @@ class IndexBuffer extends BaseBuffer {
      * 
      */
     updateGpuBuffer = () => {
-        this.ctx?.getGpuQueue().writeBuffer(
+        this.ctx!.getGpuQueue().writeBuffer(
             this.buffer as GPUBuffer,
             0,
             this.typedArrayData1D?.buffer as ArrayBuffer,

@@ -1,4 +1,14 @@
 /**
+ * util:
+ * - uniqueID
+ * - max mipmap level
+ * - hash32a
+ */
+export * from './util/uniqueID.ts'
+export * from './util/getMaxMipmapLevel.ts'
+export * from './util/hash32a.ts'
+
+/**
  * core/basic modules
  * context and compiler
  */
