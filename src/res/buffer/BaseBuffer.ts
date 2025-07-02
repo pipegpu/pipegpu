@@ -33,7 +33,7 @@ abstract class BaseBuffer {
     /**
      * 
      */
-    protected buffer: GPUBuffer | undefined;
+    protected buffer!: GPUBuffer;
 
     /**
      * 

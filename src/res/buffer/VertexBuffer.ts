@@ -19,7 +19,7 @@ class VertexBuffer extends BaseBuffer {
     /**
      * 
      */
-    private byte_length: number = 0;
+    private byteLength: number = 0;
 
     /**
      * 
@@ -54,7 +54,7 @@ class VertexBuffer extends BaseBuffer {
             0,
             this.typedArrayData1D?.buffer as ArrayBuffer,
             0,
-            this.byte_length
+            this.byteLength
         );
     }
 
@@ -65,12 +65,12 @@ class VertexBuffer extends BaseBuffer {
         if (this.handler) {
             this.typedArrayData1D = this.handler();
         }
-        this.byte_length = this.typedArrayData1D?.byteLength as number;
+        this.byteLength = this.typedArrayData1D?.byteLength as number;
         let desc: GPUBufferDescriptor = {
-            size: this.byte_length,
+            size: this.byteLength,
             usage: this.bufferUsageFlags as GPUBufferUsageFlags
         };
-        this.buffer = this.ctx?.getGpuDevice().createBuffer(desc);
+        this.buffer = this.ctx!.getGpuDevice().createBuffer(desc);
         this.updateGpuBuffer();
     }
 
@@ -78,7 +78,7 @@ class VertexBuffer extends BaseBuffer {
      * 
      */
     override getByteLength(): number {
-        return this.byte_length;
+        return this.byteLength;
     }
 
     /**

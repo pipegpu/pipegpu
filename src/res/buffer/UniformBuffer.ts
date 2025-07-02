@@ -71,7 +71,7 @@ class UniformBuffer extends BaseBuffer {
             size: this.byte_length,
             usage: this.bufferUsageFlags as GPUBufferUsageFlags
         };
-        this.buffer = this.ctx?.getGpuDevice().createBuffer(desc);
+        this.buffer = this.ctx!.getGpuDevice().createBuffer(desc);
         this.updateGpuBuffer();
     }
 
