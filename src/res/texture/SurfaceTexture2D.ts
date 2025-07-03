@@ -31,7 +31,7 @@ class SurfaceTexture2D extends BaseTexture {
     /**
      * 
      */
-    protected createGpuTexture(): void {
+    protected override createGpuTexture(): void {
         this.texture = this.ctx.getFrameTexture();
     }
 

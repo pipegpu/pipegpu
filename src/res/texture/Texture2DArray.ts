@@ -1,15 +1,21 @@
+import type { Handle2D } from "../buffer/BaseBuffer";
 import type { Context } from "../Context";
-import type { FrameStageFormat, TypedArray1DFormat } from "../Format";
+import type { FrameStageFormat, TypedArray2DFormat } from "../Format";
 import { BaseTexture } from "./BaseTexture";
 
 /**
  * 
  */
-class Texture2D extends BaseTexture {
+class Texture2DArray extends BaseTexture {
     /**
      * 
      */
-    private textureData?: TypedArray1DFormat;
+    protected textureDataArray?: TypedArray2DFormat;
+
+    /**
+     * 
+     */
+    protected handler?: Handle2D;
 
     /**
      * 
@@ -21,8 +27,10 @@ class Texture2D extends BaseTexture {
             ctx: Context,
             width: number,
             height: number,
+            array: number,
             appendixTextureUsages?: number,
-            textureData?: TypedArray1DFormat,
+            textureDataArray?: TypedArray2DFormat,
+            handler?: Handle2D,
             textureFormat?: GPUTextureFormat,
             maxMipLevel?: number
         }
@@ -32,13 +40,30 @@ class Texture2D extends BaseTexture {
             ctx: opts.ctx,
             width: opts.width,
             height: opts.height,
-            depthOrArrayLayers: 1,
+            depthOrArrayLayers: opts.array,
             textureUsageFlags: (opts.appendixTextureUsages || 0) | GPUTextureUsage.COPY_DST | GPUTextureUsage.TEXTURE_BINDING,
             textureFormat: opts.textureFormat,
             maxMipLevel: opts.maxMipLevel,
-            propertyFormat: 'texture2D'
+            propertyFormat: 'texture2DArray'
         });
-        this.textureData = opts.textureData;
+        this.textureDataArray = opts.textureDataArray;
+        this.handler = opts.handler;
+    }
+
+    /**
+     * 
+     */
+    protected refreshTextureDataSource() {
+        if (this.textureDataArray && !this.isDetphTexture()) {
+            const destination: GPUTexelCopyTextureInfo = {
+                texture: this.texture!
+            };
+            const dataLayout: GPUTexelCopyBufferLayout = this.getTexelCopyBufferLayout();
+            for (let index: number = 0; index < this.textureDataArray.length; index++) {
+                destination.origin = [0, 0, index];
+                this.ctx.getGpuQueue().writeTexture(destination, this.textureDataArray[index], dataLayout, this.extent3d);
+            }
+        }
     }
 
     /**
@@ -46,39 +71,38 @@ class Texture2D extends BaseTexture {
      */
     protected override createGpuTexture(): void {
         const desc: GPUTextureDescriptor = {
+            label: `[TextureArray]`,
             size: this.extent3d,
             format: this.textureFormat,
-            usage: this.textureUsageFlags
+            usage: this.textureUsageFlags,
+            dimension: this.getTextureDimension()
         };
-        // write texture
         this.texture = this.ctx.getGpuDevice().createTexture(desc);
-        const destination: GPUTexelCopyTextureInfo = {
-            texture: this.texture
-        };
-        // depth texture not allow texture write from cpu as default.
-        if (this.textureData && !this.isDetphTexture()) {
-            const dataLayout: GPUTexelCopyBufferLayout = this.getTexelCopyBufferLayout();
-            this.ctx.getGpuQueue().writeTexture(destination, this.textureData, dataLayout, this.extent3d);
-        }
+        this.refreshTextureDataSource();
     }
 
     /**
      * 
-     * @param encoder 
+     * @param _encoder 
      * @param frameStage 
+     * @returns 
      */
-    override getGpuTexture = (_encoder: GPUCommandEncoder, _frameStage: FrameStageFormat): GPUTexture => {
+    override getGpuTexture(_encoder: GPUCommandEncoder, frameStage: FrameStageFormat): GPUTexture {
         if (!this.texture) {
             this.createGpuTexture();
         }
-        return this.texture as GPUTexture;
+        if ('frameBegin' === frameStage && this.handler) {
+            this.textureDataArray = this.handler();
+            this.refreshTextureDataSource();
+        }
+        return this.texture!;
     }
 
     /**
      * 
      * @returns 
      */
-    override getGpuTextureView = (): GPUTextureView => {
+    override getGpuTextureView(): GPUTextureView {
         if (!this.textureViews.length) {
             if (!this.texture) {
                 this.createGpuTexture();
@@ -86,7 +110,7 @@ class Texture2D extends BaseTexture {
             for (let k = 0; k < this.maxMipLevel; k++) {
                 const desc: GPUTextureViewDescriptor = {};
                 desc.baseArrayLayer = 0;
-                desc.arrayLayerCount = 1;
+                desc.arrayLayerCount = (this.extent3d as GPUExtent3DDict).depthOrArrayLayers;
                 desc.baseMipLevel = k;
                 switch (this.textureFormat) {
                     case 'depth24plus':
@@ -121,5 +145,5 @@ class Texture2D extends BaseTexture {
 }
 
 export {
-    Texture2D
+    Texture2DArray
 }
