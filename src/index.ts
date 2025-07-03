@@ -61,4 +61,5 @@ export * from './res/shader/VertexShader.ts'
 export * from './res/texture/SurfaceTexture2D.ts'
 export * from './res/texture/Texture2D.ts'
 export * from './res/texture/TextureStorage2D.ts'
+export * from './res/texture/Texture2DArray.ts'
 
