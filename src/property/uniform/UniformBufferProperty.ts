@@ -8,7 +8,7 @@ class UniformBufferProperty extends BaseProperty {
     /**
      * 
      */
-    private uniformBuffer: UniformBuffer;
+    private buffer: UniformBuffer;
 
     /**
      * 
@@ -17,7 +17,7 @@ class UniformBufferProperty extends BaseProperty {
      */
     constructor(propertyName: string, buffer: UniformBuffer) {
         super(propertyName, 'uniformBuffer');
-        this.uniformBuffer = buffer;
+        this.buffer = buffer;
     }
 
     /**
@@ -25,7 +25,7 @@ class UniformBufferProperty extends BaseProperty {
      * @returns 
      */
     getUniformBufferID = (): number => {
-        return this.uniformBuffer.getId();
+        return this.buffer.getID();
     }
 }
 

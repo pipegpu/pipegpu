@@ -54,7 +54,7 @@ abstract class BaseBuffer {
      * 
      * @returns 
      */
-    getId = (): number => {
+    getID = (): number => {
         return this.id;
     }
 

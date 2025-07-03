@@ -6,10 +6,10 @@
 > descriptor of modules in pipegpu.
 
 ### compiler
-- [ ] Compiler
-- [ ] emitAttributes
-- [ ] emitRenderPipeline
-- [ ] emitUniforms
+- [x] Compiler
+- [x] emitAttributes
+- [x] emitRenderPipeline
+- [x] emitUniforms
 - [x] parseAttribute
 - [x] parseBindGroupLayout
 - [x] parseColorAttachments
@@ -29,13 +29,14 @@
 ### property
 - [x] Properties
 - [x] BaseProperty
-- [ ] StorageBufferProperty (uniforms)
-- [ ] TextureProperty (uniforms)
-- [ ] TextureSamplerProperty (uniforms)
-- [x] UniformBufferProperty (uniforms)
-- [x] VertexBufferProperty (attribute)
-- [ ] ComputeProperty (dispatch)
-- [x] RenderProperty (dispatch)
+- [x] StorageBufferProperty
+- [x] TextureProperty
+- [x] Texture2DarrayProperty
+- [x] TextureSamplerProperty
+- [x] UniformBufferProperty
+- [x] VertexBufferProperty
+- [x] ComputeProperty
+- [x] RenderProperty
 
 ### res
 - [x] Format
@@ -45,16 +46,15 @@
 - [x] SurfaceTexture2D
 - [x] Texture2D
 - [ ] TextureStorage2D
-- [ ] TextureArray2D
-- [ ] TextureArray
+- [x] TextureArray2D
 #### res shader
 - [x] BaseShader 
 - [x] ComputeShader
 - [x] FragmentShader
 - [x] VertexShader
 #### res buffer
-- [ ] BaseBuffer 
-- [ ] IndexBuffer
+- [x] BaseBuffer 
+- [x] IndexBuffer
 - [x] StorageBuffer
 - [x] UniformBuffer
 - [x] VertexBuffer
@@ -68,8 +68,8 @@
 - [x] ComputePipeline 
 - [x] RenderPipeline 
 #### res sampler
-- [x] BaseSampler (sampler)
-- [x] TextureSampler (sampler)
+- [x] BaseSampler
+- [x] TextureSampler
 
 ### state
 - [x] AttachmentState

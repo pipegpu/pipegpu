@@ -72,7 +72,7 @@ class RenderProperty extends BaseProperty {
      */
     getIndexBufferID(): number {
         if (this.indexBuffer) {
-            return this.indexBuffer.getId();
+            return this.indexBuffer.getID();
         } else {
             console.log(`[E][RenderProperty][getIndexBufferID] missing indexBuffer in 'RenderProperty'.`);
             return 0;

@@ -1,8 +1,10 @@
+import type { Handle1D, Handle2D } from "../res/buffer/BaseBuffer";
 import type { Context } from "../res/Context"
-import type { TypedArray1DFormat } from "../res/Format";
+import type { TypedArray1DFormat, TypedArray2DFormat } from "../res/Format";
 import type { BaseTexture } from "../res/texture/BaseTexture";
 import { SurfaceTexture2D } from "../res/texture/SurfaceTexture2D";
 import { Texture2D } from "../res/texture/Texture2D";
+import { Texture2DArray } from "../res/texture/Texture2DArray";
 import { uniqueID } from "../util/uniqueID";
 
 
@@ -52,6 +54,7 @@ class TextureState {
             textureFormat?: GPUTextureFormat,
             maxMipLevel?: number,
             appendixTextureUsages?: number,
+            handler?: Handle1D
         }
     ): Texture2D => {
         const textureID: number = uniqueID();
@@ -83,6 +86,40 @@ class TextureState {
         });
         TextureState.TEXTURE_SET.set(textureID, texture);
         return texture;
+    }
+
+    /**
+     * 
+     * @param opts 
+     * @returns 
+     */
+    createTexture2DArray = (
+        opts: {
+            width: number,
+            height: number,
+            array: number,
+            appendixTextureUsages?: number,
+            textureDataArray?: TypedArray2DFormat,
+            handler?: Handle2D,
+            textureFormat?: GPUTextureFormat,
+            maxMipLevel?: number
+        }
+    ): Texture2DArray => {
+        const textureArrayID: number = uniqueID();
+        const texture = new Texture2DArray({
+            id: textureArrayID,
+            ctx: this.ctx,
+            width: opts.width,
+            height: opts.height,
+            array: opts.array,
+            appendixTextureUsages: opts.appendixTextureUsages,
+            textureDataArray: opts.textureDataArray,
+            handler: opts.handler,
+            textureFormat: opts.textureFormat,
+            maxMipLevel: opts.maxMipLevel,
+        });
+        TextureState.TEXTURE_SET.set(textureArrayID, texture);
+        return TextureState.TEXTURE_SET.get(textureArrayID) as Texture2DArray;
     }
 }
 

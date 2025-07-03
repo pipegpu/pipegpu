@@ -25,7 +25,7 @@ class VertexBufferProperty extends BaseProperty {
      * @returns 
      */
     getVertexBufferID = (): number => {
-        return this.vertexBuffer.getId();
+        return this.vertexBuffer.getID();
     }
 }
 

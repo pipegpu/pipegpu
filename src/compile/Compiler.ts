@@ -574,10 +574,31 @@ class Compiler {
             height: number,
             textureData?: TypedArray1DFormat,
             textureFormat?: GPUTextureFormat,
-            maxMipLevel?: number
+            maxMipLevel?: number,
+            handler?: Handle1D
         }
     ) => {
         return this.textureState.createTexutre2D(opts);
+    }
+
+    /**
+     * 
+     * @param opts 
+     * @returns 
+     */
+    crateTexture2DArray = (
+        opts: {
+            width: number,
+            height: number,
+            array: number,
+            appendixTextureUsages?: number,
+            textureDataArray?: TypedArray2DFormat,
+            handler?: Handle2D,
+            textureFormat?: GPUTextureFormat,
+            maxMipLevel?: number
+        }
+    ) => {
+        return this.textureState.createTexture2DArray(opts);
     }
 }
 

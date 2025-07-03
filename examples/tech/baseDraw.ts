@@ -1,10 +1,10 @@
-import { Compiler, type RenderHolderDesc } from '../src/compile/Compiler.ts';
-import type { RenderHolder } from '../src/holder/RenderHolder.ts';
-import { RenderProperty } from '../src/property/dispatch/RenderProperty.ts';
-import { Attributes, Uniforms } from '../src/property/Properties.ts';
-import type { ColorAttachment } from '../src/res/attachment/ColorAttachment.ts';
-import { Context } from '../src/res/Context.ts';
-import type { TypedArray1DFormat } from '../src/res/Format.ts';
+import { Compiler, type RenderHolderDesc } from '../../src/compile/Compiler.ts';
+import type { RenderHolder } from '../../src/holder/RenderHolder.ts';
+import { RenderProperty } from '../../src/property/dispatch/RenderProperty.ts';
+import { Attributes, Uniforms } from '../../src/property/Properties.ts';
+import type { ColorAttachment } from '../../src/res/attachment/ColorAttachment.ts';
+import { Context } from '../../src/res/Context.ts';
+import type { TypedArray1DFormat } from '../../src/res/Format.ts';
 
 (async () => {
     const ctx: Context = new Context({

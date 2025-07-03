@@ -64,7 +64,6 @@ type PropertyFormat =
     | 'uniformBuffer'
     | 'indexBuffer'
     | 'storageBuffer'
-    | 'texutre2D'
     | 'surfaceTexture2D'
     | 'textureStorage2D'
     | 'renderPipeline'
@@ -77,6 +76,7 @@ type PropertyFormat =
     | 'textureCube'
     | 'texture2DArray'
     | 'textureCubeArray'
+    | 'textureSampler'
     ;
 
 /**
