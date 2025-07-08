@@ -91,7 +91,22 @@ const parseContextDesc = (
     }
 ): ContextDesc => {
     const container = document.body;
-    const canvas = createCanvasElement(container, opts.width, opts.height, opts.devicePixelRatio);
+    let canvas = document.getElementById(opts.selector) as HTMLCanvasElement;
+    if (canvas) {
+        const w = opts.width * devicePixelRatio;
+        const h = opts.height * devicePixelRatio;
+        canvas.width = w;
+        canvas.height = h;
+        canvas.style.border = `0px`;
+        canvas.style.margin = `0px`;
+        canvas.style.padding = `0px`;
+        canvas.style.top = `0px`;
+        canvas.style.left = `0px`;
+        canvas.style.width = `${opts.width}px`;
+        canvas.style.height = `${opts.height}px`;
+    } else {
+        canvas = createCanvasElement(container, opts.width, opts.height, opts.devicePixelRatio);
+    }
     let desc: ContextDesc = {
         selector: opts.selector,
         width: opts.width,
