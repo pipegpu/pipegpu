@@ -25,6 +25,7 @@ class BufferState {
     /**
      * 
      * @param opts 
+     * 
      */
     constructor(ctx: Context) {
         this.ctx = ctx;
@@ -33,12 +34,13 @@ class BufferState {
     /**
      * 
      * @param id 
+     * 
      */
-    getBuffer = (bufferID: number): BaseBuffer | undefined => {
+    getBuffer = (bufferID: number): BaseBuffer => {
         if (!BufferState.BUFFER_SET.has(bufferID)) {
             throw new Error(`[E][BufferState][getBuffer] find buffer failed.`);
         } else {
-            return BufferState.BUFFER_SET.get(bufferID);
+            return BufferState.BUFFER_SET.get(bufferID)!;
         }
     }
 
@@ -46,66 +48,72 @@ class BufferState {
      * 
      * @param id 
      * @returns 
+     * 
      */
     createIndexBuffer(
         opts: {
-            indexFormat: GPUIndexFormat,
-            rawData: TypedArray1DFormat
+            rawData: TypedArray1DFormat,
         }
     ): IndexBuffer {
-        const indexBufferID: number = uniqueID();
+        const bufferID: number = uniqueID();
         const buffer: IndexBuffer = new IndexBuffer({
-            id: indexBufferID,
+            id: bufferID,
             ctx: this.ctx,
-            indexFormat: opts.indexFormat,
+            totalByteLength: opts.rawData.byteLength,
             typedArrayData1D: opts.rawData
         });
-        BufferState.BUFFER_SET.set(indexBufferID, buffer);
-        return BufferState.BUFFER_SET.get(indexBufferID) as IndexBuffer;
+        BufferState.BUFFER_SET.set(bufferID, buffer);
+        return BufferState.BUFFER_SET.get(bufferID) as IndexBuffer;
     }
 
     /**
      * 
      * @param opts 
      * @param id 
+     * 
      */
     createUniformBuffer = (
         opts: {
+            totalByteLength: number,
             rawData?: TypedArray1DFormat
-            handler?: Handle1D
+            handler?: Handle1D,
         }
     ): UniformBuffer => {
-        const uniformBufferID = uniqueID();
+        const bufferID = uniqueID();
         const buffer: UniformBuffer = new UniformBuffer({
-            id: uniformBufferID,
+            id: bufferID,
             ctx: this.ctx,
+            totalByteLength: opts.totalByteLength,
             typedArrayData1D: opts.rawData,
             handler: opts.handler
         });
-        BufferState.BUFFER_SET.set(uniformBufferID, buffer);
-        return BufferState.BUFFER_SET.get(uniformBufferID) as UniformBuffer;
+        BufferState.BUFFER_SET.set(bufferID, buffer);
+        return BufferState.BUFFER_SET.get(bufferID) as UniformBuffer;
     }
 
     /**
      * 
      * @param opts 
      * @returns 
+     * 
      */
     createMapBuffer = (
         opts: {
+            totalByteLength: number,
             rawData?: TypedArray2DFormat,
             handler?: Handle2D
         }
     ): MapBuffer => {
-        const mapBufferID: number = uniqueID();
+        const bufferID: number = uniqueID();
         const buffer: MapBuffer = new MapBuffer({
-            id: mapBufferID,
+            id: bufferID,
             ctx: this.ctx,
+            totalByteLength: opts.totalByteLength,
             typedArrayData2D: opts.rawData,
             handler: opts.handler
         });
-        BufferState.BUFFER_SET.set(mapBufferID, buffer);
-        return BufferState.BUFFER_SET.get(mapBufferID) as MapBuffer;
+        BufferState.BUFFER_SET.set(bufferID, buffer);
+        return BufferState.BUFFER_SET.get(bufferID) as MapBuffer;
     }
 
     /**
@@ -115,19 +123,21 @@ class BufferState {
      */
     createStorageBuffer = (
         opts: {
+            totalByteLength: number,
             rawData?: TypedArray2DFormat,
             handler?: Handle2D
         }
     ): StorageBuffer => {
-        const storageBufferID: number = uniqueID();
+        const bufferID: number = uniqueID();
         const buffer: StorageBuffer = new StorageBuffer({
-            id: storageBufferID,
+            id: bufferID,
             ctx: this.ctx,
+            totalByteLength: opts.totalByteLength,
             typedArrayData2D: opts.rawData,
             handler: opts.handler
         });
-        BufferState.BUFFER_SET.set(storageBufferID, buffer);
-        return BufferState.BUFFER_SET.get(storageBufferID) as StorageBuffer;
+        BufferState.BUFFER_SET.set(bufferID, buffer);
+        return BufferState.BUFFER_SET.get(bufferID) as StorageBuffer;
     }
 
     /**
@@ -135,23 +145,27 @@ class BufferState {
      * @param opts 
      * @param id 
      * @returns 
+     * 
      */
     createVertexBuffer = (
         opts: {
+            totalByteLength: number,
             rawData?: TypedArray1DFormat
             handler?: Handle1D
         }
     ): VertexBuffer => {
-        const vertexBufferID: number = uniqueID();
+        const bufferID: number = uniqueID();
         const buffer: VertexBuffer = new VertexBuffer({
-            id: vertexBufferID,
+            id: bufferID,
             ctx: this.ctx,
+            totalByteLength: opts.totalByteLength,
             typedArrayData1D: opts.rawData,
             handler: opts.handler
         });
-        BufferState.BUFFER_SET.set(vertexBufferID, buffer);
-        return BufferState.BUFFER_SET.get(vertexBufferID) as VertexBuffer;
+        BufferState.BUFFER_SET.set(bufferID, buffer);
+        return BufferState.BUFFER_SET.get(bufferID) as VertexBuffer;
     }
+
 }
 
 export {

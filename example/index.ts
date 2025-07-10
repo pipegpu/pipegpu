@@ -1,12 +1,13 @@
 import {
-    type RenderHolderDesc, type RenderHolder, type ColorAttachment, type TypedArray1DFormat,
-    Context, Compiler, RenderProperty, Attributes, Uniforms
-} from '../../src/index.ts';
+    type RenderHolderDesc, type RenderHolder, type ColorAttachment,
+    Context, Compiler, RenderProperty, Attributes, Uniforms,
+    BaseHolder
+} from '../src/index';
 
 (async () => {
 
     const ctx: Context = new Context({
-        selector: "pad",
+        selector: "sketchpad",
         width: 800,
         height: 600,
         devicePixelRatio: devicePixelRatio
@@ -69,20 +70,43 @@ import {
     let seed: number = 0;
     // const vertexArr = new Float32Array([-0.15, -0.5, 0.5, -0.5, 0.0, 0.5, -0.55, -0.5, -0.05, 0.5, -0.55, 0.5]);
     const vertexBuffer = compiler.createVertexBuffer({
-        handler: (): TypedArray1DFormat => {
-            return new Float32Array([-0.15 + Math.sin((seed++) * 0.01), -0.5, 0.5, -0.5, 0.0, 0.5, -0.55, -0.5, -0.05, 0.5, -0.55, 0.5]);
-        }
+        totalByteLength: 12 * 4,
+        handler: () => {
+            const arrayData = new Float32Array([-0.15 + Math.sin((seed++) * 0.01), -0.5, 0.5, -0.5, 0.0, 0.5, -0.55, -0.5, -0.05, 0.5, -0.55, 0.5]);
+            return {
+                rewrite: true,
+                detail: {
+                    offset: 0,
+                    byteLength: arrayData.byteLength,
+                    rawData: arrayData
+                }
+            };
+        },
     });
     desc.attributes?.assign("in_vertex_position", vertexBuffer);
 
     const uniformBufferR = compiler.createUniformBuffer({
-        // rawData: new Float32Array([1.0]) 
+        totalByteLength: 1 * 4,
         handler: () => {
-            return new Float32Array([Math.cos(seed * 0.01)]);
-        }
+            const arrayData = new Float32Array([Math.cos(seed * 0.01)]);
+            return {
+                rewrite: true,
+                detail: {
+                    offset: 0,
+                    byteLength: arrayData.byteLength,
+                    rawData: arrayData
+                }
+            };
+        },
     });
-    const uniformBufferG = compiler.createUniformBuffer({ rawData: new Float32Array([0.2]) });
-    const uniformBufferB = compiler.createUniformBuffer({ rawData: new Float32Array([0.0]) });
+    const uniformBufferG = compiler.createUniformBuffer({
+        totalByteLength: 1 * 4,
+        rawData: new Float32Array([0.2]),
+    });
+    const uniformBufferB = compiler.createUniformBuffer({
+        totalByteLength: 1 * 4,
+        rawData: new Float32Array([0.0]),
+    });
 
     desc.uniforms?.assign("uColorR", uniformBufferR);
     desc.uniforms?.assign("uColorG", uniformBufferG);
@@ -96,12 +120,15 @@ import {
     //     requestAnimationFrame(renderLoop);
     // };
     // requestAnimationFrame(renderLoop);
-
+    const holderArray: BaseHolder[] = [];
+    holderArray.push(holder);
 
     const renderLoop = () => {
         ctx.refreshFrameResource();
         const encoder = ctx.getCommandEncoder();
-        holder.build(encoder);
+        holderArray.forEach(element => {
+            element.build(encoder);
+        });
         ctx.submitFrameResource();
         requestAnimationFrame(renderLoop);
     };

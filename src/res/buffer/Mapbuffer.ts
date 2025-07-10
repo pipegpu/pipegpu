@@ -18,11 +18,19 @@ class MapBuffer extends StorageBuffer {
         opts: {
             id: number,
             ctx: Context,
+            totalByteLength: number,
             typedArrayData2D?: TypedArray2DFormat,
             handler?: Handle2D
         }
     ) {
-        super(opts);
+        super({
+            id: opts.id,
+            ctx: opts.ctx,
+            bufferUsageFlags: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST | GPUBufferUsage.COPY_SRC,
+            totalByteLength: opts.totalByteLength,
+            typedArrayData2D: opts.typedArrayData2D,
+            handler: opts.handler,
+        });
     }
 
     /**
@@ -105,8 +113,8 @@ class MapBuffer extends StorageBuffer {
      * @param _frameStage 
      * @returns 
      */
-    override getGpuBuffer = (_encoder: GPUCommandEncoder, _frameStage: FrameStageFormat): GPUBuffer => {
-        super.getGpuBuffer(_encoder, _frameStage);
+    override getGpuBuffer = (encoder: GPUCommandEncoder, frameStage: FrameStageFormat): GPUBuffer => {
+        super.getGpuBuffer(encoder, frameStage);
         if (!this.mapReadBuffer) {
             this.createMapReadBuffer();
         }
@@ -116,9 +124,9 @@ class MapBuffer extends StorageBuffer {
         if (!this.buffer) {
             this.createGpuBuffer();
         }
-        if ('frameFinish' === _frameStage && _encoder) {
+        if ('frameFinish' === frameStage && encoder) {
             const byteLength = this.getByteLength();
-            _encoder.copyBufferToBuffer(this.buffer, this.mapReadBuffer, byteLength);
+            encoder.copyBufferToBuffer(this.buffer, this.mapReadBuffer, byteLength);
         }
         return this.buffer as GPUBuffer;
     }

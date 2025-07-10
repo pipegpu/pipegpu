@@ -1,25 +1,22 @@
 import type { Context } from "../Context";
 import type { FrameStageFormat, TypedArray1DFormat } from "../Format";
-import { BaseBuffer } from "./BaseBuffer";
+import { Buffer1D } from "./Buffer1D";
 
 /**
  * 
+ * @class IndexBuffer
+ * 
  */
-class IndexBuffer extends BaseBuffer {
-    /**
-     * 
-     */
-    private typedArrayData1D: TypedArray1DFormat;
-
-    /**
-     * 
-     */
-    private byte_length: number = 0;
-
+class IndexBuffer extends Buffer1D {
     /**
      * 
      */
     private indexFormat: GPUIndexFormat;
+
+    /**
+     * 
+     */
+    private indexSize: number;
 
     /**
      * 
@@ -29,71 +26,43 @@ class IndexBuffer extends BaseBuffer {
         opts: {
             id: number,
             ctx: Context,
-            indexFormat: GPUIndexFormat,
+            totalByteLength: number,
             typedArrayData1D: TypedArray1DFormat,
         }
     ) {
         super({
             id: opts.id,
             ctx: opts.ctx,
-            bufferUsageFlags: GPUBufferUsage.INDEX | GPUBufferUsage.COPY_DST
+            totalByteLength: opts.totalByteLength,
+            bufferUsageFlags: GPUBufferUsage.INDEX | GPUBufferUsage.COPY_DST,
+            typedArrayData1D: opts.typedArrayData1D,
         });
-        this.typedArrayData1D = opts.typedArrayData1D;
-        this.indexFormat = opts.indexFormat;
-    }
-
-    /**
-     * 
-     * @returns 
-     */
-    getIndexCount = (): number => {
-        if (this.typedArrayData1D) {
-            return this.typedArrayData1D.byteLength / this.typedArrayData1D.BYTES_PER_ELEMENT;
+        this.indexSize = this.typedArrayData1D!.byteLength / this.typedArrayData1D!.BYTES_PER_ELEMENT;
+        if (this.typedArrayData1D! instanceof Int16Array) {
+            this.indexFormat = 'uint16';
+        } else if (this.typedArrayData1D! instanceof Int32Array) {
+            this.indexFormat = 'uint32';
         } else {
-            return 0;
+            throw new Error(`[E][IndexBuffer][constructor] index data type error.`);
         }
     }
 
     /**
      * 
+     * @returns {number}
+     * 
      */
-    createGpuBuffer = () => {
-        this.byte_length = this.typedArrayData1D?.byteLength as number;
-        let desc: GPUBufferDescriptor = {
-            size: this.byte_length,
-            usage: this.bufferUsageFlags as GPUBufferUsageFlags
-        };
-        this.buffer = this.ctx!.getGpuDevice().createBuffer(desc);
-        this.updateGpuBuffer();
+    getIndexSize = (): number => {
+        return this.indexSize;
     }
 
     /**
      * 
-     */
-    updateGpuBuffer = () => {
-        this.ctx!.getGpuQueue().writeBuffer(
-            this.buffer as GPUBuffer,
-            0,
-            this.typedArrayData1D?.buffer as ArrayBuffer,
-            0,
-            this.byte_length
-        );
-    }
-
-    /**
+     * @returns {GPUIndexFormat}
      * 
-     * @returns 
      */
     getIndexFormat = (): GPUIndexFormat => {
         return this.indexFormat;
-    }
-
-    /**
-     * 
-     * @returns 
-     */
-    override getByteLength(): number {
-        return this.byte_length;
     }
 
     /**

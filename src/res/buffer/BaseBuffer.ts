@@ -1,20 +1,36 @@
 import { Context } from "../Context.ts"
-import type { FrameStageFormat, TypedArray1DFormat, TypedArray2DFormat } from "../Format.ts";
+import type { FrameStageFormat, TypedArray1DFormat } from "../Format.ts";
 
 /**
  * e.g for vertex / index / unfiorm buffer.
+ * rewrite buffer
  */
-type Handle1D = () => TypedArray1DFormat;
+type Handle1D = () => {
+    rewrite: boolean,
+    detail: {
+        offset: number,
+        byteLength: number,
+        rawData: TypedArray1DFormat
+    }
+};
 
 /**
  * e.g for storage buffer.
  */
-type Handle2D = () => TypedArray2DFormat;
+type Handle2D = () => {
+    rewrite: boolean,
+    details: Array<{
+        offset: number,
+        byteLength: number,
+        rawData: TypedArray1DFormat
+    }>
+};
 
 /**
  * 
  */
 abstract class BaseBuffer {
+
     /**
     *
     */
@@ -36,18 +52,28 @@ abstract class BaseBuffer {
     protected buffer!: GPUBuffer;
 
     /**
+    * 
+    */
+    protected totalByteLength: number = 0;
+
+    /**
      * 
      */
     constructor(
         opts: {
             id: number,
             ctx: Context,
-            bufferUsageFlags: GPUBufferUsageFlags
+            bufferUsageFlags: GPUBufferUsageFlags,
+            totalByteLength: number,
         }
     ) {
         this.id = opts.id;
         this.ctx = opts.ctx;
         this.bufferUsageFlags = opts.bufferUsageFlags;
+        this.totalByteLength = opts.totalByteLength;
+        if (!this.totalByteLength) {
+            throw new Error(`[E][BaseBuffer][constructor] create buffer error, opts.totalByteLength value invalid.`);
+        }
     }
 
     /**
@@ -59,16 +85,19 @@ abstract class BaseBuffer {
     }
 
     /**
+     * @returns {number} buffer total byte length.
+     */
+    getByteLength = (): number => {
+        return this.totalByteLength;
+    }
+
+    /**
      * 
      * @param encoder 
      * @param frameStage 
      */
     abstract getGpuBuffer(encoder: GPUCommandEncoder | null, frameStage: FrameStageFormat): GPUBuffer;
 
-    /**
-     * 
-     */
-    abstract getByteLength(): number;
 }
 
 export {

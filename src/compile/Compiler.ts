@@ -43,13 +43,17 @@ import { parseComputeProgrammableStage } from "./parseComputeProgrammableStage";
 import { emitComputePipeline } from "./emitComputePipeline";
 import type { StorageBuffer } from "../res/buffer/StorageBuffer";
 import type { MapBuffer } from "../res/buffer/Mapbuffer";
+import type { IndexBuffer } from "../res/buffer/IndexBuffer";
 
 /**
+ * 
  * render holde descriptor
  * @param label {String} 
  * @param vertexShader {VertexShader}
+ * 
  */
 interface RenderHolderDesc {
+
     /**
      * debug label(stats info head bar)
      */
@@ -422,9 +426,11 @@ class Compiler {
      * @param opts 
      * @param id 
      * @returns 
+     * 
      */
     createVertexBuffer = (
         opts: {
+            totalByteLength: number,
             rawData?: TypedArray1DFormat,
             handler?: Handle1D,
         }
@@ -435,11 +441,27 @@ class Compiler {
     /**
      * 
      * @param opts 
+     * @returns 
+     * 
+     */
+    createIndexBuffer = (
+        opts: {
+            rawData: TypedArray1DFormat
+        }
+    ): IndexBuffer => {
+        return this.bufferState.createIndexBuffer(opts);
+    }
+
+    /**
+     * 
+     * @param opts 
      * @param id 
      * @returns 
+     * 
      */
     createUniformBuffer = (
         opts: {
+            totalByteLength: number,
             rawData?: TypedArray1DFormat,
             handler?: Handle1D
         }
@@ -451,9 +473,11 @@ class Compiler {
      * 
      * @param opts 
      * @returns 
+     * 
      */
     createStorageBuffer = (
         opts: {
+            totalByteLength: number,
             rawData?: TypedArray2DFormat,
             handler?: Handle2D
         }
@@ -465,9 +489,11 @@ class Compiler {
      * 
      * @param opts 
      * @returns 
+     * 
      */
     createMapBuffer = (
         opts: {
+            totalByteLength: number,
             rawData?: TypedArray2DFormat,
             handler?: Handle2D
         }
@@ -480,6 +506,7 @@ class Compiler {
      * @param opts 
      * @param id 
      * @returns 
+     * 
      */
     createVertexShader = (
         opts: {
@@ -495,6 +522,7 @@ class Compiler {
      * @param opts 
      * @param id 
      * @returns 
+     * 
      */
     createFragmentShader = (
         opts: {
@@ -510,6 +538,7 @@ class Compiler {
      * @param opts 
      * @param id 
      * @returns 
+     * 
      */
     createComputeShader = (
         opts: {
@@ -525,6 +554,7 @@ class Compiler {
      * @param opts 
      * @param id 
      * @returns 
+     * 
      */
     createColorAttachment = (
         opts: {
@@ -542,6 +572,7 @@ class Compiler {
      * @param opts 
      * @param id 
      * @returns 
+     * 
      */
     createDepthStencilAttachment = (
         opts: {
@@ -560,6 +591,7 @@ class Compiler {
     /**
      * 
      * @returns 
+     * 
      */
     createSurfaceTexture2D = () => {
         return this.textureState.createSurfaceTexture2D();
@@ -585,6 +617,7 @@ class Compiler {
      * 
      * @param opts 
      * @returns 
+     * 
      */
     crateTexture2DArray = (
         opts: {
@@ -600,6 +633,7 @@ class Compiler {
     ) => {
         return this.textureState.createTexture2DArray(opts);
     }
+
 }
 
 export {

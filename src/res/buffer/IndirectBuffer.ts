@@ -1,10 +1,12 @@
-import type { Context } from "../Context";
+import { type Context } from "../Context";
+import { type TypedArray2DFormat } from "../Format";
 import { StorageBuffer } from "./StorageBuffer";
 
 /**
  * 
  */
 class IndirectBuffer extends StorageBuffer {
+
     /**
      * 
      * @param opts 
@@ -13,21 +15,19 @@ class IndirectBuffer extends StorageBuffer {
         opts: {
             id: number,
             ctx: Context,
+            totalByteLength: number,
+            typedArrayData2D: TypedArray2DFormat,
         }
     ) {
         super({
             id: opts.id,
-            ctx: opts.ctx
+            ctx: opts.ctx,
+            totalByteLength: opts.totalByteLength,
+            bufferUsageFlags: GPUBufferUsage.INDIRECT | GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST | GPUBufferUsage.COPY_SRC,
+            typedArrayData2D: opts.typedArrayData2D,
         });
-        this.bufferUsageFlags |= GPUBufferUsage.INDIRECT;
     }
 
-    /**
-     * 
-     */
-    getByteLength(): number {
-        throw new Error("Method not implemented.");
-    }
 }
 
 export {

@@ -1,34 +1,31 @@
-import type { Context } from "../Context";
-import type { FrameStageFormat, TypedArray2DFormat } from "../Format";
-import { BaseBuffer, type Handle2D } from "./BaseBuffer";
+import { type Context } from "../Context";
+import { type TypedArray2DFormat } from "../Format";
+import { type Handle2D } from "./BaseBuffer";
+import { Buffer2D } from "./Buffer2D";
 
 /**
  * 
+ * @class StorageBuffer
+ * 
  */
-class StorageBuffer extends BaseBuffer {
-    /**
-     * 
-     */
-    protected handler: Handle2D | undefined;
+class StorageBuffer extends Buffer2D {
 
     /**
      * 
-     */
-    protected typedArrayData2D: TypedArray2DFormat | undefined;
-
-    /**
+     * @param {number}              opts.id
+     * @param {Context}             opts.ctx
+     * @param {number}              opts.totalByteLength
+     * @param {GPUBufferUsageFlags} opts.bufferUsageFlags
+     * @param {TypedArray2DFormat}  opts.typedArrayData2D
+     * @param {Handle2D}            opts.handler
      * 
-     */
-    protected byteLength: number = 0;
-
-    /**
-     * 
-     * @param opts 
      */
     constructor(
         opts: {
             id: number,
             ctx: Context,
+            totalByteLength: number,
+            bufferUsageFlags?: GPUBufferUsageFlags
             typedArrayData2D?: TypedArray2DFormat,
             handler?: Handle2D
         }
@@ -36,77 +33,13 @@ class StorageBuffer extends BaseBuffer {
         super({
             id: opts.id,
             ctx: opts.ctx,
-            bufferUsageFlags: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST
-        });
-        this.handler = opts.handler;
-        this.typedArrayData2D = opts.typedArrayData2D;
-        if (this.handler === undefined && this.typedArrayData2D === undefined) {
-            throw new Error(`[E][StorageBuffer] constructor error, opts.typedArrayData2D or opts.handler must be assign at least 1.`);
-        }
-    }
-
-    /**
-     * 
-     */
-    updateGpuBuffer = () => {
-        let offset: number = 0;
-        this.typedArrayData2D?.forEach(typedArray => {
-            this.ctx?.getGpuQueue().writeBuffer(
-                this.buffer as GPUBuffer,
-                offset,
-                typedArray?.buffer as ArrayBuffer,
-                0,
-                typedArray.byteLength
-            );
-            offset += typedArray.byteLength;
+            totalByteLength: opts.totalByteLength,
+            bufferUsageFlags: opts.bufferUsageFlags || GPUBufferUsage.STORAGE | GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+            typedArrayData2D: opts.typedArrayData2D,
+            handler: opts.handler
         });
     }
 
-    /**
-    * 
-    */
-    createGpuBuffer = () => {
-        if (this.handler) {
-            this.typedArrayData2D = this.handler();
-        }
-        this.byteLength = this.getByteLength();
-        let desc: GPUBufferDescriptor = {
-            size: this.byteLength,
-            usage: this.bufferUsageFlags as GPUBufferUsageFlags
-        };
-        this.buffer = this.ctx!.getGpuDevice().createBuffer(desc);
-        this.updateGpuBuffer();
-    }
-
-    /**
-     * 
-     */
-    getByteLength(): number {
-        let totalByteLength = 0;
-        if (this.typedArrayData2D) {
-            for (const typedArray of this.typedArrayData2D) {
-                totalByteLength += typedArray.byteLength;
-            }
-        }
-        return totalByteLength;
-    }
-
-    /**
-     * 
-     * @param _encoder 
-     * @param _frameStage 
-     */
-    override getGpuBuffer(_encoder: GPUCommandEncoder, _frameStage: FrameStageFormat): GPUBuffer {
-        if (!this.buffer) {
-            this.createGpuBuffer();
-        } else {
-            if (_frameStage === "frameBegin" && this.handler) {
-                this.typedArrayData2D = this.handler();
-                this.updateGpuBuffer();
-            }
-        }
-        return this.buffer as GPUBuffer;
-    }
 }
 
 export {

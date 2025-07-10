@@ -1,0 +1,121 @@
+import type { Context } from "../Context";
+import type { FrameStageFormat, TypedArray1DFormat, TypedArray2DFormat } from "../Format";
+import { BaseBuffer, type Handle2D } from "./BaseBuffer";
+
+/**
+ * 
+ * @class Buffer2D
+ * 
+ */
+class Buffer2D extends BaseBuffer {
+
+    /**
+     * 
+     */
+    protected handler?: Handle2D;
+
+    /**
+     * 
+     */
+    protected typedArrayData2D?: TypedArray2DFormat;
+
+    /**
+     * 
+     * @param {number}              opts.id 
+     * @param {Context}             opts.ctx
+     * @param {number}              opts.totalByteLength
+     * @param {GPUBufferUsageFlags} opts.bufferUsageFlags
+     * @param {TypedArray2DFormat}  opts.typedArrayData2D
+     * @param {Handle2D}            opts.handler
+     * 
+     */
+    constructor(
+        opts: {
+            id: number,
+            ctx: Context,
+            totalByteLength: number,
+            bufferUsageFlags: GPUBufferUsageFlags
+            typedArrayData2D?: TypedArray2DFormat,
+            handler?: Handle2D,
+        }
+    ) {
+        super({
+            id: opts.id,
+            ctx: opts.ctx,
+            totalByteLength: opts.totalByteLength,
+            bufferUsageFlags: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST
+        });
+        this.typedArrayData2D = opts.typedArrayData2D;
+        this.handler = opts.handler;
+        if (this.handler === undefined && this.typedArrayData2D === undefined) {
+            throw new Error(`[E][Buffer2D][constructor] create buffer error, either opts.handler or opts.typedArrayData2D must be assigned a value.`);
+        }
+    }
+
+    /**
+     * 
+     * @param {number}              offset
+     * @param {number}              byteLength
+     * @param {TypedArray1DFormat}  rawData
+     * 
+     */
+    protected updateGpuBuffer = (offset: number, byteLength: number, rawData: TypedArray1DFormat) => {
+        if (offset + byteLength > this.totalByteLength || rawData.byteLength > this.totalByteLength) {
+            throw new Error(`[E][VertexBuffer][updateGpuBuffer] buffer bytelength oversized, maximum bytelength: ${this.totalByteLength}`);
+        }
+        this.ctx?.getGpuQueue().writeBuffer(
+            this.buffer as GPUBuffer,
+            offset,
+            rawData.buffer as ArrayBuffer,
+            0,
+            byteLength
+        );
+    }
+
+    protected createGpuBuffer = () => {
+        if (!this.buffer) {
+            const desc: GPUBufferDescriptor = {
+                size: this.totalByteLength,
+                usage: this.bufferUsageFlags as GPUBufferUsageFlags
+            }
+            this.buffer = this.ctx!.getGpuDevice().createBuffer(desc);
+        }
+        if (this.typedArrayData2D) {
+            let offset: number = 0;
+            this.typedArrayData2D?.forEach(typedArray => {
+                this.updateGpuBuffer(offset, typedArray.byteLength, typedArray)
+                offset += typedArray.byteLength;
+            });
+        } else if (this.handler) {
+            const handData = this.handler();
+            if (handData.rewrite) {
+                handData.details.forEach(detail => {
+                    this.updateGpuBuffer(detail.offset, detail.byteLength, detail.rawData);
+                });
+            }
+        } else {
+            throw new Error(`[E][Buffer2D] createGpuBuffer failed. unsupport source data array.`)
+        }
+    }
+
+    override getGpuBuffer(_encoder: GPUCommandEncoder, frameStage: FrameStageFormat): GPUBuffer {
+        if (!this.buffer) {
+            this.createGpuBuffer();
+        } else {
+            if (frameStage === "frameBegin" && this.handler) {
+                const handData = this.handler();
+                if (handData.rewrite) {
+                    handData.details.forEach(detail => {
+                        this.updateGpuBuffer(detail.offset, detail.byteLength, detail.rawData);
+                    });
+                }
+            }
+        }
+        return this.buffer as GPUBuffer;
+    }
+
+}
+
+export {
+    Buffer2D
+}
