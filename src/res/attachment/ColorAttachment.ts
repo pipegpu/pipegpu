@@ -76,8 +76,10 @@ class ColorAttachment extends BaseAttachment {
         this.renderPassColorAttachment = {
             view: this.texture.getGpuTextureView(),
             loadOp: 'clear',
-            storeOp: 'store'
+            storeOp: 'store',
+            clearValue: this.clearColor,
         };
+
         switch (this.colorLoadStoreFormat) {
             case 'clearStore':
                 {

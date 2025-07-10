@@ -8,12 +8,12 @@ interface PrimitiveDesc {
     /**
      * 
      */
-    cullFormat: CullFormat;
+    cullFormat?: CullFormat;
 
     /**
      * 
      */
-    primitiveTopology: GPUPrimitiveTopology;
+    primitiveTopology?: GPUPrimitiveTopology;
 }
 
 /**
@@ -31,15 +31,11 @@ const parsePrimitiveState = (
     const primitiveState: GPUPrimitiveState = {};
     primitiveState.topology = opts.primitiveDesc?.primitiveTopology || 'triangle-list';
 
-    const t: PropertyFormat = opts.dispatch.getPropertyFormat();
-    switch (t) {
-        case 'drawIndexed':
-            {
-                primitiveState.stripIndexFormat = opts.dispatch.getIndexFormat();
-                break;
-            }
-        default:
-            break;
+    // strip topology type needs stripIndexFormat assigned undefined
+    if ('triangle-strip' !== primitiveState.topology && 'line-strip' !== primitiveState.topology) {
+        primitiveState.stripIndexFormat = undefined;
+    } else {
+        primitiveState.stripIndexFormat = opts.dispatch.getIndexFormat();
     }
 
     const cullFormat = opts.primitiveDesc?.cullFormat || 'none';

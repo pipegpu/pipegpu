@@ -276,7 +276,7 @@ class Compiler {
             vertexBufferLayouts,
             bufferVertexAttributesMap,
             slotAttributeBufferIDMap
-        );
+        ) as GPUVertexState;
 
         // emit uniform
         const slotBindGroupMap: Map<number, GPUBindGroup> = new Map();

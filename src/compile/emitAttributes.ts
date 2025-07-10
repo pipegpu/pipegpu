@@ -127,12 +127,13 @@ const emitAttributes = (
             if (records.has(key)) {
                 slotBufferIDMap.set(att.shaderLocation, bufferID);
             }
-            if (slotBufferIDMap.size != orderedAttributes.length) {
-                console.log(`[E][emitter][emitAttributes] bufer attributes count not equal slot count, please check.`)
-                return;
-            }
         });
     });
+
+    if (slotBufferIDMap.size != orderedAttributes?.length) {
+        console.log(`[E][emitter][emitAttributes] bufer attributes count not equal slot count, please check.`)
+        return;
+    }
 
     const vertexState: GPUVertexState = {
         module: vertexShader.getGpuShader(),
