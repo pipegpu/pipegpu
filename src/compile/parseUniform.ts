@@ -1,6 +1,7 @@
 import type { BaseProperty } from "../property/BaseProperty";
 import type { Uniforms } from "../property/Properties"
-import type { UniformBufferProperty } from "../property/uniform/UniformBufferProperty";
+import type { StorageBufferProperty } from "../property/uniform/StorageBufferProperty";
+import { UniformBufferProperty } from "../property/uniform/UniformBufferProperty";
 import type { FrameStageFormat, PropertyFormat } from "../res/Format";
 import type { UniformHandle } from "../res/Handle";
 import type { BufferState } from "../state/BufferState"
@@ -59,7 +60,7 @@ const parseUniform = (
     propertyMap?.forEach((propertyBase: BaseProperty, propertyName: string) => {
         const t: PropertyFormat = propertyBase.getPropertyFormat();
         switch (t) {
-            case "uniformBuffer":
+            case 'uniformBuffer':
                 {
                     const uniformBufferProperty: UniformBufferProperty = propertyBase as UniformBufferProperty;
                     const bufferID: number = uniformBufferProperty.getUniformBufferID();
@@ -68,6 +69,20 @@ const parseUniform = (
                         type: t,
                         resourceID: bufferID
 
+                    };
+                    appendBufferIDWithAttributeRecords(bufferID, record);
+                    opts.uniformRecordMap.set(propertyName, record);
+                    bc.push(bufferID);
+                    break;
+                }
+            case 'storageBuffer':
+                {
+                    const storageBufferProperty: StorageBufferProperty = propertyBase as StorageBufferProperty;
+                    const bufferID: number = storageBufferProperty.getStorageBufferID();
+                    let record: IUniformRecord = {
+                        name: propertyName,
+                        type: t,
+                        resourceID: bufferID
                     };
                     appendBufferIDWithAttributeRecords(bufferID, record);
                     opts.uniformRecordMap.set(propertyName, record);

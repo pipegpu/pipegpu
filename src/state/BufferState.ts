@@ -6,6 +6,7 @@ import { UniformBuffer } from "../res/buffer/UniformBuffer";
 import { VertexBuffer } from "../res/buffer/VertexBuffer";
 import type { Context } from "../res/Context";
 import type { TypedArray1DFormat, TypedArray2DFormat } from "../res/Format";
+import { align4Byte } from "../util/align4Byte";
 import { uniqueID } from "../util/uniqueID";
 
 /**

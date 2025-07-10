@@ -34,7 +34,7 @@ const parseRenderDispatch = (
                     const indexBuffer: IndexBuffer = bufferState.getBuffer(indexBufferID) as IndexBuffer;
                     const instanceCount: number = dispatch.getInstanceCount();
                     encoder.setIndexBuffer(indexBuffer.getGpuBuffer(), indexBuffer.getIndexFormat());
-                    encoder.drawIndexed(indexBuffer.getIndexSize(), instanceCount, 0, 0, 0);
+                    encoder.drawIndexed(indexBuffer.getDrawCount(), instanceCount, 0, 0, 0);
                 };
             }
         default:

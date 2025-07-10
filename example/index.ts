@@ -5,6 +5,7 @@ import {
 } from '../src/index';
 import { initDrawCount } from './tech/initDrawCount';
 import { initDrawIndexed } from './tech/initDrawIndexed';
+import { initDrawInstance } from './tech/initDrawInstance';
 
 (async () => {
 
@@ -37,8 +38,9 @@ import { initDrawIndexed } from './tech/initDrawIndexed';
         texture: depthTexture
     });
 
-    const drawCountHolder = initDrawCount(compiler, colorAttachments, depthStencilAttachment);
-    const drawIndexedHolder = initDrawIndexed(compiler, colorAttachments, depthStencilAttachment);
+    // const drawCountHolder = initDrawCount(compiler, colorAttachments, depthStencilAttachment);
+    // const drawIndexedHolder = initDrawIndexed(compiler, colorAttachments, depthStencilAttachment);
+    const drawInstanceHolder = initDrawInstance(compiler, colorAttachments, depthStencilAttachment);
 
     // const graph: OrderedGraph = new OrderedGraph(ctx);
     // const renderLoop = () => {
@@ -48,8 +50,9 @@ import { initDrawIndexed } from './tech/initDrawIndexed';
     // };
     // requestAnimationFrame(renderLoop);
     const holderArray: BaseHolder[] = [];
-    holderArray.push(drawCountHolder);
-    holderArray.push(drawIndexedHolder);
+    // holderArray.push(drawCountHolder);
+    // holderArray.push(drawIndexedHolder);
+    holderArray.push(drawInstanceHolder);
 
     const renderLoop = () => {
         ctx.refreshFrameResource();

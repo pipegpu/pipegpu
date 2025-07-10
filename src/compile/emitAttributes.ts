@@ -130,10 +130,11 @@ const emitAttributes = (
         });
     });
 
-    if (slotBufferIDMap.size != orderedAttributes?.length) {
-        console.log(`[E][emitter][emitAttributes] bufer attributes count not equal slot count, please check.`)
-        return;
-    }
+    // DEBUG::
+    // if (slotBufferIDMap.size != orderedAttributes?.length) {
+    //     console.log(`[E][emitter][emitAttributes] bufer attributes count not equal slot count, please check.`)
+    //     return;
+    // }
 
     const vertexState: GPUVertexState = {
         module: vertexShader.getGpuShader(),

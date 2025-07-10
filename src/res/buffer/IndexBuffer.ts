@@ -16,7 +16,7 @@ class IndexBuffer extends Buffer1D {
     /**
      * 
      */
-    private indexSize: number;
+    private drawCount: number;
 
     /**
      * 
@@ -37,7 +37,7 @@ class IndexBuffer extends Buffer1D {
             bufferUsageFlags: GPUBufferUsage.INDEX | GPUBufferUsage.COPY_DST,
             typedArrayData1D: opts.typedArrayData1D,
         });
-        this.indexSize = this.typedArrayData1D!.byteLength / this.typedArrayData1D!.BYTES_PER_ELEMENT;
+        this.drawCount = this.typedArrayData1D!.byteLength / this.typedArrayData1D!.BYTES_PER_ELEMENT;
         if (this.typedArrayData1D! instanceof Int16Array) {
             this.indexFormat = 'uint16';
         } else if (this.typedArrayData1D! instanceof Int32Array) {
@@ -52,8 +52,8 @@ class IndexBuffer extends Buffer1D {
      * @returns {number}
      * 
      */
-    getIndexSize = (): number => {
-        return this.indexSize;
+    getDrawCount = (): number => {
+        return this.drawCount;
     }
 
     /**

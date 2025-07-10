@@ -1,8 +1,9 @@
-import type { StorageBuffer } from "../res/buffer/StorageBuffer";
+import { StorageBuffer } from "../res/buffer/StorageBuffer";
 import { UniformBuffer } from "../res/buffer/UniformBuffer";
 import type { VertexBuffer } from "../res/buffer/VertexBuffer";
 import { VertexBufferProperty } from "./attribute/VertexBufferProperty";
 import type { BaseProperty } from "./BaseProperty";
+import { StorageBufferProperty } from "./uniform/StorageBufferProperty";
 import { UniformBufferProperty } from "./uniform/UniformBufferProperty";
 
 /**
@@ -82,8 +83,13 @@ class Uniforms extends Properties {
             const uniformBufferProperty: UniformBufferProperty = new UniformBufferProperty(a, b);
             this.propertyMap.set(a, uniformBufferProperty);
             return;
+        } else if (b instanceof StorageBuffer) {
+            const storageBufferProperty: StorageBufferProperty = new StorageBufferProperty(a, b);
+            this.propertyMap.set(a, storageBufferProperty);
+            return;
+        } else {
+            console.log(`[E][Properties][Uniforms][assign] unsupported buffer type, buffer: ${b}`);
         }
-        console.log(`[E][Properties][Uniforms][assign] unsupported buffer type, buffer: ${b}`);
     }
 
 }

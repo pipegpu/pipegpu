@@ -18,35 +18,28 @@ class RenderProperty extends BaseProperty {
      */
     private indexBuffer: IndexBuffer | undefined;
 
-    /**
-     * 
-     * @param buffer 
-     */
-    constructor(buffer: IndexBuffer);
-    /**
-     * 
-     * @param buffer 
-     */
-    constructor(buffer: IndirectBuffer);
-    /**
-     * 
-     * @param maxDrawCount 
-     * @param instanceCount 
-     */
-    constructor(maxDrawCount: number, instanceCount: number);
+    constructor(buffer: IndexBuffer)
+    constructor(buffer: IndexBuffer, instanceCount: number)
+    constructor(buffer: IndirectBuffer)
+    constructor(maxDrawCount: number, instanceCount: number)
     constructor(a?: IndexBuffer | IndirectBuffer | number, b?: number) {
         super('[RenderProperty][constructor]');
-        if (typeof a === "number" && typeof b === "number") {
+        if (typeof a === 'number' && typeof b === 'number') {
             this.propertyFormat = 'drawCount';
             this.maxDrawCount = a;
             this.instanceCount = b;
-        } else if (a instanceof IndexBuffer) {
+        }
+        if (a instanceof IndexBuffer) {
             this.propertyFormat = 'drawIndexed';
             this.indexBuffer = a;
-        } else if (a instanceof IndirectBuffer) {
+        }
+        if (a instanceof IndexBuffer && typeof b === 'number') {
+            this.propertyFormat = 'drawIndexed';
+            this.indexBuffer = a;
+            this.instanceCount = b;
+        }
+        if (a instanceof IndirectBuffer) {
             this.propertyFormat = 'drawIndirect'
-        } else {
-
         }
     }
 

@@ -7,6 +7,7 @@
 export * from './util/uniqueID.ts'
 export * from './util/getMaxMipmapLevel.ts'
 export * from './util/hash32a.ts'
+export * from './util/align4Byte.ts'
 
 /**
  * core/basic modules

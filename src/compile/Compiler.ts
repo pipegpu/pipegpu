@@ -446,9 +446,12 @@ class Compiler {
      */
     createIndexBuffer = (
         opts: {
-            rawData: TypedArray1DFormat
+            rawData: TypedArray1DFormat,
         }
     ): IndexBuffer => {
+        if (opts.rawData.byteLength % 4 !== 0) {
+            throw new Error(`[E][Compiler][createIndexBuffer] buffer bytelength must align with 4. current index buffer byte length: ${opts.rawData.byteLength}`);
+        }
         return this.bufferState.createIndexBuffer(opts);
     }
 

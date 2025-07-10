@@ -60,6 +60,8 @@ class Buffer1D extends BaseBuffer {
         if (offset + byteLength > this.totalByteLength || rawData.byteLength > this.totalByteLength) {
             throw new Error(`[E][VertexBuffer][updateGpuBuffer] buffer bytelength oversized, maximum bytelength: ${this.totalByteLength}`);
         }
+        // align 4 byte for input byteLength
+        // const algin4 = align4Byte(byteLength);
         this.ctx?.getGpuQueue().writeBuffer(
             this.buffer as GPUBuffer,
             offset,
