@@ -1,9 +1,13 @@
 import { StorageBuffer } from "../res/buffer/StorageBuffer";
 import { UniformBuffer } from "../res/buffer/UniformBuffer";
 import type { VertexBuffer } from "../res/buffer/VertexBuffer";
+import { TextureSampler } from "../res/sampler/TextureSampler";
+import { Texture2D } from "../res/texture/Texture2D";
 import { VertexBufferProperty } from "./attribute/VertexBufferProperty";
 import type { BaseProperty } from "./BaseProperty";
 import { StorageBufferProperty } from "./uniform/StorageBufferProperty";
+import { TextureProperty } from "./uniform/TextureProperty";
+import { TextureSamplerProperty } from "./uniform/TextureSamplerProperty";
 import { UniformBufferProperty } from "./uniform/UniformBufferProperty";
 
 /**
@@ -76,8 +80,10 @@ class Uniforms extends Properties {
         super();
     }
 
-    assign(propertyName: string, buffer: UniformBuffer): void;
-    assign(propertyName: string, buffer: StorageBuffer): void;
+    assign(propertyName: string, buffer: UniformBuffer): void
+    assign(propertyName: string, buffer: StorageBuffer): void
+    assign(propertyName: string, textureSampler: TextureSampler): void
+    assign(propertyName: string, texture: Texture2D): void
     assign(a: string, b: any): void {
         if (b instanceof UniformBuffer) {
             const uniformBufferProperty: UniformBufferProperty = new UniformBufferProperty(a, b);
@@ -87,7 +93,16 @@ class Uniforms extends Properties {
             const storageBufferProperty: StorageBufferProperty = new StorageBufferProperty(a, b);
             this.propertyMap.set(a, storageBufferProperty);
             return;
-        } else {
+        } else if (b instanceof TextureSampler) {
+            const textureSamplerProperty: TextureSamplerProperty = new TextureSamplerProperty(a, b);
+            this.propertyMap.set(a, textureSamplerProperty);
+            return;
+        } else if (b instanceof Texture2D) {
+            const texture2DProperty: TextureProperty = new TextureProperty(a, b);
+            this.propertyMap.set(a, texture2DProperty);
+            return;
+        }
+        else {
             console.log(`[E][Properties][Uniforms][assign] unsupported buffer type, buffer: ${b}`);
         }
     }

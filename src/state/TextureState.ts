@@ -58,7 +58,7 @@ class TextureState {
         }
     ): Texture2D => {
         const textureID: number = uniqueID();
-        const texture = new Texture2D({
+        const texture: Texture2D = new Texture2D({
             id: textureID,
             ctx: this.ctx,
             width: opts.width,

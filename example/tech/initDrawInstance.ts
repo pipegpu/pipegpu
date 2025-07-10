@@ -16,29 +16,29 @@ const initDrawInstance = (compiler: Compiler, colorAttachments: ColorAttachment[
         vertexShader: compiler.createVertexShader({
             code: `
 
-        struct VSOutput
-        {
-            @builtin(position) position:vec4f,
-            @location(0) color:vec4f,
-        }
+struct VSOutput
+{
+    @builtin(position) position:vec4f,
+    @location(0) color:vec4f,
+}
 
-        @group(0) @binding(0)
-        var<storage, read> ssbo_offset:array<vec2f>;
+@group(0) @binding(0)
+var<storage, read> ssbo_offset:array<vec2f>;
 
-        @group(0) @binding(1)
-        var<storage, read> ssbo_color:array<vec4f>;
+@group(0) @binding(1)
+var<storage, read> ssbo_color:array<vec4f>;
 
-        @vertex
-        fn vs_main( @location(0) position:vec3f, @builtin(instance_index) idx:u32)->VSOutput
-        {
-            var out:VSOutput;
-            let i:u32 = idx % 4;
-            let offset = ssbo_offset[idx];
-            let color = ssbo_color[i];
-            out.position = vec4f(position, 1.0) + vec4f(offset, 0.0, 0.0);
-            out.color = color;
-            return out;
-        }
+@vertex
+fn vs_main( @location(0) position:vec3f, @builtin(instance_index) idx:u32)->VSOutput
+{
+    var out:VSOutput;
+    let i:u32 = idx % 4;
+    let offset = ssbo_offset[idx];
+    let color = ssbo_color[i];
+    out.position = vec4f(position, 1.0) + vec4f(offset, 0.0, 0.0);
+    out.color = color;
+    return out;
+}
 
     `,
             entryPoint: "vs_main"
@@ -46,16 +46,16 @@ const initDrawInstance = (compiler: Compiler, colorAttachments: ColorAttachment[
         fragmentShader: compiler.createFragmentShader({
             code: `
 
-        struct VSOutput
-        {
-            @builtin(position) position:vec4f,
-            @location(0) color:vec4f,
-        }
+struct VSOutput
+{
+    @builtin(position) position:vec4f,
+    @location(0) color:vec4f,
+}
 
-        @fragment
-        fn fs_main(in:VSOutput) -> @location(0) vec4f {
-            return in.color;
-        }
+@fragment
+fn fs_main(in:VSOutput) -> @location(0) vec4f {
+    return in.color;
+}
 
     `,
             entryPoint: "fs_main"

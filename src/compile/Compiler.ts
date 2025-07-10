@@ -637,6 +637,23 @@ class Compiler {
         return this.textureState.createTexture2DArray(opts);
     }
 
+    createTextureSampler = (
+        opts: {
+            addressModeU?: GPUAddressMode,
+            addressModeV?: GPUAddressMode,
+            addressModeW?: GPUAddressMode,
+            magFilter?: GPUFilterMode,
+            minFilter?: GPUFilterMode,
+            mipmapFilter?: GPUMipmapFilterMode,
+            lodMinClamp?: number,
+            lodMaxClamp?: number
+            anisotropy?: number,
+            compareFunction?: GPUCompareFunction,
+        }
+    ) => {
+        return this.samplerState.createTextureSampler(opts);
+    }
+
 }
 
 export {

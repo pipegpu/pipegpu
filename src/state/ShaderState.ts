@@ -49,7 +49,7 @@ class ShaderState {
     ): VertexShader => {
         const shaderID: number = BaseShader.hash32aID(opts.code, opts.entryPoint);
         if (!ShaderState.CACHE.has(shaderID)) {
-            const shader = new VertexShader({
+            const shader: VertexShader = new VertexShader({
                 ctx: this.ctx,
                 code: opts.code,
                 entryPoint: opts.entryPoint

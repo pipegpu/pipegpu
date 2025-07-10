@@ -1,6 +1,8 @@
 import type { BaseProperty } from "../property/BaseProperty";
 import type { Uniforms } from "../property/Properties"
 import type { StorageBufferProperty } from "../property/uniform/StorageBufferProperty";
+import type { TextureProperty } from "../property/uniform/TextureProperty";
+import type { TextureSamplerProperty } from "../property/uniform/TextureSamplerProperty";
 import { UniformBufferProperty } from "../property/uniform/UniformBufferProperty";
 import type { FrameStageFormat, PropertyFormat } from "../res/Format";
 import type { UniformHandle } from "../res/Handle";
@@ -87,6 +89,33 @@ const parseUniform = (
                     appendBufferIDWithAttributeRecords(bufferID, record);
                     opts.uniformRecordMap.set(propertyName, record);
                     bc.push(bufferID);
+                    break;
+                }
+            case 'texture2D':
+                {
+                    const textureProperty: TextureProperty = propertyBase as TextureProperty;
+                    const textureID: number = textureProperty.getTextureID();
+                    let record: IUniformRecord = {
+                        type: t,
+                        name: propertyName,
+                        resourceID: textureID
+                    };
+                    appendBufferIDWithAttributeRecords(textureID, record);
+                    opts.uniformRecordMap.set(propertyName, record);
+                    tc.push(textureID);
+                    break;
+                }
+            case 'textureSampler':
+                {
+                    const textureSamplerProperty: TextureSamplerProperty = propertyBase as TextureSamplerProperty;
+                    const textureSamplerID: number = textureSamplerProperty.getTextureSamplerID();
+                    let record: IUniformRecord = {
+                        type: t,
+                        name: propertyName,
+                        resourceID: textureSamplerID
+                    };
+                    appendBufferIDWithAttributeRecords(textureSamplerID, record);
+                    opts.uniformRecordMap.set(propertyName, record);
                     break;
                 }
             default:

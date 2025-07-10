@@ -107,6 +107,9 @@ abstract class BaseShader {
                 code: this.code,
             };
             this.shader = this.ctx?.getGpuDevice().createShaderModule(desc);
+            this.shader?.getCompilationInfo().then(value => {
+                console.log(value)
+            });
         }
     }
 

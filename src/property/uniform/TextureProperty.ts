@@ -4,7 +4,7 @@ import { BaseProperty } from "../BaseProperty";
 /**
  * 
  */
-class Texture2DProperty extends BaseProperty {
+class TextureProperty extends BaseProperty {
     /**
      * 
      */
@@ -16,7 +16,7 @@ class Texture2DProperty extends BaseProperty {
      * @param texture 
      */
     constructor(propertyName: string, texture: BaseTexture) {
-        super(propertyName, 'texture2D');
+        super(propertyName, texture.getPropertyFormat());
         this.texture = texture;
     }
 
@@ -30,5 +30,5 @@ class Texture2DProperty extends BaseProperty {
 }
 
 export {
-    Texture2DProperty
+    TextureProperty
 }

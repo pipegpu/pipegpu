@@ -14,20 +14,19 @@ class TextureSampler extends BaseSampler {
         opts: {
             id: number,
             ctx: Context,
+            addressModeU?: GPUAddressMode,
+            addressModeV?: GPUAddressMode,
+            addressModeW?: GPUAddressMode,
+            magFilter?: GPUFilterMode,
+            minFilter?: GPUFilterMode,
+            mipmapFilter?: GPUMipmapFilterMode,
+            lodMinClamp?: number,
+            lodMaxClamp?: number
+            anisotropy?: number,
+            compareFunction?: GPUCompareFunction,
         }
     ) {
-        super({
-            id: opts.id,
-            ctx: opts.ctx
-        })
-    }
-
-    /**
-     * 
-     */
-    createGpuSampler = (): void => {
-        const desc: GPUSamplerDescriptor = {};
-        this.sampler = this.ctx.getGpuDevice().createSampler(desc);
+        super(opts);
     }
 
     /**

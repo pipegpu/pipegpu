@@ -6,6 +6,7 @@ import {
 import { initDrawCount } from './tech/initDrawCount';
 import { initDrawIndexed } from './tech/initDrawIndexed';
 import { initDrawInstance } from './tech/initDrawInstance';
+import { initTexture2D } from './tech/initTexture2D';
 
 (async () => {
 
@@ -40,7 +41,8 @@ import { initDrawInstance } from './tech/initDrawInstance';
 
     // const drawCountHolder = initDrawCount(compiler, colorAttachments, depthStencilAttachment);
     // const drawIndexedHolder = initDrawIndexed(compiler, colorAttachments, depthStencilAttachment);
-    const drawInstanceHolder = initDrawInstance(compiler, colorAttachments, depthStencilAttachment);
+    // const drawInstanceHolder = initDrawInstance(compiler, colorAttachments, depthStencilAttachment);
+    const texture2DHolder = await initTexture2D(compiler, colorAttachments, depthStencilAttachment);
 
     // const graph: OrderedGraph = new OrderedGraph(ctx);
     // const renderLoop = () => {
@@ -52,7 +54,8 @@ import { initDrawInstance } from './tech/initDrawInstance';
     const holderArray: BaseHolder[] = [];
     // holderArray.push(drawCountHolder);
     // holderArray.push(drawIndexedHolder);
-    holderArray.push(drawInstanceHolder);
+    // holderArray.push(drawInstanceHolder);
+    holderArray.push(texture2DHolder);
 
     const renderLoop = () => {
         ctx.refreshFrameResource();
