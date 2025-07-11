@@ -1,7 +1,7 @@
 import { Attributes, ColorAttachment, DepthStencilAttachment, RenderHolder, RenderProperty, Uniforms, type BaseHolder, type Compiler, type RenderHolderDesc } from "../../src";
 import { fetchKTX2AsBc7RGBA, type KTXDataPack } from "../util/fetchKTX";
 
-const initTexture2D = async (compiler: Compiler, colorAttachments: ColorAttachment[], depthStencilAttachment: DepthStencilAttachment): Promise<BaseHolder> => {
+const initKTXTexture2D = async (compiler: Compiler, colorAttachments: ColorAttachment[], depthStencilAttachment: DepthStencilAttachment): Promise<BaseHolder> => {
 
     let dispatch: RenderProperty;
     {
@@ -108,7 +108,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4f {
 
     // texture2d (.ktx support)
     {
-        const ktxDataPack: KTXDataPack = await fetchKTX2AsBc7RGBA('/example/asset/container.ktx');
+        const ktxDataPack: KTXDataPack = await fetchKTX2AsBc7RGBA('/example/asset/ktx/1.ktx');
         const texture = compiler.createTexture2D(
             {
                 width: ktxDataPack.width,
@@ -126,5 +126,5 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4f {
 }
 
 export {
-    initTexture2D
+    initKTXTexture2D
 }

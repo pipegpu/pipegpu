@@ -3,6 +3,7 @@ import { UniformBuffer } from "../res/buffer/UniformBuffer";
 import type { VertexBuffer } from "../res/buffer/VertexBuffer";
 import { TextureSampler } from "../res/sampler/TextureSampler";
 import { Texture2D } from "../res/texture/Texture2D";
+import { Texture2DArray } from "../res/texture/Texture2DArray";
 import { VertexBufferProperty } from "./attribute/VertexBufferProperty";
 import type { BaseProperty } from "./BaseProperty";
 import { StorageBufferProperty } from "./uniform/StorageBufferProperty";
@@ -83,7 +84,8 @@ class Uniforms extends Properties {
     assign(propertyName: string, buffer: UniformBuffer): void
     assign(propertyName: string, buffer: StorageBuffer): void
     assign(propertyName: string, textureSampler: TextureSampler): void
-    assign(propertyName: string, texture: Texture2D): void
+    assign(propertyName: string, texture2d: Texture2D): void
+    assign(propertyName: string, texture2dArray: Texture2DArray): void
     assign(a: string, b: any): void {
         if (b instanceof UniformBuffer) {
             const uniformBufferProperty: UniformBufferProperty = new UniformBufferProperty(a, b);
@@ -100,6 +102,10 @@ class Uniforms extends Properties {
         } else if (b instanceof Texture2D) {
             const texture2DProperty: TextureProperty = new TextureProperty(a, b);
             this.propertyMap.set(a, texture2DProperty);
+            return;
+        } else if (b instanceof Texture2DArray) {
+            const texture2DArrayProperty: TextureProperty = new TextureProperty(a, b);
+            this.propertyMap.set(a, texture2DArrayProperty);
             return;
         }
         else {

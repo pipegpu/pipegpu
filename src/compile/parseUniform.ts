@@ -92,6 +92,7 @@ const parseUniform = (
                     break;
                 }
             case 'texture2D':
+            case 'texture2DArray':
                 {
                     const textureProperty: TextureProperty = propertyBase as TextureProperty;
                     const textureID: number = textureProperty.getTextureID();

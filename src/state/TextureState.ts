@@ -99,7 +99,6 @@ class TextureState {
             array: number,
             appendixTextureUsages?: number,
             textureDataArray?: TypedArray2DFormat,
-            handler?: Handle2D,
             textureFormat?: GPUTextureFormat,
             maxMipLevel?: number
         }
@@ -113,7 +112,6 @@ class TextureState {
             array: opts.array,
             appendixTextureUsages: opts.appendixTextureUsages,
             textureDataArray: opts.textureDataArray,
-            handler: opts.handler,
             textureFormat: opts.textureFormat,
             maxMipLevel: opts.maxMipLevel,
         });

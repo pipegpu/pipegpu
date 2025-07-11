@@ -628,7 +628,6 @@ class Compiler {
             array: number,
             appendixTextureUsages?: number,
             textureDataArray?: TypedArray2DFormat,
-            handler?: Handle2D,
             textureFormat?: GPUTextureFormat,
             maxMipLevel?: number
         }

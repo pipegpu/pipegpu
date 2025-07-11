@@ -1,4 +1,3 @@
-import type { Handle2D } from "../buffer/BaseBuffer";
 import type { Context } from "../Context";
 import type { FrameStageFormat, TypedArray2DFormat } from "../Format";
 import { BaseTexture } from "./BaseTexture";
@@ -10,12 +9,7 @@ class Texture2DArray extends BaseTexture {
     /**
      * 
      */
-    protected textureDataArray?: TypedArray2DFormat;
-
-    /**
-     * 
-     */
-    protected handler?: Handle2D;
+    protected textureData2DArray?: TypedArray2DFormat;
 
     /**
      * 
@@ -30,7 +24,6 @@ class Texture2DArray extends BaseTexture {
             array: number,
             appendixTextureUsages?: number,
             textureDataArray?: TypedArray2DFormat,
-            handler?: Handle2D,
             textureFormat?: GPUTextureFormat,
             maxMipLevel?: number
         }
@@ -46,22 +39,26 @@ class Texture2DArray extends BaseTexture {
             maxMipLevel: opts.maxMipLevel,
             propertyFormat: 'texture2DArray'
         });
-        this.textureDataArray = opts.textureDataArray;
-        this.handler = opts.handler;
+        this.textureData2DArray = opts.textureDataArray;
     }
 
     /**
      * 
      */
     protected refreshTextureDataSource() {
-        if (this.textureDataArray && !this.isDetphTexture()) {
+        if (this.textureData2DArray && !this.isDetphTexture()) {
             const destination: GPUTexelCopyTextureInfo = {
                 texture: this.texture!
             };
             const dataLayout: GPUTexelCopyBufferLayout = this.getTexelCopyBufferLayout();
-            for (let index: number = 0; index < this.textureDataArray.length; index++) {
+            const oneLayerExtent3d: GPUExtent3DDict = {
+                width: this.width,
+                height: this.height,
+                depthOrArrayLayers: 1,
+            };
+            for (let index: number = 0; index < this.textureData2DArray.length; index++) {
                 destination.origin = [0, 0, index];
-                this.ctx.getGpuQueue().writeTexture(destination, this.textureDataArray[index], dataLayout, this.extent3d);
+                this.ctx.getGpuQueue().writeTexture(destination, this.textureData2DArray[index], dataLayout, oneLayerExtent3d);
             }
         }
     }
@@ -75,7 +72,8 @@ class Texture2DArray extends BaseTexture {
             size: this.extent3d,
             format: this.textureFormat,
             usage: this.textureUsageFlags,
-            dimension: this.getTextureDimension()
+            dimension: this.getTextureDimension(),
+            mipLevelCount: this.maxMipLevel
         };
         this.texture = this.ctx.getGpuDevice().createTexture(desc);
         this.refreshTextureDataSource();
@@ -87,13 +85,9 @@ class Texture2DArray extends BaseTexture {
      * @param frameStage 
      * @returns 
      */
-    override getGpuTexture(_encoder: GPUCommandEncoder, frameStage: FrameStageFormat): GPUTexture {
+    override getGpuTexture(_encoder: GPUCommandEncoder, _frameStage: FrameStageFormat): GPUTexture {
         if (!this.texture) {
             this.createGpuTexture();
-        }
-        if ('frameBegin' === frameStage && this.handler) {
-            this.textureDataArray = this.handler();
-            this.refreshTextureDataSource();
         }
         return this.texture!;
     }

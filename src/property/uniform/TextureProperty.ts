@@ -5,6 +5,7 @@ import { BaseProperty } from "../BaseProperty";
  * 
  */
 class TextureProperty extends BaseProperty {
+
     /**
      * 
      */
@@ -27,6 +28,7 @@ class TextureProperty extends BaseProperty {
     getTextureID = (): number => {
         return this.texture.getID();
     }
+
 }
 
 export {
