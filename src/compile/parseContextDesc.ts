@@ -25,6 +25,11 @@ interface IContextOpts {
      * @description this is the ratio of the device pixel ratio to the css pixel ratio
      */
     devicePixelRatio: number;
+
+    /**
+     * 
+     */
+    requestFeatures?: GPUFeatureName[];
 }
 
 /**

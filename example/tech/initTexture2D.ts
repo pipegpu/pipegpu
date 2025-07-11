@@ -1,11 +1,7 @@
 import { Attributes, ColorAttachment, DepthStencilAttachment, RenderHolder, RenderProperty, Uniforms, type BaseHolder, type Compiler, type RenderHolderDesc } from "../../src";
-
-import { LoadLIBKTX } from '../plugin/libktx/libktx_wrapper'
 import { fetchKTX2AsBc7RGBA, type KTXDataPack } from "../util/fetchKTX";
 
 const initTexture2D = async (compiler: Compiler, colorAttachments: ColorAttachment[], depthStencilAttachment: DepthStencilAttachment): Promise<BaseHolder> => {
-
-    const ktx = LoadLIBKTX();
 
     let dispatch: RenderProperty;
     {
@@ -53,7 +49,11 @@ struct VertexOutput
 
 @fragment
 fn fs_main(in: VertexOutput) -> @location(0) vec4f {
-    let color = textureSample(texture, textureSampler, in.uv);
+    //vec2<f32>(in.uv.x, in.uv.x.y)
+    let uv2: vec2<f32> = vec2<f32>(in.uv.x, in.uv.y);
+    // let uv: vec2<f32> = vec2<f32>(0.5, 0.56);
+    let color = textureSample(texture, textureSampler, uv2* 0.5);
+    // let color = vec4<f32>(uv2.x, uv2.y, 0.0 ,1.0);
     return color;
 }
 

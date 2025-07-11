@@ -56,11 +56,26 @@ class Context {
 
     /**
      * 
+     * request supported features.
+     * 
+     */
+    private supportedFeatures!: GPUSupportedFeatures;
+
+    /**
+     * 
+     * request GPUFeature from input.
+     * 
+     */
+    private requestFeatures?: GPUFeatureName[];
+
+    /**
+     * 
      * @param opts 
      */
     constructor(opts: IContextOpts) {
         this.contextDesc = parseContextDesc(opts);
         this.gpuContext = this.contextDesc.canvas.getContext("webgpu");
+        this.requestFeatures = opts.requestFeatures;
     }
 
     /**
@@ -68,7 +83,18 @@ class Context {
      */
     async init() {
         this.adapter = await navigator.gpu.requestAdapter();
-        this.device = await this.adapter?.requestDevice();
+        this.supportedFeatures = this.adapter!.features;
+
+        // check features 
+        this.requestFeatures || [].forEach(featureName => {
+            if (!this.supportedFeatures.has(featureName)) {
+                throw new Error(`[E][Context][init] init context failed. unsupported feature: ${featureName}`);
+            }
+        });
+
+        this.device = await this.adapter?.requestDevice({
+            requiredFeatures: this.requestFeatures || [],
+        });
         this.gpuContext?.configure({
             device: this.device as GPUDevice,
             format: navigator.gpu.getPreferredCanvasFormat(),

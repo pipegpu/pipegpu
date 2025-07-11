@@ -1,4 +1,3 @@
-import type { Handle1D } from "../buffer/BaseBuffer";
 import type { Context } from "../Context";
 import type { FrameStageFormat, TypedArray1DFormat } from "../Format";
 import { BaseTexture } from "./BaseTexture";
@@ -12,8 +11,6 @@ class Texture2D extends BaseTexture {
      */
     private textureData?: TypedArray1DFormat;
 
-    private handler?: Handle1D;
-
     /**
      * 
      * @param opts 
@@ -26,7 +23,6 @@ class Texture2D extends BaseTexture {
             height: number,
             appendixTextureUsages?: number,
             textureData?: TypedArray1DFormat,
-            handler?: Handle1D,
             textureFormat?: GPUTextureFormat,
             maxMipLevel?: number
         }
@@ -43,7 +39,6 @@ class Texture2D extends BaseTexture {
             propertyFormat: 'texture2D'
         });
         this.textureData = opts.textureData;
-        this.handler = opts.handler;
     }
 
     /**
@@ -67,7 +62,8 @@ class Texture2D extends BaseTexture {
         const desc: GPUTextureDescriptor = {
             size: this.extent3d,
             format: this.textureFormat,
-            usage: this.textureUsageFlags
+            usage: this.textureUsageFlags,
+            mipLevelCount: this.maxMipLevel,
         };
         // write texture
         this.texture = this.ctx.getGpuDevice().createTexture(desc);
@@ -79,13 +75,9 @@ class Texture2D extends BaseTexture {
      * @param encoder 
      * @param frameStage 
      */
-    override getGpuTexture = (_encoder: GPUCommandEncoder, frameStage: FrameStageFormat): GPUTexture => {
+    override getGpuTexture = (_encoder: GPUCommandEncoder, _frameStage: FrameStageFormat): GPUTexture => {
         if (!this.texture) {
             this.createGpuTexture();
-        }
-        if ('frameBegin' === frameStage && this.handler) {
-            this.textureData = this.handler();
-            this.refreshTextureDataSource();
         }
         return this.texture as GPUTexture;
     }

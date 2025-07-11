@@ -54,7 +54,6 @@ class TextureState {
             textureFormat?: GPUTextureFormat,
             maxMipLevel?: number,
             appendixTextureUsages?: number,
-            handler?: Handle1D
         }
     ): Texture2D => {
         const textureID: number = uniqueID();

@@ -123,6 +123,7 @@ abstract class BaseSampler {
      */
     protected createGpuSampler = (): GPUSampler => {
         if (!this.sampler) {
+            this.samplerDesc = {};
             this.samplerDesc.addressModeU = this.addressModeU;
             this.samplerDesc.addressModeV = this.addressModeV;
             this.samplerDesc.addressModeW = this.addressModeW;
@@ -132,7 +133,8 @@ abstract class BaseSampler {
             this.samplerDesc.lodMinClamp = this.lodMinClamp;
             this.samplerDesc.lodMaxClamp = this.lodMaxClamp;
             this.samplerDesc.maxAnisotropy = this.anisotropy;
-            this.samplerDesc.compare = this.compareFunction;
+            // TODO:: default non-compre sampler
+            // this.samplerDesc.compare = this.compareFunction; 
             this.sampler = this.ctx?.getGpuDevice().createSampler(this.samplerDesc);
         }
         return this.sampler;

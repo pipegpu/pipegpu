@@ -13,18 +13,20 @@ interface IReflectUniforms {
  * 
  * @param t 
  */
-const getSamplerBindingType = (binding: VariableInfo): GPUSamplerBindingType | undefined => {
+const getSamplerBindingType = (binding: VariableInfo): GPUSamplerBindingType => {
     if (binding.resourceType === ResourceType.Sampler) {
         return "filtering";
     }
+    throw new Error(`[E][reflectShaderUniforms][getSamplerBindingType] unsupported buffer binding type: ${binding.resourceType}`);
 }
 
 /**
  * 
  * @param binding 
  * @returns 
+ * 
  */
-const getBufferBindingType = (binding: VariableInfo): GPUBufferBindingType | undefined => {
+const getBufferBindingType = (binding: VariableInfo): GPUBufferBindingType => {
     if (binding.resourceType === ResourceType.Uniform) {
         return "uniform";
     } else if (binding.resourceType === ResourceType.Storage && binding.access === "read") {
@@ -32,10 +34,66 @@ const getBufferBindingType = (binding: VariableInfo): GPUBufferBindingType | und
     } else if (binding.resourceType === ResourceType.Storage && binding.access === "read_write") {
         return "storage";
     } else {
-        console.log(`[E][getBufferBindingType] unsupported buffer binding type: ${binding.resourceType}`);
-        return undefined;
+        throw new Error(`[E][reflectShaderUniforms][getBufferBindingType] unsupported buffer binding type: ${binding.resourceType}`);
     }
 }
+
+/**
+ * 
+ * ref:
+ * https://www.w3.org/TR/webgpu/#gputexture
+ * @param binding 
+ * @returns 
+ * 
+ */
+const getTextureViewDimension = (binding: VariableInfo): GPUTextureViewDimension => {
+    switch (binding.type.name) {
+        case 'texture_1d':
+        case 'texture_storage_1d':
+            return '1d';
+        case 'texture_2d':
+        case 'texture_storage_2d':
+        case 'texture_multisampled_2d':
+        case 'texture_depth_2d':
+        case 'texture_depth_multisampled_2d':
+            return '2d';
+        case 'texture_2d_array':
+        case 'texture_storage_2d_array':
+        case 'texture_depth_2d_array':
+            return '2d-array';
+        case 'texture_cube':
+        case 'texture_depth_cube':
+            return 'cube';
+        case 'texture_cube_array':
+        case 'texture_depth_cube_array':
+            return 'cube-array';
+        case 'texture_3d':
+        case 'texture_storage_3d':
+            return '3d';
+        default:
+            throw new Error(`[E][reflectShaderUniforms][getTextureViewDimension] unsupported binding texture type name: ${binding.type.name}`);
+    }
+};
+
+/**
+ * 
+ * @param binding 
+ * @returns 
+ * 
+ */
+const getTextureSampleType = (binding: VariableInfo): GPUTextureSampleType => {
+    const typeName: string = binding.type.getTypeName();
+    if (typeName.includes('texture_depth_cube') || typeName.includes('texture_depth_cube_array')) {
+        return 'depth';
+    } else if (typeName.includes('f32') || typeName.includes('f16')) {
+        return 'float';
+    } else if (typeName.includes('u32') || typeName.includes('u16')) {
+        return 'uint';
+    } else if (typeName.includes('i32') || typeName.includes('i16')) {
+        return 'sint';
+    }
+    throw new Error(`[E][reflectShaderUniforms][getTextureSampleType] unsupported binding texture type name: ${binding.type.name}`);
+};
 
 /**
  * 
@@ -74,7 +132,6 @@ const reflectShaderUniforms = (code: string, entryPoint: string, shaderStage: GP
             {
                 throw new Error(`[E][reflectShaderUniforms] unsupported shader stage ${shaderStage}`);
             }
-
     }
     if (rawEntry === undefined) {
         throw new Error(`entry point "${entryPoint}" not found in the shader code.`);
@@ -120,19 +177,24 @@ const reflectShaderUniforms = (code: string, entryPoint: string, shaderStage: GP
                     break;
                 }
             case ResourceType.Texture:
-                if (bindGroupLayoutEntry.texture) {
-
+                {
+                    bindGroupLayoutEntry.texture = {};
+                    bindGroupLayoutEntry.texture.viewDimension = getTextureViewDimension(binding);
+                    // TODO, texture format show texture value itself
+                    bindGroupLayoutEntry.texture.sampleType = getTextureSampleType(binding);
+                    groups.push(bindGroupLayoutEntry);
+                    resourceBindings.push(binding);
+                    break;
                 }
-                break;
             case ResourceType.StorageTexture:
-                if (bindGroupLayoutEntry.storageTexture) {
-                    // bindGroupLayoutEntry.storageTexture.access
+                {
+                    throw new Error(`[E][reflectShaderUniforms] not implement ResourceType.StorageTexture`);
                 }
-                break;
             case ResourceType.Sampler:
-                if (bindGroupLayoutEntry.sampler) {
-                    bindGroupLayoutEntry.sampler.type = getSamplerBindingType(binding);
-                }
+                bindGroupLayoutEntry.sampler = {};
+                bindGroupLayoutEntry.sampler.type = getSamplerBindingType(binding);
+                groups.push(bindGroupLayoutEntry);
+                resourceBindings.push(binding);
                 break;
             default:
                 console.log(`[E][reflectShaderUniforms] unsupported resource binding resource type: ${binding.resourceType}`);

@@ -9,43 +9,50 @@ interface IReflectAttributes {
 
 /**
  * 
- * @param t 
- * @returns 
+ * @param {TypeInfo} t input type with reflect form wgsl shahder code.
+ * @returns {string} webgpu attribute format type. e.g 'float32x4'
+ * 
  */
 const getVertexFormat = (t: TypeInfo): GPUVertexFormat => {
-    switch (t.name) {
+    switch (t.getTypeName()) {
         // uint32
-        case "u32":
+        case 'u32':
             return "uint32";
-        case "vec2u":
-            return "uint32x2";
-        case "vec3u":
-            return "uint32x3";
-        case "vec4u":
-            return "uint32x4";
-
+        case 'vec2u':
+        case 'vec2<u32>':
+            return 'uint32x2';
+        case 'vec3u':
+        case 'vec3<u32>':
+            return 'uint32x3';
+        case 'vec4u':
+        case 'vec4<u32>':
+            return 'uint32x4';
         // int32
-        case "i32":
-            return "sint32";
-        case "vec2i":
-            return "sint32x2";
-        case "vec3i":
-            return "sint32x3";
-        case "vec4i":
-            return "sint32x4";
-
+        case 'i32':
+            return 'sint32';
+        case 'vec2i':
+        case 'vec2<i32>':
+            return 'sint32x2';
+        case 'vec3i':
+        case 'vec3<i32>':
+            return 'sint32x3';
+        case 'vec4i':
+        case 'vec4<i32>':
+            return 'sint32x4';
         // float32
-        case "f32":
-            return "float32";
-        case "vec2f":
-            return "float32x2";
-        case "vec3f":
-            return "float32x3";
-        case "vec4f":
-            return "float32x4";
+        case 'f32':
+            return 'float32';
+        case 'vec2f':
+        case 'vec2<f32>':
+            return 'float32x2';
+        case 'vec3f':
+        case 'vec3<f32>':
+            return 'float32x3';
+        case 'vec4f':
+        case 'vec4<f32>':
+            return 'float32x4';
         default:
-            console.log(`[E][reflectShaderAttributes] unsupported vertex format. type: ${t.name}`);
-            return "uint8";
+            throw new Error(`[E][reflectShaderAttributes][getVertexFormat] unsupported vertex format. type: ${t.getTypeName()}`);
     }
 }
 
@@ -84,8 +91,8 @@ const reflectShaderAttributes = (code: string, entryPoint: string): IReflectAttr
 
     // ensure attribute stored as acending
     attributeOdered.sort((a: GPUVertexAttribute, b: GPUVertexAttribute) => {
-        return b.shaderLocation - a.shaderLocation;
-    })
+        return a.shaderLocation - b.shaderLocation;
+    });
 
     let reflectAttributes: IReflectAttributes = {
         attributeCount: attributeCount,

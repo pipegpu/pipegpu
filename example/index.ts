@@ -14,7 +14,8 @@ import { initTexture2D } from './tech/initTexture2D';
         selector: "sketchpad",
         width: 800,
         height: 600,
-        devicePixelRatio: devicePixelRatio
+        devicePixelRatio: devicePixelRatio,
+        requestFeatures: ['texture-compression-bc']
     });
     await ctx.init();
     const compiler: Compiler = new Compiler({ ctx: ctx });
@@ -24,7 +25,7 @@ import { initTexture2D } from './tech/initTexture2D';
     const surfaceColorAttachment = compiler.createColorAttachment({
         texture: surfaceTexture,
         blendFormat: 'opaque',
-        colorLoadStoreFormat: 'loadStore',
+        colorLoadStoreFormat: 'clearStore',
         clearColor: [0.0, 0.0, 0.0, 1.0]
     });
     const colorAttachments: ColorAttachment[] = [surfaceColorAttachment];

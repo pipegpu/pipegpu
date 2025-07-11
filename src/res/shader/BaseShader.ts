@@ -108,7 +108,9 @@ abstract class BaseShader {
             };
             this.shader = this.ctx?.getGpuDevice().createShaderModule(desc);
             this.shader?.getCompilationInfo().then(value => {
-                console.log(value)
+                value.messages.forEach(message => {
+                    console.log(`[E][BaseShader][createGpuShader] wgsl: ${message}`);
+                });
             });
         }
     }

@@ -23,27 +23,42 @@ const parseRenderBindGroupLayout = (
 ) => {
     const collectedBindGroupLayoutEntriesMap: Map<number, GPUBindGroupLayoutEntry[]> = new Map();
 
-    const maxBindGroups: number = ctx.getLimits().maxBindGroups;
+    const MAXBINDGROUPS: number = ctx.getLimits().maxBindGroups;
     const vsMap = vertexShader.getBindGroupWithGroupLayoutEntriesMap(), fsMap = fragmentShader.getBindGroupWithGroupLayoutEntriesMap();
-    if (vsMap?.size + fsMap?.size >= maxBindGroups * 2) {
-        console.log(`[E][parseRenderBindGroupLayout] bindgroup over size.`);
-        return;
+    if (vsMap?.size + fsMap?.size >= MAXBINDGROUPS * 2) {
+        throw new Error(`[E][parseRenderBindGroupLayout] bindgroup over size.`);
     }
 
+    /**
+    *   Some variables are used in both vs and fs. 
+    *   Other properties are the same but visible is different. 
+    *   Layout does not allow duplicate entry points, 
+    *   so they need to be merged.
+    */
+    const MergeBindGroupLayoutEntry = (resourceBindings: GPUBindGroupLayoutEntry[], resourceMap: Map<number, GPUBindGroupLayoutEntry>) => {
+        resourceBindings.forEach(resource_binding => {
+            if (resourceMap.has(resource_binding.binding)) {
+                resourceMap.get(resource_binding.binding)!.visibility |= resource_binding.visibility;
+            } else {
+                resourceMap.set(resource_binding.binding, resource_binding);
+            }
+        });
+    };
+
     for (let bindGroupID = 0; bindGroupID < ctx.getLimits().maxBindGroups; bindGroupID++) {
-        const resourceBindings: GPUBindGroupLayoutEntry[] = [];
+        const resourceMap: Map<number, GPUBindGroupLayoutEntry> = new Map();
         if (vsMap.has(bindGroupID)) {
             const bindings: GPUBindGroupLayoutEntry[] = vsMap.get(bindGroupID) as GPUBindGroupLayoutEntry[];
-            resourceBindings.push(...bindings);
+            MergeBindGroupLayoutEntry(bindings, resourceMap);
         }
         if (fsMap.has(bindGroupID)) {
             const bindings: GPUBindGroupLayoutEntry[] = fsMap.get(bindGroupID) as GPUBindGroupLayoutEntry[];
-            resourceBindings.push(...bindings);
+            MergeBindGroupLayoutEntry(bindings, resourceMap);
         }
-        if (resourceBindings.length) {
-            collectedBindGroupLayoutEntriesMap.set(bindGroupID, resourceBindings);
+        if (resourceMap.size) {
+            collectedBindGroupLayoutEntriesMap.set(bindGroupID, resourceMap.values() as unknown as GPUBindGroupLayoutEntry[]);
             if (collectedBindGroupLayoutEntriesMap.size != bindGroupID + 1) {
-                console.log(`[E][parseRenderBindGroupLayout] binding group should use in order from start [0 to ${maxBindGroups}], please check shader binding group index.`);
+                console.log(`[E][parseRenderBindGroupLayout] binding group should use in order from start [0 to ${MAXBINDGROUPS}], please check shader binding group index.`);
                 collectedBindGroupLayoutEntriesMap.clear();
                 return;
             }

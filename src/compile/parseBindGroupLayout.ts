@@ -21,8 +21,9 @@ const parseBindGroupLayout = (
             const entries: GPUBindGroupLayoutEntry[] = collectedBindgroupLayoutEntriesMap.get(groupID) as GPUBindGroupLayoutEntry[];
             const bindGropuLayoutDescriptor: GPUBindGroupLayoutDescriptor = {
                 label: `gourp_${groupID}`,
-                entries: entries
+                entries: [...entries]
             };
+            // BUG? after createBindGroupLayout, bindGropuLayoutDescriptor.entires has been clear?
             const bindGroupLayout: GPUBindGroupLayout = ctx.getGpuDevice().createBindGroupLayout(bindGropuLayoutDescriptor);
             bindGroupLayouts.push(bindGroupLayout);
             gourpIDWithBindGroupLayoutMap.set(groupID, bindGroupLayout);
