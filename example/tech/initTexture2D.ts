@@ -49,11 +49,8 @@ struct VertexOutput
 
 @fragment
 fn fs_main(in: VertexOutput) -> @location(0) vec4f {
-    //vec2<f32>(in.uv.x, in.uv.x.y)
-    let uv2: vec2<f32> = vec2<f32>(in.uv.x, in.uv.y);
-    // let uv: vec2<f32> = vec2<f32>(0.5, 0.56);
-    let color = textureSample(texture, textureSampler, uv2* 0.5);
-    // let color = vec4<f32>(uv2.x, uv2.y, 0.0 ,1.0);
+    let uv: vec2<f32> = vec2<f32>(in.uv.x, in.uv.y);
+    let color = textureSample(texture, textureSampler, uv);
     return color;
 }
 
@@ -99,7 +96,13 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4f {
 
     // sampler
     {
-        const textureSampler = compiler.createTextureSampler({});
+        const textureSampler = compiler.createTextureSampler({
+            minFilter: 'linear',
+            magFilter: 'linear',
+            addressModeU: 'repeat',
+            addressModeV: 'repeat',
+            mipmapFilter: 'linear'
+        });
         desc.uniforms?.assign('textureSampler', textureSampler);
     }
 
@@ -111,7 +114,8 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4f {
                 width: ktxDataPack.width,
                 height: ktxDataPack.height,
                 textureData: ktxDataPack.data,
-                textureFormat: 'bc7-rgba-unorm-srgb'
+                textureFormat: 'bc7-rgba-unorm',
+                maxMipLevel: 1
             }
         );
         desc.uniforms?.assign('texture', texture);
