@@ -86,7 +86,8 @@ class Context {
         this.supportedFeatures = this.adapter!.features;
 
         // check features 
-        this.requestFeatures || [].forEach(featureName => {
+        (this.requestFeatures || []).forEach(featureName => {
+            this.supportedFeatures.forEach(e => console.log(e));
             if (!this.supportedFeatures.has(featureName)) {
                 throw new Error(`[E][Context][init] init context failed. unsupported feature: ${featureName}`);
             }

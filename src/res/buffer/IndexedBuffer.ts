@@ -4,10 +4,10 @@ import { Buffer1D } from "./Buffer1D";
 
 /**
  * 
- * @class IndexBuffer
+ * @class IndexedBuffer
  * 
  */
-class IndexBuffer extends Buffer1D {
+class IndexedBuffer extends Buffer1D {
     /**
      * 
      */
@@ -80,5 +80,5 @@ class IndexBuffer extends Buffer1D {
 }
 
 export {
-    IndexBuffer
+    IndexedBuffer
 }

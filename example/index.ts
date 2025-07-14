@@ -8,6 +8,8 @@ import { initDrawIndexed } from './tech/initDrawIndexed';
 import { initDrawInstance } from './tech/initDrawInstance';
 import { initKTXTexture2D } from './tech/initKTXTexture2D';
 import { initKTXTexture2DArray } from './tech/initKTXTexture2DArray';
+import { initDrawIndriect } from './tech/initDrawIndirect';
+import { initMultiDrawIndirect } from './tech/initMultiDrawIndirect';
 
 (async () => {
 
@@ -16,7 +18,7 @@ import { initKTXTexture2DArray } from './tech/initKTXTexture2DArray';
         width: 800,
         height: 600,
         devicePixelRatio: devicePixelRatio,
-        requestFeatures: ['texture-compression-bc']
+        requestFeatures: ['texture-compression-bc', 'chromium-experimental-multi-draw-indirect']
     });
     await ctx.init();
     const compiler: Compiler = new Compiler({ ctx: ctx });
@@ -45,7 +47,9 @@ import { initKTXTexture2DArray } from './tech/initKTXTexture2DArray';
     // const drawIndexedHolder = initDrawIndexed(compiler, colorAttachments, depthStencilAttachment);
     // const drawInstanceHolder = initDrawInstance(compiler, colorAttachments, depthStencilAttachment);
     // const texture2DHolder = await initKTXTexture2D(compiler, colorAttachments, depthStencilAttachment);
-    const texture2DArrayHolder = await initKTXTexture2DArray(compiler, colorAttachments, depthStencilAttachment);
+    // const texture2DArrayHolder = await initKTXTexture2DArray(compiler, colorAttachments, depthStencilAttachment);
+    // const drawIndirect = await initDrawIndriect(compiler, colorAttachments, depthStencilAttachment);
+    const multiDrawIndirect = await initMultiDrawIndirect(compiler, colorAttachments, depthStencilAttachment);
 
     // const graph: OrderedGraph = new OrderedGraph(ctx);
     // const renderLoop = () => {
@@ -58,7 +62,9 @@ import { initKTXTexture2DArray } from './tech/initKTXTexture2DArray';
     // holderArray.push(drawCountHolder);
     // holderArray.push(drawIndexedHolder);
     // holderArray.push(drawInstanceHolder);
-    holderArray.push(texture2DArrayHolder);
+    // holderArray.push(texture2DArrayHolder);
+    // holderArray.push(drawIndirect);
+    holderArray.push(multiDrawIndirect);
 
     const renderLoop = () => {
         ctx.refreshFrameResource();

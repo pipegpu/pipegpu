@@ -43,7 +43,7 @@ class Buffer2D extends BaseBuffer {
             id: opts.id,
             ctx: opts.ctx,
             totalByteLength: opts.totalByteLength,
-            bufferUsageFlags: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST
+            bufferUsageFlags: opts.bufferUsageFlags | GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST
         });
         this.typedArrayData2D = opts.typedArrayData2D;
         this.handler = opts.handler;
@@ -98,7 +98,7 @@ class Buffer2D extends BaseBuffer {
         }
     }
 
-    override getGpuBuffer(_encoder: GPUCommandEncoder, frameStage: FrameStageFormat): GPUBuffer {
+    override getGpuBuffer(_encoder?: GPUCommandEncoder | null, frameStage?: FrameStageFormat): GPUBuffer {
         if (!this.buffer) {
             this.createGpuBuffer();
         } else {

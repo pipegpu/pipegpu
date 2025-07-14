@@ -3,6 +3,9 @@ import type { FrameStageFormat, TypedArray1DFormat, TypedArray2DFormat } from ".
 import type { Handle2D } from "./BaseBuffer";
 import { StorageBuffer } from "./StorageBuffer";
 
+/**
+ * 
+ */
 class MapBuffer extends StorageBuffer {
     /**
      * 

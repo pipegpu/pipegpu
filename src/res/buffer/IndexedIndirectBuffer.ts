@@ -1,30 +1,26 @@
-import { type Context } from "../Context";
-import { type TypedArray2DFormat } from "../Format";
+import type { Context } from "../Context";
+import type { TypedArray2DFormat } from "../Format";
 import { StorageBuffer } from "./StorageBuffer";
 
 /**
  * 
- * ref:
- * https://toji.dev/webgpu-best-practices/indirect-draws.html
- * 
- * - vertex_count { 0 };
+ * https://gpuweb.github.io/gpuweb/#dom-gpurendercommandsmixin-drawindexedindirect
+ *   
+ * - index_count { 0 };
  * - instance_count { 1 };
- * - first_vertex { 0 };
+ * - first_index { 0 };
+ * - vertex_offset { 0 };
  * - first_instance { 0 };
  * 
  */
-class IndirectBuffer extends StorageBuffer {
+class IndexedIndirectBuffer extends StorageBuffer {
 
-    /**
-     * 
-     * @param opts 
-     */
     constructor(
         opts: {
             id: number,
             ctx: Context,
             totalByteLength: number,
-            typedArrayData2D: TypedArray2DFormat,
+            typedArrayData2D?: TypedArray2DFormat
         }
     ) {
         super({
@@ -37,7 +33,7 @@ class IndirectBuffer extends StorageBuffer {
     }
 
     getStride = (): number => {
-        return 4 * 4;
+        return 5 * 4;
     }
 
     getOffset = (): number => {
@@ -47,8 +43,9 @@ class IndirectBuffer extends StorageBuffer {
     getIndexIndirectCount = (): number => {
         return this.typedArrayData2D?.length || 0;
     }
+
 }
 
 export {
-    IndirectBuffer
+    IndexedIndirectBuffer
 }

@@ -43,7 +43,10 @@ import { parseComputeProgrammableStage } from "./parseComputeProgrammableStage";
 import { emitComputePipeline } from "./emitComputePipeline";
 import type { StorageBuffer } from "../res/buffer/StorageBuffer";
 import type { MapBuffer } from "../res/buffer/Mapbuffer";
-import type { IndexBuffer } from "../res/buffer/IndexBuffer";
+import type { IndexedBuffer } from "../res/buffer/IndexedBuffer";
+import type { IndexedStorageBuffer } from "../res/buffer/IndexedStorageBuffer";
+import type { IndirectBuffer } from "../res/buffer/IndirectBuffer";
+import type { IndexedIndirectBuffer } from "../res/buffer/IndexedIndirectBuffer";
 
 /**
  * 
@@ -233,10 +236,7 @@ class Compiler {
         );
 
         // parse render dispatch
-        const renderHandler: RenderHandle = parseRenderDispatch(
-            this.bufferState,
-            desc.dispatch
-        );
+        const renderHandler: RenderHandle = parseRenderDispatch(desc.dispatch);
 
         // parse multi sample state
         const multiSampleState: GPUMultisampleState = parseMultisampleState(
@@ -448,7 +448,7 @@ class Compiler {
         opts: {
             rawData: TypedArray1DFormat,
         }
-    ): IndexBuffer => {
+    ): IndexedBuffer => {
         if (opts.rawData.byteLength % 4 !== 0) {
             throw new Error(`[E][Compiler][createIndexBuffer] buffer bytelength must align with 4. current index buffer byte length: ${opts.rawData.byteLength}`);
         }
@@ -481,12 +481,59 @@ class Compiler {
     createStorageBuffer = (
         opts: {
             totalByteLength: number,
+            bufferUsageFlags?: GPUBufferUsageFlags,
             rawData?: TypedArray2DFormat,
             handler?: Handle2D
         }
     ): StorageBuffer => {
         return this.bufferState.createStorageBuffer(opts);
     }
+
+    /**
+     * 
+     * @param opts 
+     * @returns 
+     */
+    createIndexedStorageBuffer = (
+        opts: {
+            totalByteLength: number,
+            rawData?: TypedArray2DFormat,
+            handler?: Handle2D
+        }
+    ): IndexedStorageBuffer => {
+        return this.bufferState.createIndexedStorageBuffer(opts);
+    }
+
+    /**
+     * 
+     * [vertex_count, instance_count, first_vertex, first_instance]
+     * @param opts 
+     * @returns 
+     * 
+     */
+    createIndirectBuffer = (
+        opts: {
+            totalByteLength: number,
+            rawData: TypedArray2DFormat,
+        }
+    ): IndirectBuffer => {
+        return this.bufferState.createIndirectBuffer(opts);
+    }
+
+    /**
+     * [index_count, instance_count, first_index, vertex_offset, first_instance]
+     * @param opts 
+     * @returns 
+     */
+    createIndexedIndirectBuffer = (
+        opts: {
+            totalByteLength: number,
+            rawData: TypedArray2DFormat,
+        }
+    ): IndexedIndirectBuffer => {
+        return this.bufferState.createIndexedIndirectBuffer(opts);
+    }
+
 
     /**
      * 

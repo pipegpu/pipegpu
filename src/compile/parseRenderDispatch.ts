@@ -1,5 +1,7 @@
 import type { RenderProperty } from "../property/dispatch/RenderProperty"
-import type { IndexBuffer } from "../res/buffer/IndexBuffer";
+import type { IndexedBuffer } from "../res/buffer/IndexedBuffer";
+import type { IndirectBuffer } from "../res/buffer/IndirectBuffer";
+import type { StorageBuffer } from "../res/buffer/StorageBuffer";
 import type { PropertyFormat } from "../res/Format";
 import type { RenderHandle } from "../res/Handle";
 import type { BufferState } from "../state/BufferState";
@@ -10,10 +12,7 @@ import type { BufferState } from "../state/BufferState";
  * @param dispatch 
  * @param _handler 
  */
-const parseRenderDispatch = (
-    bufferState: BufferState,
-    dispatch: RenderProperty,
-): RenderHandle => {
+const parseRenderDispatch = (dispatch: RenderProperty): RenderHandle => {
     if (!dispatch) {
         throw new Error(`[E][parseRenderDispatch] missing render 'dispatch' in 'RenderHolderDesc'`)
     }
@@ -22,19 +21,40 @@ const parseRenderDispatch = (
         case 'drawCount':
             {
                 return (encoder: GPURenderPassEncoder): void => {
-                    const maxDrawCount: number = dispatch.getMaxDrawCount();
-                    const instanceCount: number = dispatch.getInstanceCount();
+                    const maxDrawCount: number = dispatch.getMaxDrawCount()!;
+                    const instanceCount: number = dispatch.getInstanceCount()!;
                     encoder.draw(maxDrawCount, instanceCount);
                 };
             }
         case 'drawIndexed':
             {
                 return (encoder: GPURenderPassEncoder): void => {
-                    const indexBufferID: number = dispatch.getIndexBufferID();
-                    const indexBuffer: IndexBuffer = bufferState.getBuffer(indexBufferID) as IndexBuffer;
-                    const instanceCount: number = dispatch.getInstanceCount();
+                    const indexBuffer: IndexedBuffer = dispatch.getIndexBuffer()!;
+                    const instanceCount: number = dispatch.getInstanceCount()!;
                     encoder.setIndexBuffer(indexBuffer.getGpuBuffer(), indexBuffer.getIndexFormat());
                     encoder.drawIndexed(indexBuffer.getDrawCount(), instanceCount, 0, 0, 0);
+                };
+            }
+        case 'drawIndirect':
+            {
+                return (encoder: GPURenderPassEncoder): void => {
+                    const indirectBuffer: IndirectBuffer = dispatch.getIndirectBuffer()!;
+                    encoder.drawIndirect(indirectBuffer.getGpuBuffer(), 0);
+                };
+            }
+        case 'multiDrawIndirect':
+            {
+                /**
+                 * 
+                 * needs:
+                 * chromium-experimental-multi-draw-indirect
+                 * 
+                 */
+                return (encoder: GPURenderPassEncoder): void => {
+                    const indirectBuffer: IndirectBuffer = dispatch.getIndirectBuffer()!;
+                    const indirectCountBuffer: StorageBuffer = dispatch.getIndirectCountBuffer()!;
+                    const maxDrawCount: number = dispatch.getMaxDrawCount()!;
+                    (encoder as any).multiDrawIndirect(indirectBuffer.getGpuBuffer(), 0, maxDrawCount, indirectCountBuffer.getGpuBuffer(), 0);
                 };
             }
         default:

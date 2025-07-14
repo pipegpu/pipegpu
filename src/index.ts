@@ -45,7 +45,7 @@ export * from './property/dispatch/RenderProperty.ts'
  * - shader
  * - texture
  */
-export * from './res/buffer/IndexBuffer.ts'
+export * from './res/buffer/IndexedBuffer.ts'
 export * from './res/buffer/IndirectBuffer.ts'
 export * from './res/buffer/StorageBuffer.ts'
 export * from './res/buffer/UniformBuffer.ts'

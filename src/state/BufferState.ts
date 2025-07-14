@@ -1,5 +1,8 @@
 import type { BaseBuffer, Handle1D, Handle2D } from "../res/buffer/BaseBuffer";
-import { IndexBuffer } from "../res/buffer/IndexBuffer";
+import { IndexedBuffer } from "../res/buffer/IndexedBuffer";
+import { IndexedIndirectBuffer } from "../res/buffer/IndexedIndirectBuffer";
+import { IndexedStorageBuffer } from "../res/buffer/IndexedStorageBuffer";
+import { IndirectBuffer } from "../res/buffer/IndirectBuffer";
 import { MapBuffer } from "../res/buffer/Mapbuffer";
 import { StorageBuffer } from "../res/buffer/StorageBuffer";
 import { UniformBuffer } from "../res/buffer/UniformBuffer";
@@ -55,16 +58,16 @@ class BufferState {
         opts: {
             rawData: TypedArray1DFormat,
         }
-    ): IndexBuffer {
+    ): IndexedBuffer {
         const bufferID: number = uniqueID();
-        const buffer: IndexBuffer = new IndexBuffer({
+        const buffer: IndexedBuffer = new IndexedBuffer({
             id: bufferID,
             ctx: this.ctx,
             totalByteLength: opts.rawData.byteLength,
             typedArrayData1D: opts.rawData
         });
         BufferState.BUFFER_SET.set(bufferID, buffer);
-        return BufferState.BUFFER_SET.get(bufferID) as IndexBuffer;
+        return BufferState.BUFFER_SET.get(bufferID) as IndexedBuffer;
     }
 
     /**
@@ -125,6 +128,7 @@ class BufferState {
     createStorageBuffer = (
         opts: {
             totalByteLength: number,
+            bufferUsageFlags?: GPUBufferUsageFlags,
             rawData?: TypedArray2DFormat,
             handler?: Handle2D
         }
@@ -135,10 +139,34 @@ class BufferState {
             ctx: this.ctx,
             totalByteLength: opts.totalByteLength,
             typedArrayData2D: opts.rawData,
+            bufferUsageFlags: opts.bufferUsageFlags,
             handler: opts.handler
         });
         BufferState.BUFFER_SET.set(bufferID, buffer);
         return BufferState.BUFFER_SET.get(bufferID) as StorageBuffer;
+    }
+
+    /**
+     * 
+     * @param opts 
+     */
+    createIndexedStorageBuffer = (
+        opts: {
+            totalByteLength: number,
+            rawData?: TypedArray2DFormat,
+            handler?: Handle2D
+        }
+    ): IndexedStorageBuffer => {
+        const bufferID: number = uniqueID();
+        const buffer: IndexedStorageBuffer = new IndexedStorageBuffer({
+            id: bufferID,
+            ctx: this.ctx,
+            totalByteLength: opts.totalByteLength,
+            typedArrayData2D: opts.rawData,
+            handler: opts.handler
+        });
+        BufferState.BUFFER_SET.set(bufferID, buffer);
+        return BufferState.BUFFER_SET.get(bufferID) as IndexedStorageBuffer;
     }
 
     /**
@@ -165,6 +193,40 @@ class BufferState {
         });
         BufferState.BUFFER_SET.set(bufferID, buffer);
         return BufferState.BUFFER_SET.get(bufferID) as VertexBuffer;
+    }
+
+    createIndirectBuffer = (
+        opts: {
+            totalByteLength: number,
+            rawData: TypedArray2DFormat,
+        }
+    ): IndirectBuffer => {
+        const bufferID: number = uniqueID();
+        const buffer: IndirectBuffer = new IndirectBuffer({
+            id: bufferID,
+            ctx: this.ctx,
+            totalByteLength: opts.totalByteLength,
+            typedArrayData2D: opts.rawData,
+        });
+        BufferState.BUFFER_SET.set(bufferID, buffer);
+        return BufferState.BUFFER_SET.get(bufferID) as IndirectBuffer;
+    }
+
+    createIndexedIndirectBuffer = (
+        opts: {
+            totalByteLength: number,
+            rawData: TypedArray2DFormat,
+        }
+    ): IndexedIndirectBuffer => {
+        const bufferID: number = uniqueID();
+        const buffer: IndexedIndirectBuffer = new IndexedIndirectBuffer({
+            id: bufferID,
+            ctx: this.ctx,
+            totalByteLength: opts.totalByteLength,
+            typedArrayData2D: opts.rawData,
+        });
+        BufferState.BUFFER_SET.set(bufferID, buffer);
+        return BufferState.BUFFER_SET.get(bufferID) as IndexedIndirectBuffer;
     }
 
 }
