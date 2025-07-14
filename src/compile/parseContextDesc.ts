@@ -1,3 +1,5 @@
+import type { FeatureNameFormat } from "../res/Format";
+
 /**
  * @description
  * pipegup context descriptor
@@ -29,7 +31,7 @@ interface IContextOpts {
     /**
      * 
      */
-    requestFeatures?: GPUFeatureName[];
+    requestFeatures?: FeatureNameFormat[];
 }
 
 /**

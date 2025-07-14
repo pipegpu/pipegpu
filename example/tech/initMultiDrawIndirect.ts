@@ -20,13 +20,11 @@ const initMultiDrawIndirect = (compiler: Compiler, colorAttachments: ColorAttach
     });
 
     const indirectDrawCountData = new Uint32Array([2]);
-    const indirectDrawCountBuffer = compiler.createStorageBuffer(
-        {
-            totalByteLength: indirectDrawCountData.byteLength,
-            rawData: [indirectDrawCountData],
-            bufferUsageFlags: GPUBufferUsage.INDIRECT
-        }
-    )
+    const indirectDrawCountBuffer = compiler.createStorageBuffer({
+        totalByteLength: indirectDrawCountData.byteLength,
+        rawData: [indirectDrawCountData],
+        bufferUsageFlags: GPUBufferUsage.INDIRECT
+    });
 
     const dispatch: RenderProperty = new RenderProperty(indirectBuffer, indirectDrawCountBuffer, 2);
 

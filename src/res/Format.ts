@@ -116,6 +116,18 @@ type CullFormat =
     | 'backCCW'
     ;
 
+type FeatureNameFormat = GPUFeatureName
+    | 'chromium-experimental-multi-draw-indirect'
+    | 'chromium-experimental-snorm16-texture-formats'
+    | 'chromium-experimental-timestamp-query-inside-passes'
+    | 'chromium-experimental-unorm16-texture-formats'
+    | 'chromium-experimental-multi-draw-indirect'
+    | 'chromium-experimental-snorm16-texture-formats'
+    | 'chromium-experimental-timestamp-query-inside-passes'
+    | 'chromium-experimental-unorm16-texture-formats'
+    ;
+
+
 export type {
     CullFormat,
     StencilStateFormat,
@@ -127,5 +139,6 @@ export type {
     PropertyFormat,
     FrameStageFormat,
     TypedArray1DFormat,
-    TypedArray2DFormat
+    TypedArray2DFormat,
+    FeatureNameFormat
 }
