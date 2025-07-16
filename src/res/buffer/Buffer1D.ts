@@ -65,7 +65,7 @@ class Buffer1D extends BaseBuffer {
         this.ctx?.getGpuQueue().writeBuffer(
             this.buffer as GPUBuffer,
             offset,
-            rawData.buffer as ArrayBuffer,
+            (rawData.buffer || rawData) as ArrayBuffer,
             0,
             byteLength
         );

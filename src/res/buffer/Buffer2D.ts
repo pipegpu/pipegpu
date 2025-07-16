@@ -63,10 +63,11 @@ class Buffer2D extends BaseBuffer {
         if (offset + byteLength > this.totalByteLength || rawData.byteLength > this.totalByteLength) {
             throw new Error(`[E][VertexBuffer][updateGpuBuffer] buffer bytelength oversized, maximum bytelength: ${this.totalByteLength}`);
         }
+        // rawdata perphaps typeof ArrayBuffer
         this.ctx?.getGpuQueue().writeBuffer(
             this.buffer as GPUBuffer,
             offset,
-            rawData.buffer as ArrayBuffer,
+            (rawData.buffer || rawData) as ArrayBuffer,
             0,
             byteLength
         );
