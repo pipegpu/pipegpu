@@ -1,4 +1,5 @@
 import { type IContextOpts, type ContextDesc, parseContextDesc } from "../compile/parseContextDesc.ts";
+import type { FeatureNameFormat } from "./Format.ts";
 
 /**
  * 
@@ -66,7 +67,7 @@ class Context {
      * request GPUFeature from input.
      * 
      */
-    private requestFeatures?: GPUFeatureName[];
+    private requestFeatures?: FeatureNameFormat[];
 
     /**
      * 
@@ -93,8 +94,17 @@ class Context {
             }
         });
 
+        // issue 1
+        // https://github.com/KIWI-ST/pipegpu/issues/1
+        // https://www.w3.org/TR/webgpu/#limits
         this.device = await this.adapter?.requestDevice({
-            requiredFeatures: this.requestFeatures || [],
+            requiredFeatures: this.requestFeatures || [] as any,
+            requiredLimits: {
+                'maxTextureArrayLayers': this.adapter?.limits.maxTextureArrayLayers,
+                'maxBindGroups': this.adapter?.limits.maxBindGroups,
+                'maxStorageBufferBindingSize': this.adapter?.limits.maxStorageBufferBindingSize,
+                'maxBufferSize': this.adapter?.limits.maxBufferSize,
+            }
         });
         this.gpuContext?.configure({
             device: this.device as GPUDevice,
