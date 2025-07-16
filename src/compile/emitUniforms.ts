@@ -50,8 +50,8 @@ const emitUniforms = (
                 resourceBindings.push(...cpResourceBindings);
             }
             if (resourceBindings.length) {
-                const uniqueArray = Array.from(new Set(resourceBindings));
-                mergedUniformResourceMap.set(k, uniqueArray);
+                const uniqueItems = Array.from(new Map(resourceBindings.map(item => [item.name, item])).values());
+                mergedUniformResourceMap.set(k, uniqueItems);
             }
         }
     };
