@@ -93,7 +93,7 @@ class RenderProperty extends BaseProperty {
      * @returns 
      */
     getMaxDrawCount = (): number | undefined => {
-        if (this.maxDrawCount) {
+        if (this.maxDrawCount && this.maxDrawCount >= 0) {
             return this.maxDrawCount;
         }
         throw new Error(`[E][RenderProperty][getMaxDrawCount] indvalid max draw count.`);
