@@ -1,4 +1,3 @@
-import type { Handle1D, Handle2D } from "../res/buffer/BaseBuffer";
 import type { Context } from "../res/Context"
 import type { TypedArray1DFormat, TypedArray2DFormat } from "../res/Format";
 import type { BaseTexture } from "../res/texture/BaseTexture";
