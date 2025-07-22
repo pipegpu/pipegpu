@@ -4,7 +4,7 @@
 
 ## modules
 > descriptor of modules in pipegpu.
-
+---
 ### compiler
 - [x] Compiler
 - [x] emitAttributes
@@ -21,23 +21,25 @@
 - [x] parseRenderBindGroupLayout
 - [x] parseRenderDispatch
 - [x] parseUniform
-
+---
 ### holder
 - [x] ComputeHolder
 - [x] RenderHolder
-
+---
 ### property
 - [x] Properties
 - [x] BaseProperty
-- [x] StorageBufferProperty
-- [x] TextureProperty
-- [x] Texture2DarrayProperty
-- [x] TextureSamplerProperty
-- [x] UniformBufferProperty
+#### attribute
 - [x] VertexBufferProperty
+#### dispatch
 - [x] ComputeProperty
 - [x] RenderProperty
-
+#### uniform
+- [x] StorageBufferProperty
+- [x] TextureProperty
+- [x] TextureSamplerProperty
+- [x] UniformBufferProperty
+---
 ### res
 - [x] Format
 - [x] Context
@@ -45,8 +47,8 @@
 - [x] BaseTexture
 - [x] SurfaceTexture2D
 - [x] Texture2D
+- [x] Texture2DArray
 - [ ] TextureStorage2D
-- [x] TextureArray2D
 #### res shader
 - [x] BaseShader 
 - [x] ComputeShader
@@ -54,11 +56,16 @@
 - [x] VertexShader
 #### res buffer
 - [x] BaseBuffer 
-- [x] IndexBuffer
+- [x] Buffer1D
+- [x] Buffer2D
+- [x] IndexedBuffer
+- [x] IndexedIndirectBuffer
+- [x] IndexedStorageBuffer
+- [x] IndirectBuffer
+- [x] Mapbuffer
 - [x] StorageBuffer
 - [x] UniformBuffer
 - [x] VertexBuffer
-- [x] Mapbuffer
 #### res attachment
 - [x] BaseAttachment
 - [x] ColorAttachment 
@@ -70,7 +77,7 @@
 #### res sampler
 - [x] BaseSampler
 - [x] TextureSampler
-
+---
 ### state
 - [x] AttachmentState
 - [x] BufferState
@@ -78,7 +85,7 @@
 - [x] SamplerState
 - [x] ShaderState
 - [x] TextureState
-
+---
 ### util
 - [x] hash32a
 - [x] reflectShaderAttributes
