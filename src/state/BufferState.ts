@@ -198,7 +198,8 @@ class BufferState {
     createIndirectBuffer = (
         opts: {
             totalByteLength: number,
-            rawData: TypedArray2DFormat,
+            rawData?: TypedArray2DFormat,
+            handler?: Handle2D,
         }
     ): IndirectBuffer => {
         const bufferID: number = uniqueID();
@@ -207,6 +208,7 @@ class BufferState {
             ctx: this.ctx,
             totalByteLength: opts.totalByteLength,
             typedArrayData2D: opts.rawData,
+            handler: opts.handler
         });
         BufferState.BUFFER_SET.set(bufferID, buffer);
         return BufferState.BUFFER_SET.get(bufferID) as IndirectBuffer;
@@ -215,7 +217,8 @@ class BufferState {
     createIndexedIndirectBuffer = (
         opts: {
             totalByteLength: number,
-            rawData: TypedArray2DFormat,
+            rawData?: TypedArray2DFormat,
+            handler?: Handle2D,
         }
     ): IndexedIndirectBuffer => {
         const bufferID: number = uniqueID();
@@ -224,6 +227,7 @@ class BufferState {
             ctx: this.ctx,
             totalByteLength: opts.totalByteLength,
             typedArrayData2D: opts.rawData,
+            handler: opts.handler,
         });
         BufferState.BUFFER_SET.set(bufferID, buffer);
         return BufferState.BUFFER_SET.get(bufferID) as IndexedIndirectBuffer;

@@ -1,5 +1,6 @@
 import { type Context } from "../Context";
 import { type TypedArray2DFormat } from "../Format";
+import type { Handle2D } from "./BaseBuffer";
 import { StorageBuffer } from "./StorageBuffer";
 
 /**
@@ -24,7 +25,8 @@ class IndirectBuffer extends StorageBuffer {
             id: number,
             ctx: Context,
             totalByteLength: number,
-            typedArrayData2D: TypedArray2DFormat,
+            typedArrayData2D?: TypedArray2DFormat,
+            handler?: Handle2D,
         }
     ) {
         super({
@@ -33,6 +35,7 @@ class IndirectBuffer extends StorageBuffer {
             totalByteLength: opts.totalByteLength,
             bufferUsageFlags: GPUBufferUsage.INDIRECT | GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST | GPUBufferUsage.COPY_SRC,
             typedArrayData2D: opts.typedArrayData2D,
+            handler: opts.handler,
         });
     }
 
@@ -47,6 +50,7 @@ class IndirectBuffer extends StorageBuffer {
     getIndexIndirectCount = (): number => {
         return this.typedArrayData2D?.length || 0;
     }
+
 }
 
 export {

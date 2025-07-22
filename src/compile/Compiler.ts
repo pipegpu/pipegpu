@@ -514,7 +514,8 @@ class Compiler {
     createIndirectBuffer = (
         opts: {
             totalByteLength: number,
-            rawData: TypedArray2DFormat,
+            rawData?: TypedArray2DFormat,
+            handler?: Handle2D,
         }
     ): IndirectBuffer => {
         return this.bufferState.createIndirectBuffer(opts);
@@ -528,7 +529,8 @@ class Compiler {
     createIndexedIndirectBuffer = (
         opts: {
             totalByteLength: number,
-            rawData: TypedArray2DFormat,
+            rawData?: TypedArray2DFormat,
+            handler?: Handle2D,
         }
     ): IndexedIndirectBuffer => {
         return this.bufferState.createIndexedIndirectBuffer(opts);
