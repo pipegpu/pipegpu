@@ -32,7 +32,7 @@ const parseRenderDispatch = (dispatch: RenderProperty): RenderHandle => {
                 return (encoder: GPURenderPassEncoder): void => {
                     const indexBuffer: IndexedBuffer = dispatch.getIndexBuffer()!;
                     const instanceCount: number = dispatch.getInstanceCount()!;
-                    encoder.setIndexBuffer(indexBuffer.getGpuBuffer(), indexBuffer.getIndexFormat());
+                    encoder.setIndexBuffer(indexBuffer.getGpuBuffer(null, 'frameBegin'), indexBuffer.getIndexFormat());
                     encoder.drawIndexed(indexBuffer.getDrawCount(), instanceCount, 0, 0, 0);
                 };
             }
@@ -40,7 +40,7 @@ const parseRenderDispatch = (dispatch: RenderProperty): RenderHandle => {
             {
                 return (encoder: GPURenderPassEncoder): void => {
                     const indirectBuffer: IndirectBuffer = dispatch.getIndirectBuffer()!;
-                    encoder.drawIndirect(indirectBuffer.getGpuBuffer(), 0);
+                    encoder.drawIndirect(indirectBuffer.getGpuBuffer(null, 'frameBegin'), 0);
                 };
             }
         case 'multiDrawIndirect':
@@ -55,7 +55,7 @@ const parseRenderDispatch = (dispatch: RenderProperty): RenderHandle => {
                     const indirectBuffer: IndirectBuffer = dispatch.getIndirectBuffer()!;
                     const indirectCountBuffer: StorageBuffer = dispatch.getIndirectCountBuffer()!;
                     const maxDrawCount: number = dispatch.getMaxDrawCount()!;
-                    (encoder as any).multiDrawIndirect(indirectBuffer.getGpuBuffer(), 0, maxDrawCount, indirectCountBuffer.getGpuBuffer(), 0);
+                    (encoder as any).multiDrawIndirect(indirectBuffer.getGpuBuffer(null, 'frameBegin'), 0, maxDrawCount, indirectCountBuffer.getGpuBuffer(null, 'frameBegin'), 0);
                 };
             }
         case 'drawIndexedIndirect':
@@ -63,8 +63,8 @@ const parseRenderDispatch = (dispatch: RenderProperty): RenderHandle => {
                 return (encoder: GPURenderPassEncoder): void => {
                     const indexedStorageBuffer: IndexedStorageBuffer = dispatch.getIndexStorageBuffer()!;
                     const indexedIndirectBuffer: IndexedIndirectBuffer = dispatch.getIndexedIndirectBuffer()!;
-                    encoder.setIndexBuffer(indexedStorageBuffer.getGpuBuffer(), indexedStorageBuffer.getIndexedFormat());
-                    encoder.drawIndexedIndirect(indexedIndirectBuffer.getGpuBuffer(), 0);
+                    encoder.setIndexBuffer(indexedStorageBuffer.getGpuBuffer(null, 'frameBegin'), indexedStorageBuffer.getIndexedFormat());
+                    encoder.drawIndexedIndirect(indexedIndirectBuffer.getGpuBuffer(null, 'frameBegin'), 0);
                 };
             }
         case 'multiDrawIndexedIndirect':
@@ -74,8 +74,8 @@ const parseRenderDispatch = (dispatch: RenderProperty): RenderHandle => {
                     const indexedIndirectBuffer: IndexedIndirectBuffer = dispatch.getIndexedIndirectBuffer()!;
                     const indirectCountBuffer: StorageBuffer = dispatch.getIndirectCountBuffer()!;
                     const maxDrawCount: number = dispatch.getMaxDrawCount()!;
-                    encoder.setIndexBuffer(indexedStorageBuffer.getGpuBuffer(), indexedStorageBuffer.getIndexedFormat());
-                    (encoder as any).multiDrawIndexedIndirect(indexedIndirectBuffer.getGpuBuffer(), 0, maxDrawCount, indirectCountBuffer.getGpuBuffer(), 0);
+                    encoder.setIndexBuffer(indexedStorageBuffer.getGpuBuffer(null, 'frameBegin'), indexedStorageBuffer.getIndexedFormat());
+                    (encoder as any).multiDrawIndexedIndirect(indexedIndirectBuffer.getGpuBuffer(null, 'frameBegin'), 0, maxDrawCount, indirectCountBuffer.getGpuBuffer(null, 'frameBegin'), 0);
                 };
             }
         default:

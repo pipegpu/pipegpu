@@ -1,4 +1,5 @@
 import { Attributes, ColorAttachment, DepthStencilAttachment, RenderHolder, RenderProperty, Uniforms, type BaseHolder, type Compiler, type RenderHolderDesc } from "../../src";
+import type { Handle2D } from "../../src/res/buffer/BaseBuffer";
 import type { IndexedIndirectBuffer } from "../../src/res/buffer/IndexedIndirectBuffer";
 import type { IndexedStorageBuffer } from "../../src/res/buffer/IndexedStorageBuffer";
 
@@ -7,8 +8,8 @@ const initMultiDrawIndexedIndirect = (compiler: Compiler, colorAttachments: Colo
     let dispatch: RenderProperty;
     {
         // index storage buffer.
-        const indexData2 = new Int16Array([0, 1, 2, 2, 1, 0]);
-        const indexData1 = new Int16Array([3, 4, 5, 5, 4, 3]);
+        const indexData2 = new Uint32Array([0, 1, 2, 2, 1, 0]);
+        const indexData1 = new Uint32Array([3, 4, 5, 5, 4, 3]);
         const indexStorageBuffer: IndexedStorageBuffer = compiler.createIndexedStorageBuffer({
             totalByteLength: indexData1.byteLength + indexData2.byteLength,
             rawData: [indexData1, indexData2],
@@ -17,9 +18,28 @@ const initMultiDrawIndexedIndirect = (compiler: Compiler, colorAttachments: Colo
         // indexed indirect buffer.
         const indexedIndirectData1 = new Uint32Array([indexData1.byteLength / indexData1.BYTES_PER_ELEMENT, 1, 0, 0, 0]);
         const indexedIndirectData2 = new Uint32Array([indexData2.byteLength / indexData2.BYTES_PER_ELEMENT, 1, indexData1.byteLength / indexData1.BYTES_PER_ELEMENT, 0, 0]);
+        const handler: Handle2D = () => {
+            const details: any[] = [];
+            details.push({
+                offset: 0,
+                byteLength: indexedIndirectData1.byteLength,
+                rawData: indexedIndirectData1
+            });
+            details.push({
+                offset: indexedIndirectData1.byteLength,
+                byteLength: indexedIndirectData2.byteLength,
+                rawData: indexedIndirectData2
+            });
+            return {
+                rewrite: true,
+                details: details
+            }
+        };
+
         const indexedIndirectBuffer: IndexedIndirectBuffer = compiler.createIndexedIndirectBuffer({
             totalByteLength: indexedIndirectData1.byteLength + indexedIndirectData1.byteLength,
-            rawData: [indexedIndirectData1, indexedIndirectData2]
+            // rawData: [indexedIndirectData1, indexedIndirectData2]
+            handler: handler
         });
 
         // indirect draw count buffer.
@@ -110,8 +130,6 @@ fn fs_main(in:VertexOutput) -> @location(0) vec4f {
         });
         desc.attributes?.assign("color", colorBuffer);
     }
-
-
 
     const holder: RenderHolder | undefined = compiler.compileRenderHolder(desc);
     return holder;

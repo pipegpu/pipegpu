@@ -64,14 +64,14 @@ import { initMultiDrawIndexedIndirect } from './tech/initMultiDrawIndexedIndirec
     // requestAnimationFrame(renderLoop);
 
     const holderArray: BaseHolder[] = [];
-    holderArray.push(texture2DHolder);
-    holderArray.push(drawCountHolder);
-    holderArray.push(drawIndexedHolder);
-    holderArray.push(drawInstanceHolder);
-    holderArray.push(texture2DArrayHolder);
-    holderArray.push(drawIndirect);
-    holderArray.push(multiDrawIndirect);
-    holderArray.push(drawIndexedIndirect);
+    // holderArray.push(texture2DHolder);
+    // holderArray.push(drawCountHolder);
+    // holderArray.push(drawIndexedHolder);
+    // holderArray.push(drawInstanceHolder);
+    // holderArray.push(texture2DArrayHolder);
+    // holderArray.push(drawIndirect);
+    // holderArray.push(multiDrawIndirect);
+    // holderArray.push(drawIndexedIndirect);
     holderArray.push(multiDrawIndexedIndirect);
 
 
