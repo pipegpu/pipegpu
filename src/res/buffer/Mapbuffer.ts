@@ -104,7 +104,7 @@ class MapBuffer extends StorageBuffer {
             console.log(`[E][MapBuffer][PullDataAsync] pull gpu-side buffer failed. byte length oversize: ${byteOffset + byteLength}.`);
             return;
         }
-        await this.mapReadBuffer.mapAsync(GPUMapMode.WRITE, 0, totalByteLength);
+        await this.mapReadBuffer.mapAsync(GPUMapMode.READ, 0, totalByteLength);
         const resultData: Float32Array = new Float32Array(this.mapWriteBuffer.getMappedRange());
         this.mapWriteBuffer.unmap();
         return resultData;
