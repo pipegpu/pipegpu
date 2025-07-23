@@ -56,7 +56,7 @@ class Buffer1D extends BaseBuffer {
      * @param {TypedArray1DFormat}  rawData
      * 
      */
-    protected updateGpuBuffer = (offset: number, byteLength: number, rawData: TypedArray1DFormat) => {
+    protected updateGpuBuffer = (offset: number, byteLength: number, rawData: TypedArray1DFormat | ArrayBuffer, size: number) => {
         if (offset + byteLength > this.totalByteLength || rawData.byteLength > this.totalByteLength) {
             throw new Error(`[E][VertexBuffer][updateGpuBuffer] buffer bytelength oversized, maximum bytelength: ${this.totalByteLength}`);
         }
@@ -65,9 +65,9 @@ class Buffer1D extends BaseBuffer {
         this.ctx?.getGpuQueue().writeBuffer(
             this.buffer as GPUBuffer,
             offset,
-            rawData instanceof ArrayBuffer ? rawData : rawData.buffer as ArrayBuffer,
+            rawData,
             0,
-            byteLength
+            size
         );
     }
 
@@ -83,11 +83,11 @@ class Buffer1D extends BaseBuffer {
             this.buffer = this.ctx!.getGpuDevice().createBuffer(desc);
         }
         if (this.typedArrayData1D) {
-            this.updateGpuBuffer(0, this.typedArrayData1D!.byteLength, this.typedArrayData1D!);
+            this.updateGpuBuffer(0, this.typedArrayData1D!.byteLength, this.typedArrayData1D!, this.typedArrayData1D.length);
         } else if (this.handler) {
             const handData = this.handler();
             if (handData.rewrite) {
-                this.updateGpuBuffer(handData.detail.offset, handData.detail.byteLength, handData.detail.rawData);
+                this.updateGpuBuffer(handData.detail.offset, handData.detail.byteLength, handData.detail.rawData, handData.detail.size);
             }
         } else {
             throw new Error(`[E][Buffer1D][createGpuBuffer] create gpu buffer. unsupport source data array.`);
@@ -107,7 +107,7 @@ class Buffer1D extends BaseBuffer {
             if (frameStage === "frameBegin" && this.handler) {
                 const handData = this.handler();
                 if (handData.rewrite) {
-                    this.updateGpuBuffer(handData.detail.offset, handData.detail.byteLength, handData.detail.rawData);
+                    this.updateGpuBuffer(handData.detail.offset, handData.detail.byteLength, handData.detail.rawData, handData.detail.size);
                 }
             }
         }

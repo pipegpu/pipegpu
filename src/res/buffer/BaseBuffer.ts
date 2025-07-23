@@ -9,8 +9,9 @@ type Handle1D = () => {
     rewrite: boolean,
     detail: {
         offset: number,
+        size: number,
         byteLength: number,
-        rawData: TypedArray1DFormat
+        rawData: TypedArray1DFormat | ArrayBuffer
     }
 };
 
@@ -21,8 +22,9 @@ type Handle2D = () => {
     rewrite: boolean,
     details: Array<{
         offset: number,
+        size: number,
         byteLength: number,
-        rawData: TypedArray1DFormat
+        rawData: TypedArray1DFormat | ArrayBuffer
     }>
 };
 

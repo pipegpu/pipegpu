@@ -92,7 +92,7 @@ class MapBuffer extends StorageBuffer {
      * @param byteLength 
      * @returns 
      */
-    public async PullDataAsync(byteOffset: number, byteLength: number) {
+    public async PullDataAsync(byteOffset: number, byteLength: number): Promise<ArrayBuffer | undefined> {
         if (!this.buffer) {
             this.createGpuBuffer();
         }
@@ -105,9 +105,10 @@ class MapBuffer extends StorageBuffer {
             return;
         }
         await this.mapReadBuffer.mapAsync(GPUMapMode.READ, 0, totalByteLength);
-        const resultData: Float32Array = new Float32Array(this.mapWriteBuffer.getMappedRange());
-        this.mapWriteBuffer.unmap();
-        return resultData;
+        const arrayBuffer = this.mapReadBuffer.getMappedRange();
+        const slicedArrayBuffer = arrayBuffer.slice(0);
+        this.mapReadBuffer.unmap();
+        return slicedArrayBuffer;
     }
 
     /**

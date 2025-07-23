@@ -59,7 +59,7 @@ class Buffer2D extends BaseBuffer {
      * @param {TypedArray1DFormat}  rawData
      * 
      */
-    protected updateGpuBuffer = (offset: number, byteLength: number, rawData: TypedArray1DFormat) => {
+    protected updateGpuBuffer = (offset: number, byteLength: number, rawData: TypedArray1DFormat | ArrayBuffer, size: number) => {
         if (offset + byteLength > this.totalByteLength || rawData.byteLength > this.totalByteLength) {
             throw new Error(`[E][VertexBuffer][updateGpuBuffer] buffer bytelength oversized, maximum bytelength: ${this.totalByteLength}`);
         }
@@ -68,9 +68,9 @@ class Buffer2D extends BaseBuffer {
         this.ctx?.getGpuQueue().writeBuffer(
             this.buffer as GPUBuffer,
             offset,
-            rawData instanceof ArrayBuffer ? rawData : rawData.buffer as ArrayBuffer,
+            rawData,
             0,
-            byteLength
+            size
         );
     }
 
@@ -85,14 +85,14 @@ class Buffer2D extends BaseBuffer {
         if (this.typedArrayData2D) {
             let offset: number = 0;
             this.typedArrayData2D?.forEach(typedArray => {
-                this.updateGpuBuffer(offset, typedArray.byteLength, typedArray)
+                this.updateGpuBuffer(offset, typedArray.byteLength, typedArray, typedArray.length)
                 offset += typedArray.byteLength;
             });
         } else if (this.handler) {
             const handData = this.handler();
             if (handData.rewrite) {
                 handData.details.forEach(detail => {
-                    this.updateGpuBuffer(detail.offset, detail.byteLength, detail.rawData);
+                    this.updateGpuBuffer(detail.offset, detail.byteLength, detail.rawData, detail.size);
                 });
             }
         } else {
@@ -108,7 +108,7 @@ class Buffer2D extends BaseBuffer {
                 const handData = this.handler();
                 if (handData.rewrite) {
                     handData.details.forEach(detail => {
-                        this.updateGpuBuffer(detail.offset, detail.byteLength, detail.rawData);
+                        this.updateGpuBuffer(detail.offset, detail.byteLength, detail.rawData, detail.size);
                     });
                 }
             }
