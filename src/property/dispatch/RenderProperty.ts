@@ -24,7 +24,7 @@ class RenderProperty extends BaseProperty {
     /**
      * 
      */
-    private indexStorageBuffer?: IndexedStorageBuffer;
+    private indexedStorageBuffer?: IndexedStorageBuffer;
 
     /**
      * 
@@ -44,6 +44,7 @@ class RenderProperty extends BaseProperty {
     constructor(maxDrawCount: number, instanceCount: number)
     constructor(indexBuffer: IndexedBuffer)
     constructor(indexBuffer: IndexedBuffer, instanceCount: number)
+    constructor(indexStorageBuffer: IndexedStorageBuffer, instanceCount: number)
     constructor(indexStorageBuffer: IndexedStorageBuffer, indexedIndirectBuffer: IndexedIndirectBuffer)
     constructor(indexStorageBuffer: IndexedStorageBuffer, indexedIndirectBuffer: IndexedIndirectBuffer, indirectDrawCountBuffer: StorageBuffer, maxDrawCount: number)
     constructor(indirectBuffer: IndirectBuffer)
@@ -53,6 +54,11 @@ class RenderProperty extends BaseProperty {
         if (typeof a === 'number' && typeof b === 'number') {
             this.propertyFormat = 'drawCount';
             this.maxDrawCount = a;
+            this.instanceCount = b;
+        }
+        if (a instanceof IndexedStorageBuffer && typeof b === 'number') {
+            this.propertyFormat = 'drawIndexedStorage';
+            this.indexedStorageBuffer = a;
             this.instanceCount = b;
         }
         if (a instanceof IndexedBuffer) {
@@ -76,12 +82,12 @@ class RenderProperty extends BaseProperty {
         }
         if (a instanceof IndexedStorageBuffer && b instanceof IndexedIndirectBuffer) {
             this.propertyFormat = 'drawIndexedIndirect'
-            this.indexStorageBuffer = a;
+            this.indexedStorageBuffer = a;
             this.indexedIndirectBuffer = b;
         }
         if (a instanceof IndexedStorageBuffer && b instanceof IndexedIndirectBuffer && c instanceof StorageBuffer && typeof d === 'number') {
             this.propertyFormat = 'multiDrawIndexedIndirect'
-            this.indexStorageBuffer = a;
+            this.indexedStorageBuffer = a;
             this.indexedIndirectBuffer = b;
             this.indirectDrawCountBuffer = c;
             this.maxDrawCount = d;
@@ -137,8 +143,8 @@ class RenderProperty extends BaseProperty {
     }
 
     getIndexStorageBuffer = (): IndexedStorageBuffer | undefined => {
-        if (this.indexStorageBuffer) {
-            return this.indexStorageBuffer;
+        if (this.indexedStorageBuffer) {
+            return this.indexedStorageBuffer;
         }
         throw new Error(`[E][RenderProperty][getIndexStorageBuffer] invalid index storage buffer.`);
     }

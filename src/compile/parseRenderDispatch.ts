@@ -36,6 +36,15 @@ const parseRenderDispatch = (dispatch: RenderProperty): RenderHandle => {
                     encoder.drawIndexed(indexBuffer.getDrawCount(), instanceCount, 0, 0, 0);
                 };
             }
+        case 'drawIndexedStorage':
+            {
+                return (encoder: GPURenderPassEncoder): void => {
+                    const indexedStorageBuffer: IndexedStorageBuffer = dispatch.getIndexStorageBuffer()!;
+                    const instanceCount: number = dispatch.getInstanceCount()!;
+                    encoder.setIndexBuffer(indexedStorageBuffer.getGpuBuffer(null, 'frameBegin'), indexedStorageBuffer.getIndexedFormat());
+                    encoder.drawIndexed(indexedStorageBuffer.getDrawCount(), instanceCount, 0, 0, 0);
+                };
+            };
         case 'drawIndirect':
             {
                 return (encoder: GPURenderPassEncoder): void => {

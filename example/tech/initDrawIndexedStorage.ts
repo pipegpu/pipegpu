@@ -1,26 +1,15 @@
 import { Attributes, ColorAttachment, DepthStencilAttachment, RenderHolder, RenderProperty, Uniforms, type BaseHolder, type Compiler, type RenderHolderDesc } from "../../src";
-import type { IndexedIndirectBuffer } from "../../src/res/buffer/IndexedIndirectBuffer";
-import type { IndexedStorageBuffer } from "../../src/res/buffer/IndexedStorageBuffer";
 
-const initDrawIndexedIndirect = (compiler: Compiler, colorAttachments: ColorAttachment[], depthStencilAttachment: DepthStencilAttachment): BaseHolder => {
+const initDrawIndexedStorage = (compiler: Compiler, colorAttachments: ColorAttachment[], depthStencilAttachment: DepthStencilAttachment): BaseHolder => {
 
     let dispatch: RenderProperty;
     {
-        // index storage buffer
         const indexData = new Uint32Array([0, 1, 2, 0, 2, 3]);
-        const indexStorageBuffer: IndexedStorageBuffer = compiler.createIndexedStorageBuffer({
+        const indexedStorageBuffer = compiler.createIndexedStorageBuffer({
             totalByteLength: indexData.byteLength,
             rawData: [indexData],
         });
-
-        // indexed indirect buffer
-        const indexedIndirectData = new Uint32Array([indexData.byteLength / indexData.BYTES_PER_ELEMENT, 1, 0, 0, 0]);
-        const indexedIndirectBuffer: IndexedIndirectBuffer = compiler.createIndexedIndirectBuffer({
-            totalByteLength: indexedIndirectData.byteLength,
-            rawData: [indexedIndirectData]
-        });
-
-        dispatch = new RenderProperty(indexStorageBuffer, indexedIndirectBuffer);
+        dispatch = new RenderProperty(indexedStorageBuffer, 1);
     }
 
     let desc: RenderHolderDesc = {
@@ -101,5 +90,5 @@ fn fs_main(in:VertexOutput) -> @location(0) vec4f {
 }
 
 export {
-    initDrawIndexedIndirect
+    initDrawIndexedStorage
 }

@@ -1,5 +1,5 @@
 import type { Context } from "../Context";
-import type { TypedArray2DFormat } from "../Format";
+import type { FrameStageFormat, TypedArray2DFormat } from "../Format";
 import type { Handle2D } from "./BaseBuffer";
 import { StorageBuffer } from "./StorageBuffer";
 
@@ -13,6 +13,11 @@ class IndexedStorageBuffer extends StorageBuffer {
     * 
     */
     private indexedFormat: GPUIndexFormat = 'uint32';
+
+    /**
+     * 
+     */
+    private drawCount: number = 0;
 
     /**
      * 
@@ -41,11 +46,13 @@ class IndexedStorageBuffer extends StorageBuffer {
         if (this.typedArrayData2D) {
             let format = 'none';
             this.typedArrayData2D.forEach(typedarray => {
-                if (typedarray instanceof Int16Array && ('uint16' === format || 'none' === format)) {
+                if (typedarray instanceof Uint16Array && ('uint16' === format || 'none' === format)) {
                     format = 'uint16';
+                    this.drawCount += typedarray.length;
                 }
                 else if (typedarray instanceof Uint32Array && ('uint32' === format || 'none' === format)) {
                     format = 'uint32';
+                    this.drawCount += typedarray.length;
                 }
                 else {
                     throw new Error(`[E][IndexedStorageBuffer][constructor] raw data error. only one type of uint16/uint32 support. and all slice of raw must be the same type.`);
@@ -65,6 +72,37 @@ class IndexedStorageBuffer extends StorageBuffer {
         return this.indexedFormat;
     }
 
+    /**
+     * 
+     * @returns 
+     */
+    getDrawCount = (): number => {
+        return this.drawCount;
+    }
+
+    /**
+     * 
+     * @param _encoder 
+     * @param frameStage 
+     * @returns 
+     */
+    override getGpuBuffer(_encoder?: GPUCommandEncoder | null, frameStage?: FrameStageFormat): GPUBuffer {
+        if (!this.buffer) {
+            this.createGpuBuffer();
+        } else {
+            if (frameStage === "frameBegin" && this.handler) {
+                const handData = this.handler();
+                if (handData.rewrite) {
+                    this.drawCount = 0;
+                    handData.details.forEach(detail => {
+                        this.updateGpuBuffer(detail.offset, detail.byteLength, detail.rawData, detail.size);
+                        this.drawCount += detail.size;
+                    });
+                }
+            }
+        }
+        return this.buffer as GPUBuffer;
+    }
 
 }
 

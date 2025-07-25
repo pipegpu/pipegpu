@@ -12,6 +12,7 @@ import { initDrawIndriect } from './tech/initDrawIndirect';
 import { initMultiDrawIndirect } from './tech/initMultiDrawIndirect';
 import { initDrawIndexedIndirect } from './tech/initDrawIndexedIndirect.ts'
 import { initMultiDrawIndexedIndirect } from './tech/initMultiDrawIndexedIndirect.ts'
+import { initDrawIndexedStorage } from './tech/initDrawIndexedStorage.ts';
 
 (async () => {
 
@@ -54,6 +55,7 @@ import { initMultiDrawIndexedIndirect } from './tech/initMultiDrawIndexedIndirec
     const multiDrawIndirect = await initMultiDrawIndirect(compiler, colorAttachments, depthStencilAttachment);
     const drawIndexedIndirect = await initDrawIndexedIndirect(compiler, colorAttachments, depthStencilAttachment);
     const multiDrawIndexedIndirect = await initMultiDrawIndexedIndirect(compiler, colorAttachments, depthStencilAttachment);
+    const drawIndexedStorage = await initDrawIndexedStorage(compiler, colorAttachments, depthStencilAttachment);
 
     // const graph: OrderedGraph = new OrderedGraph(ctx);
     // const renderLoop = () => {
@@ -64,6 +66,7 @@ import { initMultiDrawIndexedIndirect } from './tech/initMultiDrawIndexedIndirec
     // requestAnimationFrame(renderLoop);
 
     const holderArray: BaseHolder[] = [];
+    holderArray.push(drawIndexedStorage);
     holderArray.push(texture2DHolder);
     holderArray.push(drawCountHolder);
     holderArray.push(drawIndexedHolder);

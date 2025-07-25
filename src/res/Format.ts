@@ -59,6 +59,7 @@ type PropertyFormat =
     | 'none'
     | 'computeDispatch'
     | 'drawCount'
+    | 'drawIndexedStorage'
     | 'drawIndexed'
     | 'drawIndirect'
     | 'multiDrawIndirect'

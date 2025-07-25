@@ -70,6 +70,7 @@ const initMultiDrawIndirect = (compiler: Compiler, colorAttachments: ColorAttach
                 rewrite: true,
                 detail: {
                     offset: 0,
+                    size: 12,
                     byteLength: arrayData.byteLength,
                     rawData: arrayData
                 }
@@ -86,6 +87,7 @@ const initMultiDrawIndirect = (compiler: Compiler, colorAttachments: ColorAttach
                 rewrite: true,
                 detail: {
                     offset: 0,
+                    size: 1,
                     byteLength: arrayData.byteLength,
                     rawData: arrayData
                 }

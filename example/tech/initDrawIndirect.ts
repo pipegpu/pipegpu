@@ -57,6 +57,7 @@ const initDrawIndriect = (compiler: Compiler, colorAttachments: ColorAttachment[
                 rewrite: true,
                 detail: {
                     offset: 0,
+                    size: 12,
                     byteLength: arrayData.byteLength,
                     rawData: arrayData
                 }
@@ -73,6 +74,7 @@ const initDrawIndriect = (compiler: Compiler, colorAttachments: ColorAttachment[
                 rewrite: true,
                 detail: {
                     offset: 0,
+                    size: 1,
                     byteLength: arrayData.byteLength,
                     rawData: arrayData
                 }
