@@ -1,6 +1,6 @@
 {
   "name": "pipegpu",
-  "version": "0.1.18",
+  "version": "0.1.19",
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
@@ -14,8 +14,6 @@
     "vite": "^6.3.5"
   },
   "dependencies": {
-    "fp-ts": "^2.16.10",
-    "io-ts": "^2.2.22",
     "wgsl_reflect": "^1.2.1"
   }
 }

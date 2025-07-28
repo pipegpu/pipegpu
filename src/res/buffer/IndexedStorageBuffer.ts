@@ -5,6 +5,7 @@ import { StorageBuffer } from "./StorageBuffer";
 
 /**
  * 
+ * @class IndexedStorageBuffer
  * 
  */
 class IndexedStorageBuffer extends StorageBuffer {
@@ -94,9 +95,10 @@ class IndexedStorageBuffer extends StorageBuffer {
                 const handData = this.handler();
                 if (handData.rewrite) {
                     this.drawCount = 0;
+                    const BYTES_PER_ELEMENT = this.indexedFormat === 'uint16' ? Uint16Array.BYTES_PER_ELEMENT : Uint32Array.BYTES_PER_ELEMENT;
                     handData.details.forEach(detail => {
-                        this.updateGpuBuffer(detail.offset, detail.byteLength, detail.rawData, detail.size);
-                        this.drawCount += detail.size;
+                        this.updateGpuBuffer(detail.offset, detail.byteLength, detail.rawData);
+                        this.drawCount += detail.rawData.byteLength / BYTES_PER_ELEMENT;
                     });
                 }
             }

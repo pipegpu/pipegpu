@@ -11,15 +11,6 @@ type HandleDetail = {
 
     /**
      * 
-     * cpu side buffer element count.
-     * e.g 
-     * new Float32Array([0]) // size = 1, byteLength = 4
-     * 
-     */
-    size: number,
-
-    /**
-     * 
      * cpu write buffer total byte length.
      * 
      */

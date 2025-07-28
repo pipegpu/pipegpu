@@ -13,6 +13,8 @@ import { UniformBufferProperty } from "./uniform/UniformBufferProperty";
 
 /**
  * 
+ * @class Properties
+ * 
  */
 class Properties {
     /**

@@ -59,7 +59,7 @@ class Buffer2D extends BaseBuffer {
      * @param {TypedArray1DFormat}  rawData
      * 
      */
-    protected updateGpuBuffer = (offset: number, byteLength: number, rawData: TypedArray1DFormat | ArrayBuffer, size: number) => {
+    protected updateGpuBuffer = (offset: number, byteLength: number, rawData: TypedArray1DFormat | ArrayBuffer) => {
         if (offset + byteLength > this.totalByteLength || rawData.byteLength > this.totalByteLength) {
             throw new Error(`[E][VertexBuffer][updateGpuBuffer] buffer bytelength oversized, maximum bytelength: ${this.totalByteLength}`);
         }
@@ -69,8 +69,7 @@ class Buffer2D extends BaseBuffer {
             this.buffer as GPUBuffer,
             offset,
             rawData,
-            0,
-            size
+            0
         );
     }
 
@@ -79,20 +78,20 @@ class Buffer2D extends BaseBuffer {
             const desc: GPUBufferDescriptor = {
                 size: this.totalByteLength,
                 usage: this.bufferUsageFlags as GPUBufferUsageFlags
-            }
+            };
             this.buffer = this.ctx!.getGpuDevice().createBuffer(desc);
         }
         if (this.typedArrayData2D) {
             let offset: number = 0;
             this.typedArrayData2D?.forEach(typedArray => {
-                this.updateGpuBuffer(offset, typedArray.byteLength, typedArray, typedArray.length)
+                this.updateGpuBuffer(offset, typedArray.byteLength, typedArray);
                 offset += typedArray.byteLength;
             });
         } else if (this.handler) {
             const handData = this.handler();
             if (handData.rewrite) {
                 handData.details.forEach(detail => {
-                    this.updateGpuBuffer(detail.offset, detail.byteLength, detail.rawData, detail.size);
+                    this.updateGpuBuffer(detail.offset, detail.byteLength, detail.rawData);
                 });
             }
         } else {
@@ -108,7 +107,7 @@ class Buffer2D extends BaseBuffer {
                 const handData = this.handler();
                 if (handData.rewrite) {
                     handData.details.forEach(detail => {
-                        this.updateGpuBuffer(detail.offset, detail.byteLength, detail.rawData, detail.size);
+                        this.updateGpuBuffer(detail.offset, detail.byteLength, detail.rawData);
                     });
                 }
             }

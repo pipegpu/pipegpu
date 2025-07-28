@@ -1,5 +1,5 @@
 import type { RenderProperty } from "../property/dispatch/RenderProperty"
-import type { CullFormat, PropertyFormat } from "../res/Format"
+import type { CullFormat } from "../res/Format"
 
 /**
  * 
