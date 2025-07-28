@@ -5,11 +5,28 @@ import { IndirectBuffer } from "../../res/buffer/IndirectBuffer";
 import { StorageBuffer } from "../../res/buffer/StorageBuffer";
 import { BaseProperty } from "../BaseProperty";
 
+/**
+ * 
+ * support dynmaic max draw count.
+ * - max draw count
+ * @example
+ * const maxDrawCountHandler = ():number => {
+ *   return 0;
+ * }
+ * 
+ */
+type MaxDrawCountHandle = { (): number; }
+
 class RenderProperty extends BaseProperty {
     /**
      * 
      */
     private maxDrawCount: number = 0;
+
+    /**
+     * 
+     */
+    private maxDrawCountHandler?: MaxDrawCountHandle;
 
     /**
      * 
@@ -47,9 +64,10 @@ class RenderProperty extends BaseProperty {
     constructor(indexStorageBuffer: IndexedStorageBuffer, instanceCount: number)
     constructor(indexStorageBuffer: IndexedStorageBuffer, indexedIndirectBuffer: IndexedIndirectBuffer)
     constructor(indexStorageBuffer: IndexedStorageBuffer, indexedIndirectBuffer: IndexedIndirectBuffer, indirectDrawCountBuffer: StorageBuffer, maxDrawCount: number)
+    constructor(indexStorageBuffer: IndexedStorageBuffer, indexedIndirectBuffer: IndexedIndirectBuffer, indirectDrawCountBuffer: StorageBuffer, handler: MaxDrawCountHandle)
     constructor(indirectBuffer: IndirectBuffer)
     constructor(indirectBuffer: IndirectBuffer, indirectDrawCountBuffer: StorageBuffer, maxDrawCount: number)
-    constructor(a?: IndexedBuffer | IndirectBuffer | number | IndexedStorageBuffer, b?: number | IndexedIndirectBuffer | StorageBuffer, c?: StorageBuffer | number, d?: number) {
+    constructor(a?: IndexedBuffer | IndirectBuffer | number | IndexedStorageBuffer, b?: number | IndexedIndirectBuffer | StorageBuffer, c?: StorageBuffer | number, d?: number | MaxDrawCountHandle) {
         super('[RenderProperty][constructor]');
         if (typeof a === 'number' && typeof b === 'number') {
             this.propertyFormat = 'drawCount';
@@ -92,6 +110,13 @@ class RenderProperty extends BaseProperty {
             this.indirectDrawCountBuffer = c;
             this.maxDrawCount = d;
         }
+        if ((a instanceof IndexedStorageBuffer && b instanceof IndexedIndirectBuffer && c instanceof StorageBuffer && typeof d === "function" && d.length === 0)) {
+            this.propertyFormat = 'multiDrawIndexedIndirect'
+            this.indexedStorageBuffer = a;
+            this.indexedIndirectBuffer = b;
+            this.indirectDrawCountBuffer = c;
+            this.maxDrawCountHandler = d;
+        }
     }
 
     /**
@@ -99,7 +124,11 @@ class RenderProperty extends BaseProperty {
      * @returns 
      */
     getMaxDrawCount = (): number => {
-        return this.maxDrawCount;
+        if (this.maxDrawCountHandler) {
+            return this.maxDrawCountHandler();
+        } else {
+            return this.maxDrawCount;
+        }
     }
 
     /**

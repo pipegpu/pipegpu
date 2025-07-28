@@ -35,7 +35,9 @@ const initMultiDrawIndirectWithStorageVertex = (compiler: Compiler, colorAttachm
             indexStorageBuffer,
             indexedIndirectBuffer,
             indirectDrawCountBuffer,
-            2
+            () => {
+                return 1;
+            }
         );
     }
 

@@ -1,18 +1,45 @@
 import { Context } from "../Context.ts"
 import type { FrameStageFormat, TypedArray1DFormat } from "../Format.ts";
 
+type HandleDetail = {
+    /**
+     * 
+     * gpu buffer byte offset
+     * 
+     */
+    offset: number,
+
+    /**
+     * 
+     * cpu side buffer element count.
+     * e.g 
+     * new Float32Array([0]) // size = 1, byteLength = 4
+     * 
+     */
+    size: number,
+
+    /**
+     * 
+     * cpu write buffer total byte length.
+     * 
+     */
+    byteLength: number,
+
+    /**
+     * 
+     * cpu write source data.
+     * 
+     */
+    rawData: TypedArray1DFormat | ArrayBuffer
+};
+
 /**
  * e.g for vertex / index / unfiorm buffer.
  * rewrite buffer
  */
 type Handle1D = () => {
     rewrite: boolean,
-    detail: {
-        offset: number,
-        size: number,
-        byteLength: number,
-        rawData: TypedArray1DFormat | ArrayBuffer
-    }
+    detail: HandleDetail
 };
 
 /**
@@ -20,12 +47,7 @@ type Handle1D = () => {
  */
 type Handle2D = () => {
     rewrite: boolean,
-    details: Array<{
-        offset: number,
-        size: number,
-        byteLength: number,
-        rawData: TypedArray1DFormat | ArrayBuffer
-    }>
+    details: Array<HandleDetail>
 };
 
 /**
@@ -103,7 +125,6 @@ abstract class BaseBuffer {
 }
 
 export {
-    type Handle1D,
-    type Handle2D,
+    type Handle1D, type Handle2D, type HandleDetail,
     BaseBuffer
 }
