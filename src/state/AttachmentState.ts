@@ -79,7 +79,9 @@ class AttachmentState {
             stencilFunctionFormat?: StencilStateFormat,
             stencilLoadStoreFormat?: StencilLoadStoreFormat,
             depthReadOnly?: boolean,
+            depthClearValue?: number,
             stencilReadOnly?: boolean
+            stencilClearValue?: number,
         }
     ): DepthStencilAttachment => {
         const depthStencilAttachmentID: number = uniqueID();
@@ -93,7 +95,9 @@ class AttachmentState {
                 stencilFunctionFormat: opts.stencilFunctionFormat,
                 stencilLoadStoreFormat: opts.stencilLoadStoreFormat,
                 depthReadOnly: opts.depthReadOnly,
-                stencilReadOnly: opts.stencilReadOnly
+                depthClearValue: opts.depthClearValue,
+                stencilReadOnly: opts.stencilReadOnly,
+                stencilClearValue: opts.stencilClearValue,
             });
             AttachmentState.ATTACHMENT_SET.set(depthStencilAttachmentID, depthStencilAttachment);
         }

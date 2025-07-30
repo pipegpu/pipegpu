@@ -634,7 +634,9 @@ class Compiler {
             stencilFunctionFormat?: StencilStateFormat,
             stencilLoadStoreFormat?: StencilLoadStoreFormat,
             depthReadOnly?: boolean,
-            stencilReadOnly?: boolean
+            depthClearValue?: number,
+            stencilReadOnly?: boolean,
+            stencilClearValue?: number,
         }
     ): DepthStencilAttachment => {
         return this.attachmentState.createDepthStencilAttachment(opts);
