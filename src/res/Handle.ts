@@ -17,8 +17,18 @@ type RenderHandle = (encoder: GPURenderPassEncoder) => void;
  */
 type ComputeHandle = (encoder: GPUComputePassEncoder) => void;
 
+/**
+ * 
+ * hook handle
+ * share gpu command encoder,
+ * used as buffer copy etc.
+ * 
+ */
+type HookHandle = { (encoder: GPUCommandEncoder): void };
+
 export {
     type UniformHandle,
     type RenderHandle,
-    type ComputeHandle
+    type ComputeHandle,
+    type HookHandle,
 }

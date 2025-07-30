@@ -11,7 +11,7 @@ import type { UniformBuffer } from "../res/buffer/UniformBuffer";
 import type { VertexBuffer } from "../res/buffer/VertexBuffer";
 import { Context } from "../res/Context";
 import type { BlendFormat, ColorLoadStoreFormat, DepthLoadStoreFormat, MultiSampleFormat, StencilLoadStoreFormat, StencilStateFormat, TypedArray1DFormat, TypedArray2DFormat } from "../res/Format";
-import type { ComputeHandle, RenderHandle } from "../res/Handle";
+import type { ComputeHandle, HookHandle, RenderHandle } from "../res/Handle";
 import type { ComputeShader } from "../res/shader/ComputeShader";
 import type { FragmentShader } from "../res/shader/FragmentShader";
 import type { VertexShader } from "../res/shader/VertexShader";
@@ -131,7 +131,15 @@ interface ComputeHolderDesc {
     /**
      * 
      */
-    dispatch: ComputeProperty
+    dispatch: ComputeProperty,
+
+    /**
+     * 
+     * compute shader tail handler.
+     * append command buffer at the end.
+     * 
+     */
+    handler?: HookHandle,
 }
 
 /**

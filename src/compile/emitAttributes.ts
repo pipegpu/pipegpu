@@ -65,7 +65,6 @@ const emitAttributes = (
         vertexBufferIDAttributesMap.get(bufferID)?.push(att);
     };
 
-
     // order by shader location, spilit and group by buffer
     // slot only mapping one buffer, a buffer can mapping multi-slots.
     bufferAttributeRecordsMap.forEach((attributeRecrods: Map<string, IAttributeRecord>, bufferID: number) => {

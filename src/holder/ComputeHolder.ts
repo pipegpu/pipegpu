@@ -1,5 +1,5 @@
 import type { Context } from "../res/Context";
-import type { ComputeHandle, UniformHandle } from "../res/Handle";
+import type { ComputeHandle, HookHandle, UniformHandle } from "../res/Handle";
 import type { ComputePipeline } from "../res/pipeline/ComputePipeline";
 import type { BufferState } from "../state/BufferState";
 import type { TextureState } from "../state/TextureState";
@@ -37,6 +37,11 @@ class ComputeHolder extends BaseHolder {
     /**
      * 
      */
+    private hookHandler?: HookHandle;
+
+    /**
+     * 
+     */
     private slotBindGroupMap: Map<number, GPUBindGroup>;
 
     /**
@@ -52,6 +57,7 @@ class ComputeHolder extends BaseHolder {
             textureState: TextureState,
             computeHandler: ComputeHandle,
             uniformHandler: UniformHandle,
+            hookHandler?: HookHandle,
             slotBindGroupMap: Map<number, GPUBindGroup>,
         }
     ) {
@@ -65,6 +71,7 @@ class ComputeHolder extends BaseHolder {
         this.textureState = opts.textureState;
         this.computeHandler = opts.computeHandler;
         this.uniformHandler = opts.uniformHandler;
+        this.hookHandler = opts.hookHandler;
         this.slotBindGroupMap = opts.slotBindGroupMap;
     }
 
@@ -94,6 +101,9 @@ class ComputeHolder extends BaseHolder {
 
         // uniform copy buffer should recrod whild any pass encoder end
         this.uniformHandler('frameFinish', encoder, this.bufferState, this.textureState);
+
+        // do hook event at frame end.
+        this.hookHandler ? this.hookHandler(encoder) : null;
     }
 }
 
