@@ -299,6 +299,27 @@ abstract class BaseTexture {
     }
 
     /**
+     * return texture extends.width
+     */
+    get Width() {
+        return this.width;
+    }
+
+    /**
+     * return texture extends.height
+     */
+    get Height() {
+        return this.height;
+    }
+
+    /**
+     * return texture extends.depthOrArrayLayers
+     */
+    get DepthOrArrayLayers() {
+        return this.depthOrArrayLayers;
+    }
+
+    /**
      * 
      * @returns 
      */
