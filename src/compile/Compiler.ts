@@ -676,6 +676,22 @@ class Compiler {
 
     /**
      * 
+     */
+    createTextureStorage2D = (
+        opts: {
+            width: number,
+            height: number,
+            textureData?: TypedArray1DFormat,
+            textureFormat?: GPUTextureFormat,
+            maxMipLevel?: number,
+            appendixTextureUsages?: number,
+        }
+    ) => {
+        return this.textureState.createTextureStorage2D(opts);
+    }
+
+    /**
+     * 
      * @param opts 
      * @returns 
      * 

@@ -4,6 +4,7 @@ import type { VertexBuffer } from "../res/buffer/VertexBuffer";
 import { TextureSampler } from "../res/sampler/TextureSampler";
 import { Texture2D } from "../res/texture/Texture2D";
 import { Texture2DArray } from "../res/texture/Texture2DArray";
+import { TextureStorage2D } from "../res/texture/TextureStorage2D";
 import { VertexBufferProperty } from "./attribute/VertexBufferProperty";
 import type { BaseProperty } from "./BaseProperty";
 import { StorageBufferProperty } from "./uniform/StorageBufferProperty";
@@ -88,6 +89,7 @@ class Uniforms extends Properties {
     assign(propertyName: string, textureSampler: TextureSampler): void
     assign(propertyName: string, texture2d: Texture2D): void
     assign(propertyName: string, texture2dArray: Texture2DArray): void
+    assign(propertyName: string, textureStorage2d: TextureStorage2D): void
     assign(a: string, b: any): void {
         if (b instanceof UniformBuffer) {
             const uniformBufferProperty: UniformBufferProperty = new UniformBufferProperty(a, b);
@@ -109,14 +111,17 @@ class Uniforms extends Properties {
             const texture2DArrayProperty: TextureProperty = new TextureProperty(a, b);
             this.propertyMap.set(a, texture2DArrayProperty);
             return;
+        } else if (b instanceof TextureStorage2D) {
+            const textureStorage2DProperty: TextureProperty = new TextureProperty(a, b);
+            this.propertyMap.set(a, textureStorage2DProperty);
+            return;
         }
         else {
-            console.log(`[E][Properties][Uniforms][assign] unsupported buffer type, buffer: ${b}`);
+            throw new Error(`[E][Properties][Uniforms][assign] unsupported buffer type, buffer: ${b}`);
         }
     }
 
 }
-
 
 export {
     Properties,

@@ -13,8 +13,9 @@ class TextureProperty extends BaseProperty {
 
     /**
      * 
-     * @param propertyName 
-     * @param texture 
+     * @param propertyName
+     * @param texture
+     * 
      */
     constructor(propertyName: string, texture: BaseTexture) {
         super(propertyName, texture.getPropertyFormat());

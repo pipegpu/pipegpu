@@ -19,7 +19,7 @@ class SurfaceTexture2D extends BaseTexture {
     ) {
         super({
             id: opts.id,
-            ctx: opts.ctx,
+            context: opts.ctx,
             width: opts.ctx.getViewportWidth(),
             height: opts.ctx.getViewportHeight(),
             textureUsageFlags: (opts.appendixTextureUsages || 0) | GPUTextureUsage.COPY_DST | GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
@@ -32,14 +32,14 @@ class SurfaceTexture2D extends BaseTexture {
      * 
      */
     protected override createGpuTexture(): void {
-        this.texture = this.ctx.getFrameTexture();
+        this.texture = this.context.getFrameTexture();
     }
 
     /**
      * surface texture do nothing.
      */
     override getGpuTextureView = (): GPUTextureView => {
-        return this.ctx.getFrameTextureView();
+        return this.context.getFrameTextureView();
     }
 
     /**

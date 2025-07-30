@@ -9,7 +9,7 @@ class Texture2D extends BaseTexture {
     /**
      * 
      */
-    private textureData?: TypedArray1DFormat;
+    protected textureData?: TypedArray1DFormat;
 
     /**
      * 
@@ -18,18 +18,18 @@ class Texture2D extends BaseTexture {
     constructor(
         opts: {
             id: number,
-            ctx: Context,
+            context: Context,
             width: number,
             height: number,
             appendixTextureUsages?: number,
             textureData?: TypedArray1DFormat,
             textureFormat?: GPUTextureFormat,
-            maxMipLevel?: number
+            maxMipLevel?: number,
         }
     ) {
         super({
             id: opts.id,
-            ctx: opts.ctx,
+            context: opts.context,
             width: opts.width,
             height: opts.height,
             depthOrArrayLayers: 1,
@@ -45,13 +45,13 @@ class Texture2D extends BaseTexture {
      * 
      */
     protected refreshTextureDataSource() {
-        // depth texture not allow texture write from cpu as default.
+        // depth texture not allow texture write from cpu.
         if (this.textureData && !this.isDetphTexture()) {
             const destination: GPUTexelCopyTextureInfo = {
                 texture: this.texture!
             };
             const dataLayout: GPUTexelCopyBufferLayout = this.getTexelCopyBufferLayout();
-            this.ctx.getGpuQueue().writeTexture(destination, this.textureData, dataLayout, this.extent3d);
+            this.context.getGpuQueue().writeTexture(destination, this.textureData, dataLayout, this.extent3d);
         }
     }
 
@@ -66,7 +66,7 @@ class Texture2D extends BaseTexture {
             mipLevelCount: this.maxMipLevel,
         };
         // write texture
-        this.texture = this.ctx.getGpuDevice().createTexture(desc);
+        this.texture = this.context.getGpuDevice().createTexture(desc);
         this.refreshTextureDataSource();
     }
 

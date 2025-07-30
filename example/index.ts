@@ -13,18 +13,19 @@ import { initMultiDrawIndirect } from './tech/initMultiDrawIndirect';
 import { initDrawIndexedIndirect } from './tech/initDrawIndexedIndirect.ts'
 import { initMultiDrawIndexedIndirect } from './tech/initMultiDrawIndexedIndirect.ts'
 import { initMultiDrawIndirectWithStorageVertex } from './tech/initMultiDrawIndirectWithStorageVertex.ts';
+import { initTexelCopy } from './tech/initTexelCopy.ts';
 
 (async () => {
 
-    const ctx: Context = new Context({
+    const context: Context = new Context({
         selector: "sketchpad",
         width: 800,
         height: 600,
         devicePixelRatio: devicePixelRatio,
         requestFeatures: ['texture-compression-bc', 'chromium-experimental-multi-draw-indirect']
     });
-    await ctx.init();
-    const compiler: Compiler = new Compiler({ ctx: ctx });
+    await context.init();
+    const compiler: Compiler = new Compiler({ ctx: context });
 
     // color attachment
     const surfaceTexture = compiler.createSurfaceTexture2D();
@@ -38,24 +39,25 @@ import { initMultiDrawIndirectWithStorageVertex } from './tech/initMultiDrawIndi
 
     // depth stencil attachment
     const depthTexture = compiler.createTexture2D({
-        width: ctx.getViewportWidth(),
-        height: ctx.getViewportHeight(),
-        textureFormat: ctx.getPreferredDepthTexuteFormat(),
+        width: context.getViewportWidth(),
+        height: context.getViewportHeight(),
+        textureFormat: context.getPreferredDepthTexuteFormat(),
     });
     const depthStencilAttachment = compiler.createDepthStencilAttachment({
         texture: depthTexture
     });
 
-    const drawCountHolder = initDrawCount(compiler, colorAttachments, depthStencilAttachment);
-    const drawIndexedHolder = initDrawIndexed(compiler, colorAttachments, depthStencilAttachment);
-    const drawInstanceHolder = initDrawInstance(compiler, colorAttachments, depthStencilAttachment);
-    const texture2DHolder = await initKTXTexture2D(compiler, colorAttachments, depthStencilAttachment);
-    const texture2DArrayHolder = await initKTXTexture2DArray(compiler, colorAttachments, depthStencilAttachment);
-    const drawIndirect = await initDrawIndriect(compiler, colorAttachments, depthStencilAttachment);
-    const multiDrawIndirect = await initMultiDrawIndirect(compiler, colorAttachments, depthStencilAttachment);
-    const drawIndexedIndirect = await initDrawIndexedIndirect(compiler, colorAttachments, depthStencilAttachment);
-    const multiDrawIndexedIndirect = await initMultiDrawIndexedIndirect(compiler, colorAttachments, depthStencilAttachment);
-    const drawIndexedStorage = await initMultiDrawIndirectWithStorageVertex(compiler, colorAttachments, depthStencilAttachment);
+    // const drawCountHolder = initDrawCount(compiler, colorAttachments, depthStencilAttachment);
+    // const drawIndexedHolder = initDrawIndexed(compiler, colorAttachments, depthStencilAttachment);
+    // const drawInstanceHolder = initDrawInstance(compiler, colorAttachments, depthStencilAttachment);
+    // const texture2DHolder = await initKTXTexture2D(compiler, colorAttachments, depthStencilAttachment);
+    // const texture2DArrayHolder = await initKTXTexture2DArray(compiler, colorAttachments, depthStencilAttachment);
+    // const drawIndirect = await initDrawIndriect(compiler, colorAttachments, depthStencilAttachment);
+    // const multiDrawIndirect = await initMultiDrawIndirect(compiler, colorAttachments, depthStencilAttachment);
+    // const drawIndexedIndirect = await initDrawIndexedIndirect(compiler, colorAttachments, depthStencilAttachment);
+    // const multiDrawIndexedIndirect = await initMultiDrawIndexedIndirect(compiler, colorAttachments, depthStencilAttachment);
+    // const drawIndexedStorage = await initMultiDrawIndirectWithStorageVertex(compiler, colorAttachments, depthStencilAttachment);
+    const texelCopy = await initTexelCopy(compiler);
 
     // const graph: OrderedGraph = new OrderedGraph(ctx);
     // const renderLoop = () => {
@@ -66,25 +68,26 @@ import { initMultiDrawIndirectWithStorageVertex } from './tech/initMultiDrawIndi
     // requestAnimationFrame(renderLoop);
 
     const holderArray: BaseHolder[] = [];
-    holderArray.push(drawIndexedStorage);
-    holderArray.push(texture2DHolder);
-    holderArray.push(drawCountHolder);
-    holderArray.push(drawIndexedHolder);
-    holderArray.push(drawInstanceHolder);
-    holderArray.push(texture2DArrayHolder);
-    holderArray.push(drawIndirect);
-    holderArray.push(multiDrawIndirect);
-    holderArray.push(drawIndexedIndirect);
-    holderArray.push(multiDrawIndexedIndirect);
+    // holderArray.push(drawIndexedStorage);
+    // holderArray.push(texture2DHolder);
+    // holderArray.push(drawCountHolder);
+    // holderArray.push(drawIndexedHolder);
+    // holderArray.push(drawInstanceHolder);
+    // holderArray.push(texture2DArrayHolder);
+    // holderArray.push(drawIndirect);
+    // holderArray.push(multiDrawIndirect);
+    // holderArray.push(drawIndexedIndirect);
+    // holderArray.push(multiDrawIndexedIndirect);
+    holderArray.push(texelCopy);
 
 
     const renderLoop = () => {
-        ctx.refreshFrameResource();
-        const encoder = ctx.getCommandEncoder();
+        context.refreshFrameResource();
+        const encoder = context.getCommandEncoder();
         holderArray.forEach(element => {
             element.build(encoder);
         });
-        ctx.submitFrameResource();
+        context.submitFrameResource();
         requestAnimationFrame(renderLoop);
     };
     requestAnimationFrame(renderLoop);

@@ -212,7 +212,7 @@ abstract class BaseTexture {
     /**
      * 
      */
-    protected ctx: Context;
+    protected context: Context;
 
     /**
      * 
@@ -271,7 +271,7 @@ abstract class BaseTexture {
     constructor(
         opts: {
             id: number,
-            ctx: Context,
+            context: Context,
             width: number,
             height: number,
             propertyFormat: PropertyFormat,
@@ -282,13 +282,13 @@ abstract class BaseTexture {
         }
     ) {
         this.id = opts.id;
-        this.ctx = opts.ctx;
+        this.context = opts.context;
         this.width = opts.width;
         this.height = opts.height;
         this.depthOrArrayLayers = opts.depthOrArrayLayers || 1;
         this.textureUsageFlags = opts.textureUsageFlags;
         this.extent3d = [opts.width, opts.height, opts.depthOrArrayLayers || 1];
-        this.textureFormat = opts.textureFormat || this.ctx.getPreferredTextureFormat();
+        this.textureFormat = opts.textureFormat || this.context.getPreferredTextureFormat();
         this.propertyFormat = opts.propertyFormat;
         if (this.isDetphTexture()) {
             this.maxMipLevel = 1;

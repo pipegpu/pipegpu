@@ -1,4 +1,4 @@
-import { FunctionInfo, ResourceType, VariableInfo, WgslReflect } from "wgsl_reflect";
+import { CallExpr, FunctionInfo, ResourceType, VariableInfo, WgslReflect } from "wgsl_reflect";
 
 /**
  * 
@@ -70,8 +70,40 @@ const getTextureViewDimension = (binding: VariableInfo): GPUTextureViewDimension
         case 'texture_3d':
         case 'texture_storage_3d':
             return '3d';
-        default:
+        default: {
             throw new Error(`[E][reflectShaderUniforms][getTextureViewDimension] unsupported binding texture type name: ${binding.type.name}`);
+        }
+    }
+};
+
+const getTextureFormatByTexelType = (binding: VariableInfo): GPUTextureFormat => {
+    const t: string = (binding as any).type.format.name;
+    switch (t) {
+        case 'r32float':
+            return 'r32float';
+        default:
+            {
+                throw new Error(`[E][getTextureFormatByTexelType] unsupported texel type: ${t}`);
+            }
+    }
+}
+
+/**
+ * ref: https://www.w3.org/TR/WGSL/#memory-access-mode
+ * @param binding 
+ */
+const getStorageTextureAccess = (binding: VariableInfo): GPUStorageTextureAccess => {
+    const t: string = (binding as any).type.access;
+    switch (t) {
+        case 'read':
+            return 'read-only';
+        case 'write':
+            return 'write-only';
+        case 'read_write':
+            return 'read-write';
+        default: {
+            throw new Error(`[E][getStorageTextureAccess] unspported texture acecessor type in valid storage texture access. type: ${t}`);
+        }
     }
 };
 
@@ -188,17 +220,26 @@ const reflectShaderUniforms = (code: string, entryPoint: string, shaderStage: GP
                 }
             case ResourceType.StorageTexture:
                 {
-                    throw new Error(`[E][reflectShaderUniforms] not implement ResourceType.StorageTexture`);
+                    bindGroupLayoutEntry.storageTexture = { format: getTextureFormatByTexelType(binding) };
+                    bindGroupLayoutEntry.storageTexture.access = getStorageTextureAccess(binding);
+                    bindGroupLayoutEntry.storageTexture.viewDimension = getTextureViewDimension(binding);
+                    groups.push(bindGroupLayoutEntry);
+                    resourceBindings.push(binding);
+                    break;
                 }
             case ResourceType.Sampler:
-                bindGroupLayoutEntry.sampler = {};
-                bindGroupLayoutEntry.sampler.type = getSamplerBindingType(binding);
-                groups.push(bindGroupLayoutEntry);
-                resourceBindings.push(binding);
-                break;
+                {
+                    bindGroupLayoutEntry.sampler = {};
+                    bindGroupLayoutEntry.sampler.type = getSamplerBindingType(binding);
+                    groups.push(bindGroupLayoutEntry);
+                    resourceBindings.push(binding);
+                    break;
+                }
+
             default:
-                console.log(`[E][reflectShaderUniforms] unsupported resource binding resource type: ${binding.resourceType}`);
-                break;
+                {
+                    throw new Error(`[E][reflectShaderUniforms] unsupported resource binding resource type: ${binding.resourceType}`);
+                }
         }
 
     });

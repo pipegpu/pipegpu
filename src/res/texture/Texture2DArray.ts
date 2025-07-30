@@ -30,7 +30,7 @@ class Texture2DArray extends BaseTexture {
     ) {
         super({
             id: opts.id,
-            ctx: opts.ctx,
+            context: opts.ctx,
             width: opts.width,
             height: opts.height,
             depthOrArrayLayers: opts.array,
@@ -58,7 +58,7 @@ class Texture2DArray extends BaseTexture {
             };
             for (let index: number = 0; index < this.textureData2DArray.length; index++) {
                 destination.origin = [0, 0, index];
-                this.ctx.getGpuQueue().writeTexture(destination, this.textureData2DArray[index], dataLayout, oneLayerExtent3d);
+                this.context.getGpuQueue().writeTexture(destination, this.textureData2DArray[index], dataLayout, oneLayerExtent3d);
             }
         }
     }
@@ -75,7 +75,7 @@ class Texture2DArray extends BaseTexture {
             dimension: this.getTextureDimension(),
             mipLevelCount: this.maxMipLevel
         };
-        this.texture = this.ctx.getGpuDevice().createTexture(desc);
+        this.texture = this.context.getGpuDevice().createTexture(desc);
         this.refreshTextureDataSource();
     }
 

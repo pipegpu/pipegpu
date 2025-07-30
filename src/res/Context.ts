@@ -103,8 +103,16 @@ class Context {
                 'maxBindGroups': this.adapter?.limits.maxBindGroups,
                 'maxStorageBufferBindingSize': this.adapter?.limits.maxStorageBufferBindingSize,
                 'maxBufferSize': this.adapter?.limits.maxBufferSize,
+                'maxComputeWorkgroupSizeX': this.adapter?.limits.maxComputeWorkgroupSizeX,
+                'maxComputeWorkgroupSizeY': this.adapter?.limits.maxComputeWorkgroupSizeY,
+                'maxComputeWorkgroupSizeZ': this.adapter?.limits.maxComputeWorkgroupSizeZ,
+                'maxComputeWorkgroupsPerDimension': this.adapter?.limits.maxComputeWorkgroupsPerDimension,
+                // 'maxComputeInvocationsPerWorkgroup': this.adapter?.limits.maxComputeWorkgroupSizeX * this.adapter?.limits.maxComputeWorkgroupSizeY * this.adapter?.limits.maxComputeWorkgroupSizeZ
             }
         });
+
+        console.log(`${this.adapter?.limits.maxComputeWorkgroupSizeX}/${this.adapter?.limits.maxComputeWorkgroupSizeY}/${this.adapter?.limits.maxComputeWorkgroupSizeZ}`)
+
         this.gpuContext?.configure({
             device: this.device as GPUDevice,
             format: navigator.gpu.getPreferredCanvasFormat(),

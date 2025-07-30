@@ -1,8 +1,14 @@
 import type { Context } from "../Context";
-import type { FrameStageFormat } from "../Format";
-import { BaseTexture } from "./BaseTexture";
+import type { TypedArray1DFormat } from "../Format";
+import { Texture2D } from "./Texture2D";
 
-class TextureStorage2D extends BaseTexture {
+/**
+ * 
+ * webgpu use texture storage to write/store result.
+ * 
+ */
+class TextureStorage2D extends Texture2D {
+
     /**
      * 
      * @param opts 
@@ -10,9 +16,10 @@ class TextureStorage2D extends BaseTexture {
     constructor(
         opts: {
             id: number,
-            ctx: Context,
+            context: Context,
             width: number,
             height: number,
+            textureData?: TypedArray1DFormat,
             maxMipLevel?: number,
             textureUsageFlags?: number,
             textureFormat?: GPUTextureFormat,
@@ -20,42 +27,18 @@ class TextureStorage2D extends BaseTexture {
     ) {
         super({
             id: opts.id,
-            ctx: opts.ctx,
+            context: opts.context,
             width: opts.width,
             height: opts.height,
-            depthOrArrayLayers: 1,
-            textureUsageFlags: (opts.textureUsageFlags || 0) | GPUTextureUsage.STORAGE_BINDING | GPUTextureUsage.COPY_DST | GPUTextureUsage.COPY_SRC,
             textureFormat: opts.textureFormat,
             maxMipLevel: opts.maxMipLevel,
-            propertyFormat: 'textureStorage2D'
         });
+        this.textureData = opts.textureData;
+        this.depthOrArrayLayers = 1;
+        this.textureUsageFlags = this.textureUsageFlags | GPUTextureUsage.STORAGE_BINDING | GPUTextureUsage.COPY_DST | GPUTextureUsage.COPY_SRC;
+        this.propertyFormat = 'textureStorage2D';
     }
 
-    /**
-     * 
-     */
-    protected createGpuTexture(): void {
-        throw new Error("Method not implemented.");
-    }
-
-    /**
-     * 
-     */
-    override getGpuTextureView(): GPUTextureView {
-        throw new Error("Method not implemented.");
-    }
-
-    /**
-     * 
-     * @param encoder 
-     * @param frameStage 
-     */
-    override getGpuTexture = (_encoder?: GPUCommandEncoder, _frameStage?: FrameStageFormat): GPUTexture => {
-        if (!this.texture) {
-            this.createGpuTexture();
-        }
-        return this.texture as GPUTexture;
-    }
 }
 
 export {
