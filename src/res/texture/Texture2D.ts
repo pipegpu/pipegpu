@@ -75,7 +75,7 @@ class Texture2D extends BaseTexture {
      * @param encoder 
      * @param frameStage 
      */
-    override getGpuTexture = (_encoder: GPUCommandEncoder, _frameStage: FrameStageFormat): GPUTexture => {
+    override getGpuTexture = (_encoder?: GPUCommandEncoder, _frameStage?: FrameStageFormat): GPUTexture => {
         if (!this.texture) {
             this.createGpuTexture();
         }

@@ -44,13 +44,16 @@ class SurfaceTexture2D extends BaseTexture {
 
     /**
      * 
-     * @param encoder 
-     * @param frameStage 
+     * @param [GPUCommandEncoder] encoder 
+     * @param [FrameStageFormat] frameStage
+     * 
      */
-    override getGpuTexture = (_encoder: GPUCommandEncoder | null = null, _frameStage: FrameStageFormat = 'frameBegin'): GPUTexture => {
+    override getGpuTexture = (_encoder?: GPUCommandEncoder, _frameStage?: FrameStageFormat): GPUTexture => {
         this.createGpuTexture();
         return this.texture as GPUTexture;
+
     }
+
 }
 
 export {
