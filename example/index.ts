@@ -13,7 +13,7 @@ import { initMultiDrawIndirect } from './tech/initMultiDrawIndirect';
 import { initDrawIndexedIndirect } from './tech/initDrawIndexedIndirect.ts'
 import { initMultiDrawIndexedIndirect } from './tech/initMultiDrawIndexedIndirect.ts'
 import { initMultiDrawIndirectWithStorageVertex } from './tech/initMultiDrawIndirectWithStorageVertex.ts';
-import { initTexelCopy } from './tech/initTexelCopy.ts';
+import { initTexelCopy, texelCopyDebugBuffer } from './tech/initTexelCopy.ts';
 
 (async () => {
 
@@ -57,7 +57,7 @@ import { initTexelCopy } from './tech/initTexelCopy.ts';
     // const drawIndexedIndirect = await initDrawIndexedIndirect(compiler, colorAttachments, depthStencilAttachment);
     // const multiDrawIndexedIndirect = await initMultiDrawIndexedIndirect(compiler, colorAttachments, depthStencilAttachment);
     // const drawIndexedStorage = await initMultiDrawIndirectWithStorageVertex(compiler, colorAttachments, depthStencilAttachment);
-    const texelCopy = await initTexelCopy(compiler);
+    const texelCopy: BaseHolder[] = await initTexelCopy(compiler, colorAttachments, depthStencilAttachment) as BaseHolder[];
 
     // const graph: OrderedGraph = new OrderedGraph(ctx);
     // const renderLoop = () => {
@@ -78,16 +78,24 @@ import { initTexelCopy } from './tech/initTexelCopy.ts';
     // holderArray.push(multiDrawIndirect);
     // holderArray.push(drawIndexedIndirect);
     // holderArray.push(multiDrawIndexedIndirect);
-    holderArray.push(texelCopy);
+    holderArray.push(texelCopy[0]);
+    holderArray.push(texelCopy[1]);
 
 
-    const renderLoop = () => {
+    const renderLoop = async () => {
         context.refreshFrameResource();
+
         const encoder = context.getCommandEncoder();
         holderArray.forEach(element => {
             element.build(encoder);
         });
+
         context.submitFrameResource();
+
+        const rawDebugBuffer = await texelCopyDebugBuffer.PullDataAsync(0, 4);
+        const f32DebugBuffer = new Float32Array(rawDebugBuffer as ArrayBuffer);
+        console.log(f32DebugBuffer);
+
         requestAnimationFrame(renderLoop);
     };
     requestAnimationFrame(renderLoop);

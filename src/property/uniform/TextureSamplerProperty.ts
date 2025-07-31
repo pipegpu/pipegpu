@@ -28,6 +28,14 @@ class TextureSamplerProperty extends BaseProperty {
         return this.textureSampler.getID();
     }
 
+    /**
+     * 
+     * @returns 
+     */
+    getTextureSampler = (): TextureSampler => {
+        return this.textureSampler;
+    }
+
 }
 
 export {

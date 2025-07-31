@@ -24,6 +24,7 @@ class TextureSampler extends BaseSampler {
             lodMaxClamp?: number
             anisotropy?: number,
             compareFunction?: GPUCompareFunction,
+            samplerBindingType?: GPUSamplerBindingType,
         }
     ) {
         super(opts);
@@ -35,7 +36,7 @@ class TextureSampler extends BaseSampler {
      * @param _frameStage 
      * @returns 
      */
-    override getGpuSampler = (_encoder: GPUCommandEncoder | null = null, _frameStage: FrameStageFormat = 'frameBegin'): GPUSampler => {
+    public override getGpuSampler = (_encoder?: GPUCommandEncoder, _frameStage?: FrameStageFormat): GPUSampler => {
         if (!this.sampler) {
             this.createGpuSampler();
         }

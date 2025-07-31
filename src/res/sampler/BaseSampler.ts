@@ -3,6 +3,9 @@ import type { FrameStageFormat } from "../Format";
 
 /**
  * 
+ * TODO::
+ * https://github.com/brendan-duncan/wgsl_reflect/issues/77
+ * 
  */
 abstract class BaseSampler {
 
@@ -14,7 +17,7 @@ abstract class BaseSampler {
     /**
      * 
      */
-    protected ctx: Context;
+    protected context: Context;
 
     /**
      * 
@@ -79,6 +82,11 @@ abstract class BaseSampler {
     /**
      * 
      */
+    private samplerBindingType?: GPUSamplerBindingType;
+
+    /**
+     * 
+     */
     constructor(
         opts: {
             id: number,
@@ -93,10 +101,11 @@ abstract class BaseSampler {
             lodMaxClamp?: number
             anisotropy?: number,
             compareFunction?: GPUCompareFunction,
+            samplerBindingType?: GPUSamplerBindingType,
         }
     ) {
         this.id = opts.id;
-        this.ctx = opts.ctx;
+        this.context = opts.ctx;
         this.addressModeU = opts.addressModeU || 'clamp-to-edge';
         this.addressModeV = opts.addressModeV || 'clamp-to-edge';
         this.addressModeW = opts.addressModeW || 'clamp-to-edge';
@@ -107,14 +116,25 @@ abstract class BaseSampler {
         this.lodMaxClamp = opts.lodMaxClamp || 1.0;
         this.anisotropy = opts.anisotropy || 1;
         this.compareFunction = opts.compareFunction || 'always';
+        this.samplerBindingType = opts.samplerBindingType || 'filtering';
     }
 
     /**
      * 
      * @returns 
+     * 
      */
     getID = (): number => {
         return this.id;
+    }
+
+    /**
+     * 
+     * get sampler binding type.
+     * 
+     */
+    get SamplerBindingType() {
+        return this.samplerBindingType;
     }
 
     /**
@@ -135,7 +155,7 @@ abstract class BaseSampler {
             this.samplerDesc.maxAnisotropy = this.anisotropy;
             // TODO:: default non-compre sampler
             // this.samplerDesc.compare = this.compareFunction; 
-            this.sampler = this.ctx?.getGpuDevice().createSampler(this.samplerDesc);
+            this.sampler = this.context?.getGpuDevice().createSampler(this.samplerDesc);
         }
         return this.sampler;
     }
@@ -145,7 +165,7 @@ abstract class BaseSampler {
      * @param encoder 
      * @param frameStage 
      */
-    abstract getGpuSampler(encoder: GPUCommandEncoder | null, frameStage: FrameStageFormat): GPUSampler;
+    public abstract getGpuSampler(_encoder?: GPUCommandEncoder, _frameStage?: FrameStageFormat): GPUSampler;
 
 }
 

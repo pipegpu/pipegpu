@@ -49,6 +49,7 @@ class SamplerState {
             lodMaxClamp?: number
             anisotropy?: number,
             compareFunction?: GPUCompareFunction,
+            samplerBindingType?: GPUSamplerBindingType,
         }
     ) => {
         const samplerID: number = uniqueID();
@@ -64,7 +65,8 @@ class SamplerState {
             lodMinClamp: opts.lodMinClamp,
             lodMaxClamp: opts.lodMaxClamp,
             anisotropy: opts.anisotropy,
-            compareFunction: opts.compareFunction
+            compareFunction: opts.compareFunction,
+            samplerBindingType: opts.samplerBindingType,
         });
         SamplerState.SAMPLER_SET.set(samplerID, sampler);
         return SamplerState.SAMPLER_SET.get(samplerID) as TextureSampler;

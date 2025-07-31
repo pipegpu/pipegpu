@@ -2,6 +2,7 @@ import type { VariableInfo } from "wgsl_reflect";
 import { hash32a } from "../../util/hash32a";
 import type { IReflectUniforms } from "../../util/reflectShaderUniforms";
 import type { Context } from "../Context"
+import type { Uniforms } from "../../property/Properties";
 
 /**
  * 
@@ -15,7 +16,7 @@ abstract class BaseShader {
     /**
      * 
      */
-    private ctx: Context | null | undefined;
+    private context: Context;
 
     /**
      * 
@@ -55,7 +56,7 @@ abstract class BaseShader {
         }
     ) {
         this.id = BaseShader.hash32aID(opts.code, opts.entryPoint);
-        this.ctx = opts.ctx;
+        this.context = opts.ctx;
         this.shaderStage = opts.shaderStage;
         this.code = opts.code;
         this.entryPoint = opts.entryPoint;
@@ -91,9 +92,9 @@ abstract class BaseShader {
      * get gpu-side shader
      */
     getGpuShader(): GPUShaderModule {
-        if (!this.shader) {
-            this.reflect();
-        }
+        // if (!this.shader) {
+        //     this.reflect();
+        // }
         return this.shader as GPUShaderModule;
     }
 
@@ -106,7 +107,7 @@ abstract class BaseShader {
                 label: label,
                 code: this.code,
             };
-            this.shader = this.ctx?.getGpuDevice().createShaderModule(desc);
+            this.shader = this.context?.getGpuDevice().createShaderModule(desc);
             this.shader?.getCompilationInfo().then(value => {
                 value.messages.forEach(message => {
                     console.log(`[E][BaseShader][createGpuShader] wgsl: ${message}`);
@@ -120,9 +121,9 @@ abstract class BaseShader {
      * @returns 
      */
     getBindGroupWithGroupLayoutEntriesMap = (): Map<number, Array<GPUBindGroupLayoutEntry>> => {
-        if (!this.shader) {
-            this.reflect();
-        }
+        // if (!this.shader) {
+        //     this.reflect();
+        // }
         return this.reflectedUniforms?.groupIDwithBindGroupLayoutEntriesMap as Map<number, Array<GPUBindGroupLayoutEntry>>;
     }
 
@@ -131,13 +132,13 @@ abstract class BaseShader {
      * @returns 
      */
     getBindGroupWithResourceBindingsMap = (): Map<number, Array<VariableInfo>> => {
-        if (!this.shader) {
-            this.reflect();
-        }
+        // if (!this.shader) {
+        //     this.reflect();
+        // }
         return this.reflectedUniforms?.groupIDwithResourceBindingsMap as Map<number, Array<VariableInfo>>;
     }
 
-    protected abstract reflect(): void;
+    public abstract reflect(uniforms?: Uniforms): void;
 }
 
 export {

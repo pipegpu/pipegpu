@@ -212,6 +212,10 @@ class Compiler {
             throw new Error(`[E][Compiler][compileRenderHolder] missing shader, vertexShader: ${vertexShader}; fragmentShader:${fragmentShader}`);
         }
 
+        // force update reflected info
+        vertexShader.reflect(desc.uniforms);
+        fragmentShader.reflect(desc.uniforms);
+
         // parse attribute
         const attributeRecordMap: Map<string, IAttributeRecord> = new Map();
         const bufferAttributeRecordsMap: Map<number, Map<string, IAttributeRecord>> = new Map();
@@ -349,6 +353,9 @@ class Compiler {
             throw new Error(`[E][Compiler][compileComputeHolder] missing shader, computeShader: ${computeShader}`);
         }
 
+        // force update reflected info
+        computeShader.reflect(desc.uniforms);
+
         // parse uniform
         const uniformRecordMap: Map<string, IUniformRecord> = new Map();
         const bufferUniformRecordsMap: Map<number, Map<string, IUniformRecord>> = new Map();
@@ -425,6 +432,7 @@ class Compiler {
             textureState: this.textureState,
             computeHandler: computeHandler,
             uniformHandler: unifomrHandler,
+            hookHandler: desc.handler,
             slotBindGroupMap: slotBindGroupMap
         });
     }
@@ -722,6 +730,7 @@ class Compiler {
             lodMaxClamp?: number
             anisotropy?: number,
             compareFunction?: GPUCompareFunction,
+            samplerBindingType?: GPUSamplerBindingType,
         }
     ) => {
         return this.samplerState.createTextureSampler(opts);

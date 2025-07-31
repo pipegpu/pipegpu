@@ -1,4 +1,7 @@
-import { CallExpr, FunctionInfo, ResourceType, VariableInfo, WgslReflect } from "wgsl_reflect";
+import { FunctionInfo, ResourceType, VariableInfo, WgslReflect } from "wgsl_reflect";
+import type { Uniforms } from "../property/Properties";
+import type { TextureProperty } from "../property/uniform/TextureProperty";
+import type { TextureSamplerProperty } from "../property/uniform/TextureSamplerProperty";
 
 /**
  * 
@@ -108,33 +111,130 @@ const getStorageTextureAccess = (binding: VariableInfo): GPUStorageTextureAccess
 };
 
 /**
- * 
+ * ref:
+ * https://www.w3.org/TR/webgpu/#texture-format-caps
  * @param binding 
  * @returns 
  * 
  */
-const getTextureSampleType = (binding: VariableInfo): GPUTextureSampleType => {
-    const typeName: string = binding.type.getTypeName();
-    if (typeName.includes('texture_depth_cube') || typeName.includes('texture_depth_cube_array')) {
-        return 'depth';
-    } else if (typeName.includes('f32') || typeName.includes('f16')) {
-        return 'float';
-    } else if (typeName.includes('u32') || typeName.includes('u16')) {
-        return 'uint';
-    } else if (typeName.includes('i32') || typeName.includes('i16')) {
-        return 'sint';
+const getTextureSampleType = (textureFormat: GPUTextureFormat): GPUTextureSampleType => {
+    switch (textureFormat) {
+        case 'depth16unorm':
+        case 'depth24plus':
+        case 'depth24plus-stencil8':
+        case 'depth32float':
+        case 'depth32float-stencil8':
+            return 'depth';
+        case 'r8uint':
+        case 'rg8uint':
+        case 'rgba8uint':
+        case 'r16uint':
+        case 'rg16uint':
+        case 'rgba16uint':
+        case 'r32uint':
+        case 'rg32uint':
+        case 'rgba32uint':
+        case 'rgb10a2uint':
+            return 'uint';
+        case 'r8sint':
+        case 'rg8sint':
+        case 'rgba8sint':
+        case 'r16sint':
+        case 'rg16sint':
+        case 'rgba16sint':
+        case 'r32sint':
+        case 'rg32sint':
+        case 'rgba32sint':
+            return 'sint';
+        case 'rg16unorm':
+        case 'rg16snorm':
+        case 'r16unorm':
+        case 'r16snorm':
+        case 'rg32float':
+        case 'r32float':
+        case 'rgba16unorm':
+        case 'rgba16snorm':
+        case 'rgba32float':
+            return 'unfilterable-float';
+        case 'rgb9e5ufloat':
+        case 'r8unorm':
+        case 'r8snorm':
+        case 'rg8unorm':
+        case 'rgba8unorm':
+        case 'rgba8unorm-srgb':
+        case 'bgra8unorm':
+        case 'rgba8snorm':
+        case 'bgra8unorm-srgb':
+        case 'rg16float':
+        case 'r16float':
+        case 'rgba16float':
+        case 'rgb10a2unorm':
+        case 'rg11b10ufloat':
+        case 'bc1-rgba-unorm':
+        case 'bc1-rgba-unorm-srgb':
+        case 'bc2-rgba-unorm':
+        case 'bc2-rgba-unorm-srgb':
+        case 'bc3-rgba-unorm':
+        case 'bc3-rgba-unorm-srgb':
+        case 'bc4-r-unorm':
+        case 'bc4-r-snorm':
+        case 'bc5-rg-unorm':
+        case 'bc5-rg-snorm':
+        case 'bc6h-rgb-ufloat':
+        case 'bc6h-rgb-float':
+        case 'bc7-rgba-unorm-srgb':
+        case 'bc7-rgba-unorm':
+        case 'etc2-rgb8unorm':
+        case 'etc2-rgb8unorm-srgb':
+        case 'etc2-rgb8a1unorm':
+        case 'etc2-rgb8a1unorm-srgb':
+        case 'etc2-rgba8unorm-srgb':
+        case 'eac-r11unorm':
+        case 'eac-r11snorm':
+        case 'eac-rg11unorm':
+        case 'eac-rg11snorm':
+        case 'astc-4x4-unorm':
+        case 'astc-4x4-unorm-srgb':
+        case 'astc-5x4-unorm':
+        case 'astc-5x4-unorm-srgb':
+        case 'astc-5x5-unorm':
+        case 'astc-5x5-unorm-srgb':
+        case 'astc-6x5-unorm':
+        case 'astc-6x5-unorm-srgb':
+        case 'astc-6x6-unorm':
+        case 'astc-6x6-unorm-srgb':
+        case 'astc-8x5-unorm':
+        case 'astc-8x5-unorm-srgb':
+        case 'astc-8x6-unorm':
+        case 'astc-8x6-unorm-srgb':
+        case 'astc-8x8-unorm':
+        case 'astc-8x8-unorm-srgb':
+        case 'astc-10x5-unorm':
+        case 'astc-10x5-unorm-srgb':
+        case 'astc-10x6-unorm':
+        case 'astc-10x6-unorm-srgb':
+        case 'astc-10x8-unorm':
+        case 'astc-10x8-unorm-srgb':
+        case 'astc-10x10-unorm':
+        case 'astc-10x10-unorm-srgb':
+        case 'astc-12x10-unorm':
+        case 'astc-12x10-unorm-srgb':
+        case 'astc-12x12-unorm':
+        case 'astc-12x12-unorm-srgb':
+            return 'float';
+        default:
+            throw new Error(`[E][reflectShaderUniforms][getTextureSampleType] unsupported analysis binding texturetype: ${textureFormat}`);
     }
-    throw new Error(`[E][reflectShaderUniforms][getTextureSampleType] unsupported binding texture type name: ${binding.type.name}`);
 };
 
 /**
- * 
+ * reflect shader uniform info.
  * @param code 
  * @param entryPoint 
  * @param shaderStage  GPUShaderStage.
  * @returns 
  */
-const reflectShaderUniforms = (code: string, entryPoint: string, shaderStage: GPUFlagsConstant): IReflectUniforms => {
+const reflectShaderUniforms = (code: string, entryPoint: string, shaderStage: GPUFlagsConstant, uniforms?: Uniforms): IReflectUniforms => {
     const reflect = new WgslReflect(code);
 
     let rawEntry: FunctionInfo | undefined = undefined;
@@ -210,17 +310,22 @@ const reflectShaderUniforms = (code: string, entryPoint: string, shaderStage: GP
                 }
             case ResourceType.Texture:
                 {
+                    if (!uniforms?.getPropertyMap().has(binding.name)) {
+                        throw new Error(`[E][reflectShaderUniforms] input uniforms missing texture property, name: ${binding.name}. please check holder descriptor uniforms.`)
+                    }
                     bindGroupLayoutEntry.texture = {};
                     bindGroupLayoutEntry.texture.viewDimension = getTextureViewDimension(binding);
-                    // TODO, texture format show texture value itself
-                    bindGroupLayoutEntry.texture.sampleType = getTextureSampleType(binding);
+                    const textureFormat = (uniforms?.getPropertyMap().get(binding.name) as TextureProperty).getTexture().getTextureFormat();
+                    bindGroupLayoutEntry.texture.sampleType = getTextureSampleType(textureFormat);
                     groups.push(bindGroupLayoutEntry);
                     resourceBindings.push(binding);
                     break;
                 }
             case ResourceType.StorageTexture:
                 {
-                    bindGroupLayoutEntry.storageTexture = { format: getTextureFormatByTexelType(binding) };
+                    bindGroupLayoutEntry.storageTexture = {
+                        format: getTextureFormatByTexelType(binding)
+                    };
                     bindGroupLayoutEntry.storageTexture.access = getStorageTextureAccess(binding);
                     bindGroupLayoutEntry.storageTexture.viewDimension = getTextureViewDimension(binding);
                     groups.push(bindGroupLayoutEntry);
@@ -229,8 +334,16 @@ const reflectShaderUniforms = (code: string, entryPoint: string, shaderStage: GP
                 }
             case ResourceType.Sampler:
                 {
+                    if (!uniforms?.getPropertyMap().has(binding.name)) {
+                        throw new Error(`[E][reflectShaderUniforms] input uniforms missing sampler property, name: ${binding.name}. please check holder descriptor uniforms.`)
+                    }
+
+                    // TODO:: wait wgsl_reflect support reflect relationshiop bteween texture and textureSampler.
+                    // ISSUE: https://github.com/brendan-duncan/wgsl_reflect/issues/77
+                    const textureSampler = (uniforms?.getPropertyMap().get(binding.name) as TextureSamplerProperty).getTextureSampler();
                     bindGroupLayoutEntry.sampler = {};
-                    bindGroupLayoutEntry.sampler.type = getSamplerBindingType(binding);
+                    bindGroupLayoutEntry.sampler.type = textureSampler.SamplerBindingType;
+
                     groups.push(bindGroupLayoutEntry);
                     resourceBindings.push(binding);
                     break;

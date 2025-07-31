@@ -30,6 +30,14 @@ class TextureProperty extends BaseProperty {
         return this.texture.getID();
     }
 
+    /**
+     * 
+     * @returns 
+     */
+    getTexture = (): BaseTexture => {
+        return this.texture;
+    }
+
 }
 
 export {
