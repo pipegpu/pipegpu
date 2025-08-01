@@ -320,6 +320,13 @@ abstract class BaseTexture {
     }
 
     /**
+     * return maximum mipmap level count.
+     */
+    get MipmapCount() {
+        return this.maxMipLevel;
+    }
+
+    /**
      * 
      * @returns 
      */
