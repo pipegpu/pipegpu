@@ -107,7 +107,7 @@ class Context {
                 'maxComputeWorkgroupSizeY': this.adapter?.limits.maxComputeWorkgroupSizeY,
                 'maxComputeWorkgroupSizeZ': this.adapter?.limits.maxComputeWorkgroupSizeZ,
                 'maxComputeWorkgroupsPerDimension': this.adapter?.limits.maxComputeWorkgroupsPerDimension,
-                // 'maxComputeInvocationsPerWorkgroup': this.adapter?.limits.maxComputeWorkgroupSizeX * this.adapter?.limits.maxComputeWorkgroupSizeY * this.adapter?.limits.maxComputeWorkgroupSizeZ
+                'maxComputeInvocationsPerWorkgroup': this.adapter?.limits.maxComputeInvocationsPerWorkgroup,
             }
         });
 

@@ -47,16 +47,16 @@ import { initTexelCopy, texelCopyDebugBuffer } from './tech/initTexelCopy.ts';
         texture: depthTexture
     });
 
-    // const drawCountHolder = initDrawCount(compiler, colorAttachments, depthStencilAttachment);
-    // const drawIndexedHolder = initDrawIndexed(compiler, colorAttachments, depthStencilAttachment);
-    // const drawInstanceHolder = initDrawInstance(compiler, colorAttachments, depthStencilAttachment);
-    // const texture2DHolder = await initKTXTexture2D(compiler, colorAttachments, depthStencilAttachment);
-    // const texture2DArrayHolder = await initKTXTexture2DArray(compiler, colorAttachments, depthStencilAttachment);
-    // const drawIndirect = await initDrawIndriect(compiler, colorAttachments, depthStencilAttachment);
-    // const multiDrawIndirect = await initMultiDrawIndirect(compiler, colorAttachments, depthStencilAttachment);
-    // const drawIndexedIndirect = await initDrawIndexedIndirect(compiler, colorAttachments, depthStencilAttachment);
-    // const multiDrawIndexedIndirect = await initMultiDrawIndexedIndirect(compiler, colorAttachments, depthStencilAttachment);
-    // const drawIndexedStorage = await initMultiDrawIndirectWithStorageVertex(compiler, colorAttachments, depthStencilAttachment);
+    const drawCountHolder = initDrawCount(compiler, colorAttachments, depthStencilAttachment);
+    const drawIndexedHolder = initDrawIndexed(compiler, colorAttachments, depthStencilAttachment);
+    const drawInstanceHolder = initDrawInstance(compiler, colorAttachments, depthStencilAttachment);
+    const texture2DHolder = await initKTXTexture2D(compiler, colorAttachments, depthStencilAttachment);
+    const texture2DArrayHolder = await initKTXTexture2DArray(compiler, colorAttachments, depthStencilAttachment);
+    const drawIndirect = await initDrawIndriect(compiler, colorAttachments, depthStencilAttachment);
+    const multiDrawIndirect = await initMultiDrawIndirect(compiler, colorAttachments, depthStencilAttachment);
+    const drawIndexedIndirect = await initDrawIndexedIndirect(compiler, colorAttachments, depthStencilAttachment);
+    const multiDrawIndexedIndirect = await initMultiDrawIndexedIndirect(compiler, colorAttachments, depthStencilAttachment);
+    const drawIndexedStorage = await initMultiDrawIndirectWithStorageVertex(compiler, colorAttachments, depthStencilAttachment);
     const texelCopy: BaseHolder[] = await initTexelCopy(compiler, colorAttachments, depthStencilAttachment) as BaseHolder[];
 
     // const graph: OrderedGraph = new OrderedGraph(ctx);
@@ -68,16 +68,16 @@ import { initTexelCopy, texelCopyDebugBuffer } from './tech/initTexelCopy.ts';
     // requestAnimationFrame(renderLoop);
 
     const holderArray: BaseHolder[] = [];
-    // holderArray.push(drawIndexedStorage);
-    // holderArray.push(texture2DHolder);
-    // holderArray.push(drawCountHolder);
-    // holderArray.push(drawIndexedHolder);
-    // holderArray.push(drawInstanceHolder);
-    // holderArray.push(texture2DArrayHolder);
-    // holderArray.push(drawIndirect);
-    // holderArray.push(multiDrawIndirect);
-    // holderArray.push(drawIndexedIndirect);
-    // holderArray.push(multiDrawIndexedIndirect);
+    holderArray.push(drawIndexedStorage);
+    holderArray.push(texture2DHolder);
+    holderArray.push(drawCountHolder);
+    holderArray.push(drawIndexedHolder);
+    holderArray.push(drawInstanceHolder);
+    holderArray.push(texture2DArrayHolder);
+    holderArray.push(drawIndirect);
+    holderArray.push(multiDrawIndirect);
+    holderArray.push(drawIndexedIndirect);
+    holderArray.push(multiDrawIndexedIndirect);
     holderArray.push(texelCopy[0]);
     holderArray.push(texelCopy[1]);
 
@@ -91,11 +91,9 @@ import { initTexelCopy, texelCopyDebugBuffer } from './tech/initTexelCopy.ts';
         });
 
         context.submitFrameResource();
-
-        const rawDebugBuffer = await texelCopyDebugBuffer.PullDataAsync(0, 4);
-        const f32DebugBuffer = new Float32Array(rawDebugBuffer as ArrayBuffer);
-        console.log(f32DebugBuffer);
-
+        // const rawDebugBuffer = await texelCopyDebugBuffer.PullDataAsync(0, 4);
+        // const f32DebugBuffer = new Float32Array(rawDebugBuffer as ArrayBuffer);
+        // console.log(f32DebugBuffer);
         requestAnimationFrame(renderLoop);
     };
     requestAnimationFrame(renderLoop);
