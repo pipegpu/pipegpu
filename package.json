@@ -1,17 +1,22 @@
 {
   "name": "pipegpu",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
     "dev": "vite",
+    "test": "vitest",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/jsdom": "^21.1.7",
+    "@vitest/browser": "^3.2.4",
     "@webgpu/types": "^0.1.63",
+    "playwright": "^1.54.2",
     "typescript": "~5.8.3",
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "vitest": "^3.2.4"
   },
   "dependencies": {
     "wgsl_reflect": "^1.2.3"
