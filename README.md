@@ -2,6 +2,12 @@
 
 > pipegpu is a functional webgpu library, written in typescript. helpes you quickly implement render/compute logic.
 
+## unit test
+> webgpu test dep chrome environment
+``` shell
+npx playwright install  
+```
+
 ## modules
 > descriptor of modules in pipegpu.
 ---
