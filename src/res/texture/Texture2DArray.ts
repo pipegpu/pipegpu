@@ -25,7 +25,7 @@ class Texture2DArray extends BaseTexture {
             appendixTextureUsages?: number,
             textureDataArray?: TypedArray2DFormat,
             textureFormat?: GPUTextureFormat,
-            maxMipLevel?: number
+            mipmapCount?: number
         }
     ) {
         super({
@@ -36,7 +36,7 @@ class Texture2DArray extends BaseTexture {
             depthOrArrayLayers: opts.array,
             textureUsageFlags: (opts.appendixTextureUsages || 0) | GPUTextureUsage.COPY_DST | GPUTextureUsage.TEXTURE_BINDING,
             textureFormat: opts.textureFormat,
-            mipmapCount: opts.maxMipLevel,
+            mipmapCount: opts.mipmapCount,
             propertyFormat: 'texture2DArray'
         });
         this.textureData2DArray = opts.textureDataArray;
@@ -56,9 +56,9 @@ class Texture2DArray extends BaseTexture {
                 height: this.height,
                 depthOrArrayLayers: 1,
             };
-            for (let index: number = 0; index < this.textureData2DArray.length; index++) {
+            for (let index: number = 0, len = this.textureData2DArray.length; index < len; index++) {
                 destination.origin = [0, 0, index];
-                this.context.getGpuQueue().writeTexture(destination, this.textureData2DArray[index], dataLayout, oneLayerExtent3d);
+                this.context.getGpuQueue().writeTexture(destination, (this.textureData2DArray[index] as Uint8Array).buffer, dataLayout, oneLayerExtent3d);
             }
         }
     }

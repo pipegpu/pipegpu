@@ -128,7 +128,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4f {
                 array: 3,
                 textureDataArray: dataArray,
                 textureFormat: 'bc7-rgba-unorm',
-                maxMipLevel: 1
+                mipmapCount: 1
             }
         );
         desc.uniforms?.assign('texture_array', texture2DArray);

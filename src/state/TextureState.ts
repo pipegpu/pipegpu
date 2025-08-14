@@ -84,7 +84,7 @@ class TextureState {
             height: number,
             textureData?: TypedArray1DFormat,
             textureFormat?: GPUTextureFormat,
-            maxMipLevel?: number,
+            mipmapCount?: number,
             appendixTextureUsages?: number,
         }
     ): TextureStorage2D => {
@@ -95,7 +95,7 @@ class TextureState {
             width: opts.width,
             height: opts.height,
             textureData: opts.textureData,
-            maxMipLevel: opts.maxMipLevel,
+            mipmapCount: opts.mipmapCount,
             textureUsageFlags: opts.appendixTextureUsages,
             textureFormat: opts.textureFormat,
         });
@@ -132,7 +132,7 @@ class TextureState {
             appendixTextureUsages?: number,
             textureDataArray?: TypedArray2DFormat,
             textureFormat?: GPUTextureFormat,
-            maxMipLevel?: number
+            mipmapCount?: number
         }
     ): Texture2DArray => {
         const textureArrayID: number = uniqueID();
@@ -145,7 +145,7 @@ class TextureState {
             appendixTextureUsages: opts.appendixTextureUsages,
             textureDataArray: opts.textureDataArray,
             textureFormat: opts.textureFormat,
-            maxMipLevel: opts.maxMipLevel,
+            mipmapCount: opts.mipmapCount,
         });
         TextureState.TEXTURE_SET.set(textureArrayID, texture);
         return TextureState.TEXTURE_SET.get(textureArrayID) as Texture2DArray;

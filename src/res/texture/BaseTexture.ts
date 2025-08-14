@@ -1,4 +1,4 @@
-import { getMaxMipmapLevel } from "../../util/getMaxMipmapLevel";
+import { getMaxMipmapCount } from "../../util/getMaxMipmapLevel";
 import type { Context } from "../Context"
 import type { FrameStageFormat, PropertyFormat } from "../Format";
 
@@ -295,7 +295,7 @@ abstract class BaseTexture {
         this.extent3d = [opts.width, opts.height, opts.depthOrArrayLayers || 1];
         this.textureFormat = opts.textureFormat || this.context.getPreferredTextureFormat();
         this.propertyFormat = opts.propertyFormat;
-        this.maxMipmapCount = getMaxMipmapLevel(...this.extent3d);
+        this.maxMipmapCount = getMaxMipmapCount(...this.extent3d);
         if (this.isDetphTexture()) {
             this.mipmapCount = 1;
             this.textureUsageFlags |= GPUTextureUsage.RENDER_ATTACHMENT;

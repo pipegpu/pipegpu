@@ -12,7 +12,7 @@ const min = (...args: number[]) => {
  * @param extent3d 
  * @returns 
  */
-const getMaxMipmapLevel = (...args: number[]): number => {
+const getMaxMipmapCount = (...args: number[]): number => {
     const maxRes = max(...args);
     return Math.floor(Math.log(maxRes));
 }
@@ -20,5 +20,5 @@ const getMaxMipmapLevel = (...args: number[]): number => {
 export {
     max,
     min,
-    getMaxMipmapLevel
+    getMaxMipmapCount
 }

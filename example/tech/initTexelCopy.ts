@@ -30,7 +30,7 @@ const initTexelCopy = async (compiler: Compiler, colorAttachments: ColorAttachme
         width: wx,
         height: wy,
         textureFormat: 'r32float',
-        maxMipLevel: 1,
+        mipmapCount: 1,
     });
 
     const texture_2d_copied = compiler.createTexture2D({

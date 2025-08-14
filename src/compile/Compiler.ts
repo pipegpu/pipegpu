@@ -691,7 +691,7 @@ class Compiler {
             height: number,
             textureData?: TypedArray1DFormat,
             textureFormat?: GPUTextureFormat,
-            maxMipLevel?: number,
+            mipmapCount?: number,
             appendixTextureUsages?: number,
         }
     ) => {
@@ -712,7 +712,7 @@ class Compiler {
             appendixTextureUsages?: number,
             textureDataArray?: TypedArray2DFormat,
             textureFormat?: GPUTextureFormat,
-            maxMipLevel?: number
+            mipmapCount?: number
         }
     ) => {
         return this.textureState.createTexture2DArray(opts);
