@@ -676,7 +676,7 @@ class Compiler {
             height: number,
             textureData?: TypedArray1DFormat,
             textureFormat?: GPUTextureFormat,
-            maxMipLevel?: number,
+            mipmapCount?: number,
         }
     ) => {
         return this.textureState.createTexutre2D(opts);

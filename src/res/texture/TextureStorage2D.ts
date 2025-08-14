@@ -31,7 +31,7 @@ class TextureStorage2D extends Texture2D {
             width: opts.width,
             height: opts.height,
             textureFormat: opts.textureFormat,
-            maxMipLevel: opts.maxMipLevel,
+            mipmapCount: opts.maxMipLevel,
         });
         this.textureData = opts.textureData;
         this.depthOrArrayLayers = 1;

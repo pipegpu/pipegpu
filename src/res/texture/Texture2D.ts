@@ -24,7 +24,7 @@ class Texture2D extends BaseTexture {
             appendixTextureUsages?: number,
             textureData?: TypedArray1DFormat,
             textureFormat?: GPUTextureFormat,
-            maxMipLevel?: number,
+            mipmapCount?: number,
         }
     ) {
         super({
@@ -35,7 +35,7 @@ class Texture2D extends BaseTexture {
             depthOrArrayLayers: 1,
             textureUsageFlags: (opts.appendixTextureUsages || 0) | GPUTextureUsage.COPY_DST | GPUTextureUsage.TEXTURE_BINDING,
             textureFormat: opts.textureFormat,
-            maxMipLevel: opts.maxMipLevel,
+            mipmapCount: opts.mipmapCount,
             propertyFormat: 'texture2D'
         });
         this.textureData = opts.textureData;
@@ -63,7 +63,7 @@ class Texture2D extends BaseTexture {
             size: this.extent3d,
             format: this.textureFormat,
             usage: this.textureUsageFlags,
-            mipLevelCount: this.maxMipLevel,
+            mipLevelCount: this.mipmapCount,
         };
         // write texture
         this.texture = this.context.getGpuDevice().createTexture(desc);
@@ -91,7 +91,7 @@ class Texture2D extends BaseTexture {
             if (!this.texture) {
                 this.createGpuTexture();
             }
-            for (let k = 0; k < this.maxMipLevel; k++) {
+            for (let k = 0; k < this.mipmapCount; k++) {
                 const desc: GPUTextureViewDescriptor = {};
                 desc.baseArrayLayer = 0;
                 desc.arrayLayerCount = 1;
@@ -114,7 +114,7 @@ class Texture2D extends BaseTexture {
                             break;
                         }
                     default: {
-                        desc.mipLevelCount = this.maxMipLevel - k;
+                        desc.mipLevelCount = this.mipmapCount - k;
                         desc.aspect = 'all';
                         break;
                     }

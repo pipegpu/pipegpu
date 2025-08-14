@@ -23,7 +23,7 @@ const initTexelCopy = async (compiler: Compiler, colorAttachments: ColorAttachme
         height: wy,
         textureData: ktxDataPack.data,
         textureFormat: 'bc7-rgba-unorm',
-        maxMipLevel: 1
+        mipmapCount: 1
     });
 
     const texture_storage_2d = compiler.createTextureStorage2D({
@@ -37,7 +37,7 @@ const initTexelCopy = async (compiler: Compiler, colorAttachments: ColorAttachme
         width: wx,
         height: wy,
         textureFormat: 'r32float',
-        maxMipLevel: 1,
+        mipmapCount: 1,
     });
 
     const workgroup_size: number[] = [16, 16, 1];

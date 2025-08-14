@@ -232,7 +232,12 @@ abstract class BaseTexture {
     /**
      * 
      */
-    protected maxMipLevel: number = 1;
+    protected mipmapCount: number = 1;
+
+    /**
+     * 
+     */
+    protected maxMipmapCount: number = 1;
 
     /**
      * 
@@ -278,7 +283,7 @@ abstract class BaseTexture {
             textureUsageFlags: number,
             textureFormat?: GPUTextureFormat,
             depthOrArrayLayers?: number,
-            maxMipLevel?: number
+            mipmapCount?: number
         }
     ) {
         this.id = opts.id;
@@ -290,11 +295,12 @@ abstract class BaseTexture {
         this.extent3d = [opts.width, opts.height, opts.depthOrArrayLayers || 1];
         this.textureFormat = opts.textureFormat || this.context.getPreferredTextureFormat();
         this.propertyFormat = opts.propertyFormat;
+        this.maxMipmapCount = getMaxMipmapLevel(...this.extent3d);
         if (this.isDetphTexture()) {
-            this.maxMipLevel = 1;
+            this.mipmapCount = 1;
             this.textureUsageFlags |= GPUTextureUsage.RENDER_ATTACHMENT;
         } else {
-            this.maxMipLevel = opts.maxMipLevel || getMaxMipmapLevel(...this.extent3d);
+            this.mipmapCount = opts.mipmapCount || this.maxMipmapCount;
         }
     }
 
@@ -320,10 +326,17 @@ abstract class BaseTexture {
     }
 
     /**
-     * return maximum mipmap level count.
+     * return assigned mipmapcount
      */
     get MipmapCount() {
-        return this.maxMipLevel;
+        return this.mipmapCount;
+    }
+
+    /**
+     * return maximum mipmap level count.
+     */
+    get MaxMipmapCount() {
+        return this.maxMipmapCount;
     }
 
     /**
@@ -399,7 +412,7 @@ abstract class BaseTexture {
      * cursor to next view
      */
     nextCursor = (): void => {
-        this.mipCurosr = (++this.mipCurosr) % this.maxMipLevel;
+        this.mipCurosr = (++this.mipCurosr) % this.mipmapCount;
     }
 
     /**
@@ -407,7 +420,7 @@ abstract class BaseTexture {
      * @param absCursor 
      */
     cursor = (absCursor: number): void => {
-        this.mipCurosr = absCursor % this.maxMipLevel;
+        this.mipCurosr = absCursor % this.mipmapCount;
     }
 
     /**

@@ -53,7 +53,7 @@ class TextureState {
             height: number,
             textureData?: TypedArray1DFormat,
             textureFormat?: GPUTextureFormat,
-            maxMipLevel?: number,
+            mipmapCount?: number,
             appendixTextureUsages?: number,
         }
     ): Texture2D => {
@@ -65,7 +65,7 @@ class TextureState {
             height: opts.height,
             textureData: opts.textureData,
             textureFormat: opts.textureFormat,
-            maxMipLevel: opts.maxMipLevel,
+            mipmapCount: opts.mipmapCount,
             appendixTextureUsages: opts.appendixTextureUsages,
         });
         TextureState.TEXTURE_SET.set(textureID, texture);

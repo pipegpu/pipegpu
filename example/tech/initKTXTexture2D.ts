@@ -115,7 +115,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4f {
                 height: ktxDataPack.height,
                 textureData: ktxDataPack.data,
                 textureFormat: 'bc7-rgba-unorm',
-                maxMipLevel: 1
+                mipmapCount: 1
             }
         );
         desc.uniforms?.assign('texture', texture);
