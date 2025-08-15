@@ -80,19 +80,24 @@ class Context {
     }
 
     /**
+     * @description need use 'await' for adapter request, e.g:
+     * const adapter = await context.init();
      * 
      */
     async init() {
-        this.adapter = await navigator.gpu.requestAdapter();
+        this.adapter = await navigator.gpu.requestAdapter({
+            powerPreference: "high-performance"
+        });
+        if (!this.adapter) {
+            throw new Error(`[E][Context][init] get adapter failed.`);
+        }
         this.supportedFeatures = this.adapter!.features;
-
         // check features 
         (this.requestFeatures || []).forEach(featureName => {
             if (!this.supportedFeatures.has(featureName)) {
                 throw new Error(`[E][Context][init] init context failed. unsupported feature: ${featureName}`);
             }
         });
-
         // issue 1
         // https://github.com/KIWI-ST/pipegpu/issues/1
         // https://www.w3.org/TR/webgpu/#limits
@@ -110,9 +115,6 @@ class Context {
                 'maxComputeInvocationsPerWorkgroup': this.adapter?.limits.maxComputeInvocationsPerWorkgroup,
             }
         });
-
-        console.log(`${this.adapter?.limits.maxComputeWorkgroupSizeX}/${this.adapter?.limits.maxComputeWorkgroupSizeY}/${this.adapter?.limits.maxComputeWorkgroupSizeZ}`)
-
         this.gpuContext?.configure({
             device: this.device as GPUDevice,
             format: navigator.gpu.getPreferredCanvasFormat(),

@@ -1,13 +1,19 @@
 import { defineConfig } from 'vitest/config'
 
+/**
+ * 
+ * https://vitest.dev/guide/browser/#browser-option-types
+ * - webdriverio support chrome env
+ * - webdriverio chrome support webgpu context
+ * 
+ */
 export default defineConfig({
   test: {
     browser: {
-      provider: 'playwright', // or 'webdriverio'
+      provider: 'webdriverio', // playwright
       enabled: true,
-      // at least one instance is required
       instances: [
-        { browser: 'chromium' },
+        { browser: 'chrome' },
       ],
     },
     // environment: 'edge-runtime',
