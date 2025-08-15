@@ -92,7 +92,7 @@ class MapBuffer extends StorageBuffer {
      * @param byteLength 
      * @returns 
      */
-    public async PullDataAsync(byteOffset: number, byteLength: number): Promise<ArrayBuffer | undefined> {
+    public async PullDataAsync(byteOffset?: number, byteLength?: number): Promise<ArrayBuffer | undefined> {
         if (!this.buffer) {
             this.createGpuBuffer();
         }
@@ -100,8 +100,10 @@ class MapBuffer extends StorageBuffer {
             this.createMapReadBuffer();
         }
         const totalByteLength: number = this.getByteLength();
-        if (byteOffset + byteLength > totalByteLength) {
-            console.log(`[E][MapBuffer][PullDataAsync] pull gpu-side buffer failed. byte length oversize: ${byteOffset + byteLength}.`);
+        const offset = byteOffset || 0;
+        const len = byteLength || 0;
+        if (offset + len > totalByteLength) {
+            console.log(`[E][MapBuffer][PullDataAsync] pull gpu-side buffer failed. byte length oversize: ${offset + len}.`);
             return;
         }
         await this.mapReadBuffer.mapAsync(GPUMapMode.READ, 0, totalByteLength);
