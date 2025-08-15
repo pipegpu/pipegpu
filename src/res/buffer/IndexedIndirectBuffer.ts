@@ -16,6 +16,10 @@ import { StorageBuffer } from "./StorageBuffer";
  */
 class IndexedIndirectBuffer extends StorageBuffer {
 
+    /**
+     * 
+     * @param opts 
+     */
     constructor(
         opts: {
             id: number,
@@ -35,14 +39,26 @@ class IndexedIndirectBuffer extends StorageBuffer {
         });
     }
 
+    /**
+     * 
+     * @returns 
+     */
     getStride = (): number => {
         return 5 * 4;
     }
 
+    /**
+     * 
+     * @returns 
+     */
     getOffset = (): number => {
         return 0;
     }
 
+    /**
+     * 
+     * @returns 
+     */
     getIndexIndirectCount = (): number => {
         return this.typedArrayData2D?.length || 0;
     }

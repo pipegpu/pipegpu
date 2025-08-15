@@ -85,9 +85,7 @@ class Context {
      * 
      */
     async init() {
-        this.adapter = await navigator.gpu.requestAdapter({
-            powerPreference: "high-performance"
-        });
+        this.adapter = await navigator.gpu.requestAdapter();
         if (!this.adapter) {
             throw new Error(`[E][Context][init] get adapter failed.`);
         }
