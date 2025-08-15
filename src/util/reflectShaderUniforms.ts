@@ -84,9 +84,20 @@ const getTextureFormatByTexelType = (binding: VariableInfo): GPUTextureFormat =>
     switch (t) {
         case 'r32float':
             return 'r32float';
+        case 'r32uint':
+            return 'r32uint';
+        case 'rgba8sint':
+            return 'rgba8sint';
+        case 'rgba8snorm':
+            return 'rgba8snorm'
+        case 'rgba8uint':
+            return 'rgba8uint'
+        case 'rgba8unorm':
+            return 'rgba8unorm'
         default:
             {
-                throw new Error(`[E][getTextureFormatByTexelType] unsupported texel type: ${t}`);
+                console.warn(`[W][getTextureFormatByTexelType] texel type: ${t}`)
+                return t as GPUTextureFormat;
             }
     }
 }
