@@ -13,15 +13,15 @@ interface IReflectUniforms {
 }
 
 /**
- * 
+ * @deprecated sampler binding type related with input unifomrs.
  * @param t 
  */
-const getSamplerBindingType = (binding: VariableInfo): GPUSamplerBindingType => {
-    if (binding.resourceType === ResourceType.Sampler) {
-        return "filtering";
-    }
-    throw new Error(`[E][reflectShaderUniforms][getSamplerBindingType] unsupported buffer binding type: ${binding.resourceType}`);
-}
+// const getSamplerBindingType = (binding: VariableInfo): GPUSamplerBindingType => {
+//     if (binding.resourceType === ResourceType.Sampler) {
+//         return "filtering";
+//     }
+//     throw new Error(`[E][reflectShaderUniforms][getSamplerBindingType] unsupported buffer binding type: ${binding.resourceType}`);
+// }
 
 /**
  * 

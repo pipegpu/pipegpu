@@ -32,7 +32,7 @@ class ComputeShader extends BaseShader {
      */
     public override reflect = (uniforms?: Uniforms, debugLabel?: string): void => {
         this.createGpuShader(`[ComputeShader] ${debugLabel} shader id: ${this.getID()}]`);
-        this.reflectedUniforms = reflectShaderUniforms(this.code, this.entryPoint, this.shaderStage, uniforms);
+        this.reflectedUniforms = reflectShaderUniforms(this.code, this.entryPoint, this.shaderStage, uniforms, debugLabel);
     }
 
 }
