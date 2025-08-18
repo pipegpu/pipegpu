@@ -245,7 +245,7 @@ const getTextureSampleType = (textureFormat: GPUTextureFormat): GPUTextureSample
  * @param shaderStage  GPUShaderStage.
  * @returns 
  */
-const reflectShaderUniforms = (code: string, entryPoint: string, shaderStage: GPUFlagsConstant, uniforms?: Uniforms): IReflectUniforms => {
+const reflectShaderUniforms = (code: string, entryPoint: string, shaderStage: GPUFlagsConstant, uniforms?: Uniforms, debugLabel?: string): IReflectUniforms => {
     const reflect = new WgslReflect(code);
 
     let rawEntry: FunctionInfo | undefined = undefined;
@@ -273,11 +273,11 @@ const reflectShaderUniforms = (code: string, entryPoint: string, shaderStage: GP
             break;
         default:
             {
-                throw new Error(`[E][reflectShaderUniforms] unsupported shader stage ${shaderStage}`);
+                throw new Error(`[E][reflectShaderUniforms] ${debugLabel} unsupported shader stage ${shaderStage}`);
             }
     }
     if (rawEntry === undefined) {
-        throw new Error(`entry point "${entryPoint}" not found in the shader code.`);
+        throw new Error(`[E][reflectShaderUniforms] ${debugLabel} entry point "${entryPoint}" not found in the shader code.`);
     }
 
     let groupIDwithBindGroupLayoutEntriesMap: Map<number, Array<GPUBindGroupLayoutEntry>> = new Map();
@@ -322,7 +322,7 @@ const reflectShaderUniforms = (code: string, entryPoint: string, shaderStage: GP
             case ResourceType.Texture:
                 {
                     if (!uniforms?.getPropertyMap().has(binding.name)) {
-                        throw new Error(`[E][reflectShaderUniforms] input uniforms missing texture property, name: ${binding.name}. please check holder descriptor uniforms.`)
+                        throw new Error(`[E][reflectShaderUniforms] ${debugLabel} input uniforms missing texture property, name: ${binding.name}. please check holder descriptor uniforms.`)
                     }
                     bindGroupLayoutEntry.texture = {};
                     bindGroupLayoutEntry.texture.viewDimension = getTextureViewDimension(binding);
@@ -346,7 +346,7 @@ const reflectShaderUniforms = (code: string, entryPoint: string, shaderStage: GP
             case ResourceType.Sampler:
                 {
                     if (!uniforms?.getPropertyMap().has(binding.name)) {
-                        throw new Error(`[E][reflectShaderUniforms] input uniforms missing sampler property, name: ${binding.name}. please check holder descriptor uniforms.`)
+                        throw new Error(`[E][reflectShaderUniforms] ${debugLabel} input uniforms missing sampler property, name: ${binding.name}. please check holder descriptor uniforms.`)
                     }
 
                     // TODO:: wait wgsl_reflect support reflect relationshiop bteween texture and textureSampler.
@@ -362,7 +362,7 @@ const reflectShaderUniforms = (code: string, entryPoint: string, shaderStage: GP
 
             default:
                 {
-                    throw new Error(`[E][reflectShaderUniforms] unsupported resource binding resource type: ${binding.resourceType}`);
+                    throw new Error(`[E][reflectShaderUniforms] ${debugLabel} unsupported resource binding resource type: ${binding.resourceType}`);
                 }
         }
 

@@ -56,7 +56,7 @@ const getVertexFormat = (t: TypeInfo): GPUVertexFormat => {
     }
 }
 
-const reflectShaderAttributes = (code: string, entryPoint: string): IReflectAttributes => {
+const reflectShaderAttributes = (code: string, entryPoint: string, debugLabel?: string): IReflectAttributes => {
     const reflect = new WgslReflect(code);
 
     let rawEntry: FunctionInfo | undefined = undefined;
@@ -67,7 +67,7 @@ const reflectShaderAttributes = (code: string, entryPoint: string): IReflectAttr
     });
 
     if (!rawEntry) {
-        throw new Error(`entry point "${entryPoint}" not found in the shader code.`);
+        throw new Error(`[E][reflectShaderAttributes] ${debugLabel} entry point "${entryPoint}" not found in the shader code.`);
     }
 
     let entry: FunctionInfo = rawEntry as FunctionInfo;

@@ -40,7 +40,7 @@ class VertexShader extends BaseShader {
      */
     public override reflect = (uniforms?: Uniforms, debugLabel?: string): void => {
         this.createGpuShader(`[VertexShader] holder name:${debugLabel}, shader id: ${this.getID()}.`);
-        this.reflectedAttributes = reflectShaderAttributes(this.code, this.entryPoint);
+        this.reflectedAttributes = reflectShaderAttributes(this.code, this.entryPoint, debugLabel);
         this.reflectedUniforms = reflectShaderUniforms(this.code, this.entryPoint, this.shaderStage, uniforms);
     }
 

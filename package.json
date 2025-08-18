@@ -1,6 +1,6 @@
 {
   "name": "pipegpu",
-  "version": "0.2.15",
+  "version": "0.2.16",
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
@@ -19,6 +19,7 @@
     "webdriverio": "^9.19.1"
   },
   "dependencies": {
+    "pipegpu": "^0.2.15",
     "wgsl_reflect": "^1.2.3"
   }
 }
