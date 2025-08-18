@@ -17,6 +17,9 @@ import { BaseProperty } from "../BaseProperty";
  */
 type MaxDrawCountHandle = { (): number; }
 
+/**
+ * 
+ */
 class RenderProperty extends BaseProperty {
     /**
      * 
