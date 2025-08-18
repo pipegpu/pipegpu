@@ -13,8 +13,7 @@ const parseColorAttachments = (
 ): GPUColorTargetState[] => {
     const colorTargetStates: GPUColorTargetState[] = [];
     if (opts.colorAttachments.length === 0) {
-        console.log(`[E][parseColorAttachments] ${opts.debugLabel} 'RenderHolderDesc' missing color attachments.`);
-        return colorTargetStates;
+        throw new Error(`[E][parseColorAttachments] ${opts.debugLabel} 'RenderHolderDesc' missing color attachments.`);
     }
     opts.colorAttachments.forEach(colorAttachment => {
         const colorTargetState: GPUColorTargetState = {

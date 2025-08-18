@@ -210,7 +210,7 @@ class Compiler {
         const vertexShader = desc.vertexShader, fragmentShader = desc.fragmentShader;
         // vaildation shader
         if (!vertexShader || !fragmentShader) {
-            throw new Error(`[E][Compiler][compileRenderHolder] missing shader, vertexShader: ${vertexShader}; fragmentShader:${fragmentShader}`);
+            throw new Error(`[E][Compiler][compileRenderHolder] ${debugLabel} missing shader, vertexShader: ${vertexShader}; fragmentShader:${fragmentShader}`);
         }
 
         // force update reflected info
@@ -366,11 +366,11 @@ class Compiler {
         const debugLabel = `[compute][holder][${desc.label}]`;
         const computeShader = desc.computeShader;
         if (!computeShader) {
-            throw new Error(`[E][Compiler][compileComputeHolder] missing shader, computeShader: ${computeShader}`);
+            throw new Error(`[E][Compiler][compileComputeHolder] ${debugLabel} missing shader, computeShader: ${computeShader}`);
         }
 
         // force update reflected info
-        computeShader.reflect(desc.uniforms);
+        computeShader.reflect(desc.uniforms, debugLabel);
 
         // parse uniform
         const uniformRecordMap: Map<string, IUniformRecord> = new Map();
@@ -386,23 +386,26 @@ class Compiler {
         const bindGroupLayouts: GPUBindGroupLayout[] = [];
         const gourpIDWithBindGroupLayoutMap: Map<number, GPUBindGroupLayout> = new Map();
         const gourpIDWithBindGroupLayoutDescriptorMap: Map<number, GPUBindGroupLayoutDescriptor> = new Map();
-        parseComputeBindGroupLayout(
-            this.ctx,
-            computeShader,
-            bindGroupLayouts,
-            gourpIDWithBindGroupLayoutMap,
-            gourpIDWithBindGroupLayoutDescriptorMap
-        );
+        parseComputeBindGroupLayout({
+            debugLabel: debugLabel,
+            context: this.ctx,
+            computeShader: computeShader,
+            bindGroupLayouts: bindGroupLayouts,
+            gourpIDWithBindGroupLayoutMap: gourpIDWithBindGroupLayoutMap,
+            gourpIDWithBindGroupLayoutDescriptorMap: gourpIDWithBindGroupLayoutDescriptorMap
+        });
 
         // parse render dispatch
-        const computeHandler: ComputeHandle = parseComputeDispatch(
-            desc.dispatch
-        );
+        const computeHandler: ComputeHandle = parseComputeDispatch({
+            debugLabel: debugLabel,
+            dispatch: desc.dispatch
+        });
 
         // parse compute program stage
-        const computeProgrammableStage: GPUProgrammableStage = parseComputeProgrammableStage(
-            computeShader
-        );
+        const computeProgrammableStage: GPUProgrammableStage = parseComputeProgrammableStage({
+            debugLabel: debugLabel,
+            computeShader: computeShader
+        });
 
         // parse pipeline layout
         const pipelineLayout: GPUPipelineLayout = parsePipelineLayout({

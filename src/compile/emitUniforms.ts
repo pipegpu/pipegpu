@@ -33,8 +33,7 @@ const emitUniforms = (
         const fsMap: Map<number, VariableInfo[]> = opts.fragmentShader?.getBindGroupWithResourceBindingsMap() || new Map();
         const cpMap: Map<number, VariableInfo[]> = opts.computeShader?.getBindGroupWithResourceBindingsMap() || new Map();
         if (vsMap.size >= MAXBINDGROUPS || fsMap.size >= MAXBINDGROUPS || cpMap.size >= MAXBINDGROUPS) {
-            console.log(`[E][emitUniforms][mergeBindGroupWithResourceBindingsMap] over limits: ${MAXBINDGROUPS}`);
-            return;
+            throw new Error(`[E][emitUniforms][mergeBindGroupWithResourceBindingsMap] ${opts.debugLabel} over limits: ${MAXBINDGROUPS}`);
         }
         for (let k = 0; k < MAXBINDGROUPS; k++) {
             const resourceBindings: VariableInfo[] = [];
@@ -65,11 +64,11 @@ const emitUniforms = (
             let offset: number = 0;
             const key: string = resourceBinding.name;
             if (!opts.uniformRecordMap.has(key)) {
-                throw new Error(`[E][emitUniforms] uniforms ${key} not exists.`);
+                throw new Error(`[E][emitUniforms] ${opts.debugLabel} uniforms ${key} not exists.`);
             }
             const record = opts.uniformRecordMap.get(key);
             if (!record) {
-                throw new Error(`[E][emitUniforms] uniforms record: ${key} is not assigned.`);
+                throw new Error(`[E][emitUniforms] ${opts.debugLabel} uniforms record: ${key} is not assigned.`);
             }
             const t = resourceBinding.resourceType;
             switch (t) {
@@ -79,7 +78,7 @@ const emitUniforms = (
                         const resourcID = record?.resourceID as number;
                         const buffer = opts.bufferState.getBuffer(resourcID);
                         if (!buffer) {
-                            throw new Error(`[E][emitUniforms] emit resource buffer (id:${resourcID}) is undefined.`);
+                            throw new Error(`[E][emitUniforms] ${opts.debugLabel} emit resource buffer (id:${resourcID}) is undefined.`);
                         }
                         const gpuBufferBinding: GPUBufferBinding = {
                             buffer: buffer.getGpuBuffer(null, 'frameBegin'),
@@ -101,7 +100,7 @@ const emitUniforms = (
                         const resourcID = record?.resourceID as number;
                         const textureView = opts.textureState.getTexture(resourcID)?.getGpuTextureView();
                         if (!textureView) {
-                            throw new Error(`[E][emitUniforms] missing texture view, id:${resourcID}`);
+                            throw new Error(`[E][emitUniforms] ${opts.debugLabel} missing texture view, id:${resourcID}`);
                         }
                         const bindGroupEntry: GPUBindGroupEntry = {
                             binding: resourceBinding.binding,
@@ -115,7 +114,7 @@ const emitUniforms = (
                         const resourcID = record?.resourceID as number;
                         const sampler = opts.samplerState.getSampler(resourcID)?.getGpuSampler(undefined, 'frameBegin');
                         if (!sampler) {
-                            throw new Error(`[E][emitUniforms] emit resource sampler (id: ${resourcID}) is undfined.`);
+                            throw new Error(`[E][emitUniforms] ${opts.debugLabel} emit resource sampler (id: ${resourcID}) is undfined.`);
                         }
                         const bindGroupEntry: GPUBindGroupEntry = {
                             binding: resourceBinding.binding,
@@ -126,13 +125,13 @@ const emitUniforms = (
                     }
                 default:
                     {
-                        throw new Error(`[E][emitUniforms] missing uniforms, resourceBindings: ${resourceBindings}`);
+                        throw new Error(`[E][emitUniforms] ${opts.debugLabel} missing uniforms, resourceBindings: ${resourceBindings}`);
                     }
             }
         });
         const bindGroupLayoutDescriptor: GPUBindGroupLayoutDescriptor = opts.gourpIDWithBindGroupLayoutDescriptorMap.get(bindGroupID) as GPUBindGroupLayoutDescriptor;
         if ((bindGroupLayoutDescriptor.entries as GPUBindGroupLayoutEntry[]).length !== bindGroupEntries.length) {
-            throw new Error(`[E][emitUniforms] analysis bind_group_entries error.`);
+            throw new Error(`[E][emitUniforms] ${opts.debugLabel} analysis bind_group_entries error.`);
         }
         const bindGroupDescriptor: GPUBindGroupDescriptor = {
             layout: opts.gourpIDWithBindGroupLayoutMap.get(bindGroupID) as GPUBindGroupLayout,

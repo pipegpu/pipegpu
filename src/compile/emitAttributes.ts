@@ -6,7 +6,7 @@ import type { IAttributeRecord } from "./parseAttribute"
  * 
  * @param vertexFormat 
  */
-const getVertexFormatStride = (vertexFormat: GPUVertexFormat): number => {
+const getVertexFormatStride = (vertexFormat: GPUVertexFormat, debugLabel: string): number => {
     switch (vertexFormat) {
         case 'float32':
             return 4;
@@ -33,7 +33,7 @@ const getVertexFormatStride = (vertexFormat: GPUVertexFormat): number => {
         case 'sint32x4':
             return 16;
         default:
-            console.log(`[E][getVertexFormatStride] unsupported vertex format type: ${vertexFormat}`);
+            console.log(`[E][getVertexFormatStride] ${debugLabel} unsupported vertex format type: ${vertexFormat}`);
             return 0;
     }
 }
@@ -81,7 +81,7 @@ const emitAttributes = (
             if (!r) {
                 return;
             }
-            const stride: number = getVertexFormatStride(att.format);
+            const stride: number = getVertexFormatStride(att.format, `[E]][emitAttributes] ${opts.debugLabel}`);
             const t: PropertyFormat = r.type;
             switch (t) {
                 case 'vertexBuffer':

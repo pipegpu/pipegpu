@@ -1,4 +1,4 @@
-import type { Context } from "../res/Context"
+import { Context } from "../res/Context"
 import type { FragmentShader } from "../res/shader/FragmentShader"
 import type { VertexShader } from "../res/shader/VertexShader"
 import { parseBindGroupLayout } from "./parseBindGroupLayout";
@@ -29,7 +29,7 @@ const parseRenderBindGroupLayout = (
     const MAXBINDGROUPS: number = opts.context.getLimits().maxBindGroups;
     const vsMap = opts.vertexShader.getBindGroupWithGroupLayoutEntriesMap(), fsMap = opts.fragmentShader.getBindGroupWithGroupLayoutEntriesMap();
     if (vsMap?.size + fsMap?.size >= MAXBINDGROUPS * 2) {
-        throw new Error(`[E][parseRenderBindGroupLayout] bindgroup over size.`);
+        throw new Error(`[E][parseRenderBindGroupLayout] ${opts.debugLabel} bindgroup over size.`);
     }
 
     /**
@@ -61,20 +61,21 @@ const parseRenderBindGroupLayout = (
         if (resourceMap.size) {
             collectedBindGroupLayoutEntriesMap.set(bindGroupID, resourceMap.values() as unknown as GPUBindGroupLayoutEntry[]);
             if (collectedBindGroupLayoutEntriesMap.size != bindGroupID + 1) {
-                console.log(`[E][parseRenderBindGroupLayout] binding group should use in order from start [0 to ${MAXBINDGROUPS}], please check shader binding group index.`);
+                console.log(`[E][parseRenderBindGroupLayout] ${opts.debugLabel} binding group should use in order from start [0 to ${MAXBINDGROUPS}], please check shader binding group index.`);
                 collectedBindGroupLayoutEntriesMap.clear();
                 return;
             }
         }
     }
 
-    parseBindGroupLayout(
-        opts.context,
-        collectedBindGroupLayoutEntriesMap,
-        opts.bindGroupLayouts,
-        opts.gourpIDWithBindGroupLayoutMap,
-        opts.gourpIDWithBindGroupLayoutDescriptorMap
-    );
+    parseBindGroupLayout({
+        debugLabel: opts.debugLabel,
+        context: opts.context,
+        collectedBindgroupLayoutEntriesMap: collectedBindGroupLayoutEntriesMap,
+        bindGroupLayouts: opts.bindGroupLayouts,
+        gourpIDWithBindGroupLayoutMap: opts.gourpIDWithBindGroupLayoutMap,
+        gourpIDWithBindGroupLayoutDescriptorMap: opts.gourpIDWithBindGroupLayoutDescriptorMap
+    });
 }
 
 export {
