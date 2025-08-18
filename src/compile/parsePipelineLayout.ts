@@ -7,14 +7,16 @@ import type { Context } from "../res/Context";
  * @returns 
  */
 const parsePipelineLayout = (
-    ctx: Context,
-    bindGroupLayouts: GPUBindGroupLayout[]
+    opts: {
+        debugLabel: string,
+        context: Context,
+        bindGroupLayouts: GPUBindGroupLayout[]
+    }
 ): GPUPipelineLayout => {
     const pipeLineLayoutDescriptor: GPUPipelineLayoutDescriptor = {
-        bindGroupLayouts: bindGroupLayouts,
+        bindGroupLayouts: opts.bindGroupLayouts,
     };
-
-    const pipelineLayout: GPUPipelineLayout = ctx.getGpuDevice().createPipelineLayout(pipeLineLayoutDescriptor);
+    const pipelineLayout: GPUPipelineLayout = opts.context.getGpuDevice().createPipelineLayout(pipeLineLayoutDescriptor);
     return pipelineLayout;
 }
 

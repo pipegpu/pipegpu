@@ -206,6 +206,7 @@ class Compiler {
      * @returns 
      */
     compileRenderHolder = (desc: RenderHolderDesc): RenderHolder => {
+        const debugLabel = `[render][holder][${desc.label}]`;
         const vertexShader = desc.vertexShader, fragmentShader = desc.fragmentShader;
         // vaildation shader
         if (!vertexShader || !fragmentShader) {
@@ -213,13 +214,14 @@ class Compiler {
         }
 
         // force update reflected info
-        vertexShader.reflect(desc.uniforms);
-        fragmentShader.reflect(desc.uniforms);
+        vertexShader.reflect(desc.uniforms, debugLabel);
+        fragmentShader.reflect(desc.uniforms, debugLabel);
 
         // parse attribute
         const attributeRecordMap: Map<string, IAttributeRecord> = new Map();
         const bufferAttributeRecordsMap: Map<number, Map<string, IAttributeRecord>> = new Map();
         parseAttribute({
+            debugLabel: debugLabel,
             attributes: desc.attributes,
             attributeRecordMap: attributeRecordMap,
             bufferAttributeRecordsMap: bufferAttributeRecordsMap
@@ -229,6 +231,7 @@ class Compiler {
         const uniformRecordMap: Map<string, IUniformRecord> = new Map();
         const bufferUniformRecordsMap: Map<number, Map<string, IUniformRecord>> = new Map();
         const unifomrHandler: UniformHandle = parseUniform({
+            debugLabel: debugLabel,
             uniforms: desc.uniforms,
             uniformRecordMap: uniformRecordMap,
             bufferUniformRecordsMap: bufferUniformRecordsMap
@@ -238,64 +241,75 @@ class Compiler {
         const bindGroupLayouts: GPUBindGroupLayout[] = [];
         const gourpIDWithBindGroupLayoutMap: Map<number, GPUBindGroupLayout> = new Map();
         const gourpIDWithBindGroupLayoutDescriptorMap: Map<number, GPUBindGroupLayoutDescriptor> = new Map();
-        parseRenderBindGroupLayout(
-            this.ctx,
-            vertexShader,
-            fragmentShader,
-            bindGroupLayouts,
-            gourpIDWithBindGroupLayoutMap,
-            gourpIDWithBindGroupLayoutDescriptorMap
-        );
+        parseRenderBindGroupLayout({
+            debugLabel: debugLabel,
+            context: this.ctx,
+            vertexShader: vertexShader,
+            fragmentShader: fragmentShader,
+            bindGroupLayouts: bindGroupLayouts,
+            gourpIDWithBindGroupLayoutMap: gourpIDWithBindGroupLayoutMap,
+            gourpIDWithBindGroupLayoutDescriptorMap: gourpIDWithBindGroupLayoutDescriptorMap,
+        });
 
         // parse render dispatch
-        const renderHandler: RenderHandle = parseRenderDispatch(desc.dispatch);
+        const renderHandler: RenderHandle = parseRenderDispatch({
+            debugLabel: debugLabel,
+            dispatch: desc.dispatch
+        });
 
         // parse multi sample state
-        const multiSampleState: GPUMultisampleState = parseMultisampleState(
-            desc.multiSampleFormat || '1x'
-        );
+        const multiSampleState: GPUMultisampleState = parseMultisampleState({
+            debugLabel: debugLabel,
+            multiSampleFormat: desc.multiSampleFormat || '1x'
+        });
 
         // parse color attachments
-        const colorTargetStates: GPUColorTargetState[] = parseColorAttachments(
-            desc.colorAttachments
-        );
+        const colorTargetStates: GPUColorTargetState[] = parseColorAttachments({
+            debugLabel: debugLabel,
+            colorAttachments: desc.colorAttachments
+        });
 
         // parse primitive state
         const primitiveState: GPUPrimitiveState = parsePrimitiveState({
+            debugLabel: debugLabel,
             primitiveDesc: desc.primitiveDesc,
             dispatch: desc.dispatch
         });
 
         // parse fragment state
-        const fragmentState: GPUFragmentState = parseFragmentState(
-            fragmentShader,
-            colorTargetStates
-        );
+        const fragmentState: GPUFragmentState = parseFragmentState({
+            debugLabel: debugLabel,
+            fragmentShader: fragmentShader,
+            colorTargetStates: colorTargetStates
+        });
 
         // parse pipeline layout
-        const pipelineLayout: GPUPipelineLayout = parsePipelineLayout(
-            this.ctx,
-            bindGroupLayouts,
-        );
+        const pipelineLayout: GPUPipelineLayout = parsePipelineLayout({
+            debugLabel: debugLabel,
+            context: this.ctx,
+            bindGroupLayouts: bindGroupLayouts
+        });
 
         // emmit vertex state
         let vertexBufferLayouts: GPUVertexBufferLayout[] = [];
         let bufferVertexAttributesMap: Map<number, GPUVertexAttribute[]> = new Map();
         let slotAttributeBufferIDMap: Map<number, number> = new Map();
-        const vertexState: GPUVertexState = emitAttributes(
-            vertexShader,
-            bufferAttributeRecordsMap,
-            vertexBufferLayouts,
-            bufferVertexAttributesMap,
-            slotAttributeBufferIDMap
-        ) as GPUVertexState;
+        const vertexState: GPUVertexState = emitAttributes({
+            debugLabel: debugLabel,
+            vertexShader: vertexShader,
+            bufferAttributeRecordsMap: bufferAttributeRecordsMap,
+            vertexBufferLayouts: vertexBufferLayouts,
+            vertexBufferIDAttributesMap: bufferVertexAttributesMap,
+            slotBufferIDMap: slotAttributeBufferIDMap
+        }) as GPUVertexState;
 
         // emit uniform
         const slotBindGroupMap: Map<number, GPUBindGroup> = new Map();
         const mergedUniformResourceMap: Map<number, VariableInfo[]> = new Map();
         emitUniforms(
             {
-                ctx: this.ctx,
+                debugLabel: debugLabel,
+                context: this.ctx,
                 vertexShader: vertexShader,
                 fragmentShader: fragmentShader,
                 bufferState: this.bufferState,
@@ -312,6 +326,7 @@ class Compiler {
 
         // emit render pipeline
         const renderPipeline: RenderPipeline = emitRenderPipeline({
+            debugLabel: debugLabel,
             pipelineState: this.pipelineState,
             depthStencilAttachment: desc.depthStencilAttachment,
             vertexState: vertexState,
@@ -328,6 +343,7 @@ class Compiler {
 
         // render holder
         return new RenderHolder({
+            debugLabel: debugLabel,
             id: uniqueID(),
             ctx: this.ctx,
             renderPipeline: renderPipeline,
@@ -347,8 +363,8 @@ class Compiler {
      * @param desc 
      */
     compileComputeHolder = (desc: ComputeHolderDesc): ComputeHolder => {
+        const debugLabel = `[compute][holder][${desc.label}]`;
         const computeShader = desc.computeShader;
-
         if (!computeShader) {
             throw new Error(`[E][Compiler][compileComputeHolder] missing shader, computeShader: ${computeShader}`);
         }
@@ -360,6 +376,7 @@ class Compiler {
         const uniformRecordMap: Map<string, IUniformRecord> = new Map();
         const bufferUniformRecordsMap: Map<number, Map<string, IUniformRecord>> = new Map();
         const unifomrHandler: UniformHandle = parseUniform({
+            debugLabel: debugLabel,
             uniforms: desc.uniforms,
             uniformRecordMap: uniformRecordMap,
             bufferUniformRecordsMap: bufferUniformRecordsMap
@@ -388,17 +405,19 @@ class Compiler {
         );
 
         // parse pipeline layout
-        const pipelineLayout: GPUPipelineLayout = parsePipelineLayout(
-            this.ctx,
-            bindGroupLayouts,
-        );
+        const pipelineLayout: GPUPipelineLayout = parsePipelineLayout({
+            debugLabel: debugLabel,
+            context: this.ctx,
+            bindGroupLayouts: bindGroupLayouts
+        });
 
         // emit uniform
         const slotBindGroupMap: Map<number, GPUBindGroup> = new Map();
         const mergedUniformResourceMap: Map<number, VariableInfo[]> = new Map();
         emitUniforms(
             {
-                ctx: this.ctx,
+                debugLabel: debugLabel,
+                context: this.ctx,
                 computeShader: computeShader,
                 bufferState: this.bufferState,
                 textureState: this.textureState,
@@ -414,6 +433,7 @@ class Compiler {
 
         // emit compute pipeline
         const computePipeline = emitComputePipeline({
+            debugLabel: debugLabel,
             computeProgrammableStage: computeProgrammableStage,
             pipelineLayout: pipelineLayout,
             pipelineState: this.pipelineState
@@ -425,6 +445,7 @@ class Compiler {
         //
 
         return new ComputeHolder({
+            debugLabel: debugLabel,
             id: uniqueID(),
             ctx: this.ctx,
             computePipeline: computePipeline,

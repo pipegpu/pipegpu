@@ -26,8 +26,8 @@ class FragmentShader extends BaseShader {
     /**
      * 
      */
-    public override reflect = (uniforms?: Uniforms): void => {
-        this.createGpuShader(`[FragmentShader][ID][${this.getID()}]`);
+    public override reflect = (uniforms?: Uniforms, debugLabel?: string): void => {
+        this.createGpuShader(`[FragmentShader] holder name ${debugLabel}, shader id: ${this.getID()}`);
         this.reflectedUniforms = reflectShaderUniforms(this.code, this.entryPoint, this.shaderStage, uniforms);
     }
 

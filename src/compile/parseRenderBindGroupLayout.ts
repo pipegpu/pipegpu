@@ -14,17 +14,20 @@ import { parseBindGroupLayout } from "./parseBindGroupLayout";
  * @returns 
  */
 const parseRenderBindGroupLayout = (
-    ctx: Context,
-    vertexShader: VertexShader,
-    fragmentShader: FragmentShader,
-    bindGroupLayouts: GPUBindGroupLayout[],
-    gourpIDWithBindGroupLayoutMap: Map<number, GPUBindGroupLayout>,
-    gourpIDWithBindGroupLayoutDescriptorMap: Map<number, GPUBindGroupLayoutDescriptor>
+    opts: {
+        debugLabel: string,
+        context: Context,
+        vertexShader: VertexShader,
+        fragmentShader: FragmentShader,
+        bindGroupLayouts: GPUBindGroupLayout[],
+        gourpIDWithBindGroupLayoutMap: Map<number, GPUBindGroupLayout>,
+        gourpIDWithBindGroupLayoutDescriptorMap: Map<number, GPUBindGroupLayoutDescriptor>
+    }
 ) => {
     const collectedBindGroupLayoutEntriesMap: Map<number, GPUBindGroupLayoutEntry[]> = new Map();
 
-    const MAXBINDGROUPS: number = ctx.getLimits().maxBindGroups;
-    const vsMap = vertexShader.getBindGroupWithGroupLayoutEntriesMap(), fsMap = fragmentShader.getBindGroupWithGroupLayoutEntriesMap();
+    const MAXBINDGROUPS: number = opts.context.getLimits().maxBindGroups;
+    const vsMap = opts.vertexShader.getBindGroupWithGroupLayoutEntriesMap(), fsMap = opts.fragmentShader.getBindGroupWithGroupLayoutEntriesMap();
     if (vsMap?.size + fsMap?.size >= MAXBINDGROUPS * 2) {
         throw new Error(`[E][parseRenderBindGroupLayout] bindgroup over size.`);
     }
@@ -45,7 +48,7 @@ const parseRenderBindGroupLayout = (
         });
     };
 
-    for (let bindGroupID = 0; bindGroupID < ctx.getLimits().maxBindGroups; bindGroupID++) {
+    for (let bindGroupID = 0; bindGroupID < opts.context.getLimits().maxBindGroups; bindGroupID++) {
         const resourceMap: Map<number, GPUBindGroupLayoutEntry> = new Map();
         if (vsMap.has(bindGroupID)) {
             const bindings: GPUBindGroupLayoutEntry[] = vsMap.get(bindGroupID) as GPUBindGroupLayoutEntry[];
@@ -66,11 +69,11 @@ const parseRenderBindGroupLayout = (
     }
 
     parseBindGroupLayout(
-        ctx,
+        opts.context,
         collectedBindGroupLayoutEntriesMap,
-        bindGroupLayouts,
-        gourpIDWithBindGroupLayoutMap,
-        gourpIDWithBindGroupLayoutDescriptorMap
+        opts.bindGroupLayouts,
+        opts.gourpIDWithBindGroupLayoutMap,
+        opts.gourpIDWithBindGroupLayoutDescriptorMap
     );
 }
 

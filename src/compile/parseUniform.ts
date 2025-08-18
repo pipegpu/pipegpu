@@ -37,13 +37,14 @@ interface IUniformRecord {
  */
 const parseUniform = (
     opts: {
+        debugLabel: string,
         uniforms?: Uniforms,
         uniformRecordMap: Map<string, IUniformRecord>,
         bufferUniformRecordsMap: Map<number, Map<string, IUniformRecord>>
     }
 ): UniformHandle => {
     if (opts.uniforms?.isEmpty()) {
-        console.log(`[I][parseUniform] input 'uniforms' is empty.`);
+        console.log(`[I][parseUniform][holder][name] ${opts.debugLabel}, input 'uniforms' is empty.`);
         return emptyUniformHandler;
     }
 
@@ -122,7 +123,7 @@ const parseUniform = (
                 }
             default:
                 {
-                    throw new Error(`[E][parseUniform] unsupported property type: ${t}`);
+                    throw new Error(`[E][parseUniform][holder][name] ${opts.debugLabel}, unsupported property type: ${t}`);
                 }
         }
     });

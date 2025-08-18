@@ -22,10 +22,16 @@ abstract class BaseHolder {
 
     /**
      * 
+     */
+    protected debugLabel: string;
+
+    /**
+     * 
      * @param opts 
      */
     constructor(
         opts: {
+            debugLabel: string,
             id: number,
             ctx: Context,
             poropertyFormat: PropertyFormat
@@ -34,6 +40,7 @@ abstract class BaseHolder {
         this.id = opts.id;
         this.ctx = opts.ctx;
         this.poropertyFormat = opts.poropertyFormat;
+        this.debugLabel = opts.debugLabel;
     }
 
     /**

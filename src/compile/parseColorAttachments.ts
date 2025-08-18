@@ -6,18 +6,21 @@ import { ColorAttachment } from "../res/attachment/ColorAttachment"
  * @returns 
  */
 const parseColorAttachments = (
-    colorAttachments: ColorAttachment[]
+    opts: {
+        debugLabel: string,
+        colorAttachments: ColorAttachment[],
+    }
 ): GPUColorTargetState[] => {
     const colorTargetStates: GPUColorTargetState[] = [];
-    if (colorAttachments.length === 0) {
-        console.log(`[E][parseColorAttachments] 'RenderHolderDesc' missing color attachments.`);
+    if (opts.colorAttachments.length === 0) {
+        console.log(`[E][parseColorAttachments] ${opts.debugLabel} 'RenderHolderDesc' missing color attachments.`);
         return colorTargetStates;
     }
-    colorAttachments.forEach(colorAttachment => {
+    opts.colorAttachments.forEach(colorAttachment => {
         const colorTargetState: GPUColorTargetState = {
             format: colorAttachment.getTextureFormat()
         };
-        // blend 
+        // blend
         colorTargetState.blend = colorAttachment.getGpuBlendState();
         colorTargetState.writeMask = GPUColorWrite.ALL;
         colorTargetStates.push(colorTargetState);

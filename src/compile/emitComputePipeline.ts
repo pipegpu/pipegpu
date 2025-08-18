@@ -6,6 +6,7 @@ import type { PipelineState } from "../state/PipelineState";
  */
 const emitComputePipeline = (
     opts: {
+        debugLabel: string,
         computeProgrammableStage: GPUProgrammableStage,
         pipelineLayout: GPUPipelineLayout,
         pipelineState: PipelineState,

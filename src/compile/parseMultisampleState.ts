@@ -5,11 +5,16 @@ import type { MultiSampleFormat } from "../res/Format"
  * @param multiSampleFormat 
  * @param multiSampleState 
  */
-const parseMultisampleState = (multiSampleFormat: MultiSampleFormat): GPUMultisampleState => {
+const parseMultisampleState = (
+    opts: {
+        debugLabel: string,
+        multiSampleFormat: MultiSampleFormat
+    }
+): GPUMultisampleState => {
     const multiSampleState: GPUMultisampleState = {};
     // multiSampleState.mask = ~0;
     multiSampleState.alphaToCoverageEnabled = false;
-    switch (multiSampleFormat) {
+    switch (opts.multiSampleFormat) {
         case '1x':
             multiSampleState.count = 1;
             break;
@@ -23,6 +28,7 @@ const parseMultisampleState = (multiSampleFormat: MultiSampleFormat): GPUMultisa
             multiSampleState.count = 8;
             break;
         default:
+            console.warn(`[W][parseMultisampleState] ${opts.debugLabel}`);
             multiSampleState.count = 1;
             break;
     }

@@ -10,7 +10,8 @@ import type { IUniformRecord } from "./parseUniform"
 
 const emitUniforms = (
     opts: {
-        ctx: Context,
+        debugLabel: string,
+        context: Context,
         vertexShader?: VertexShader,
         fragmentShader?: FragmentShader,
         computeShader?: ComputeShader,
@@ -27,7 +28,7 @@ const emitUniforms = (
 ) => {
 
     const mergeBindGroupWithResourceBindingsMap = () => {
-        const MAXBINDGROUPS = opts.ctx.getLimits().maxBindGroups;
+        const MAXBINDGROUPS = opts.context.getLimits().maxBindGroups;
         const vsMap: Map<number, VariableInfo[]> = opts.vertexShader?.getBindGroupWithResourceBindingsMap() || new Map();
         const fsMap: Map<number, VariableInfo[]> = opts.fragmentShader?.getBindGroupWithResourceBindingsMap() || new Map();
         const cpMap: Map<number, VariableInfo[]> = opts.computeShader?.getBindGroupWithResourceBindingsMap() || new Map();
@@ -112,7 +113,7 @@ const emitUniforms = (
                 case ResourceType.Sampler:
                     {
                         const resourcID = record?.resourceID as number;
-                        const sampler = opts.samplerState.getSampler(resourcID)?.getGpuSampler(null, 'frameBegin');
+                        const sampler = opts.samplerState.getSampler(resourcID)?.getGpuSampler(undefined, 'frameBegin');
                         if (!sampler) {
                             throw new Error(`[E][emitUniforms] emit resource sampler (id: ${resourcID}) is undfined.`);
                         }
@@ -137,7 +138,7 @@ const emitUniforms = (
             layout: opts.gourpIDWithBindGroupLayoutMap.get(bindGroupID) as GPUBindGroupLayout,
             entries: bindGroupEntries
         };
-        const bindGroup = opts.ctx.getGpuDevice().createBindGroup(bindGroupDescriptor);
+        const bindGroup = opts.context.getGpuDevice().createBindGroup(bindGroupDescriptor);
         slotBindGroupMap.set(bindGroupID, bindGroup);
     });
 }

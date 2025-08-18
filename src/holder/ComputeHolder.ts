@@ -50,6 +50,7 @@ class ComputeHolder extends BaseHolder {
      */
     constructor(
         opts: {
+            debugLabel: string,
             id: number,
             ctx: Context,
             computePipeline: ComputePipeline,
@@ -62,6 +63,7 @@ class ComputeHolder extends BaseHolder {
         }
     ) {
         super({
+            debugLabel: opts.debugLabel,
             id: opts.id,
             ctx: opts.ctx,
             poropertyFormat: 'computeHolder'

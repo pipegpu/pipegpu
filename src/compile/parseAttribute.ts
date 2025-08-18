@@ -20,13 +20,14 @@ interface IAttributeRecord {
  */
 const parseAttribute = (
     opts: {
+        debugLabel?: string,
         attributes?: Attributes,
         attributeRecordMap: Map<string, IAttributeRecord>,
         bufferAttributeRecordsMap: Map<number, Map<string, IAttributeRecord>>
     }
 ): void => {
     if (opts.attributes?.isEmpty()) {
-        console.log(`[I][parseAttribute] input 'attributes' is empty.`);
+        console.log(`[I][parseAttribute][holder][name] ${opts.debugLabel}, input 'attributes' is empty.`);
         return;
     }
     const appendBufferIDWithAttributeRecords = (bufferID: number, record: IAttributeRecord): void => {
@@ -58,7 +59,7 @@ const parseAttribute = (
                 }
             default:
                 {
-                    throw new Error(`[E][ParseAttribute] unsupport property type: ${t}`);
+                    throw new Error(`[E][ParseAttribute][holder][name] ${opts.debugLabel} unsupport property type: ${t}`);
                 }
         }
     });

@@ -62,6 +62,7 @@ class RenderHolder extends BaseHolder {
      */
     constructor(
         opts: {
+            debugLabel: string,
             id: number,
             ctx: Context,
             renderPipeline: RenderPipeline,
@@ -76,6 +77,7 @@ class RenderHolder extends BaseHolder {
         }
     ) {
         super({
+            debugLabel: opts.debugLabel,
             id: opts.id,
             ctx: opts.ctx,
             poropertyFormat: 'renderHolder'

@@ -3,6 +3,7 @@ import type { PipelineState } from "../state/PipelineState"
 
 const emitRenderPipeline = (
     opts: {
+        debugLabel: string,
         vertexState: GPUVertexState,
         pipelineLayout: GPUPipelineLayout,
         pipelineState: PipelineState,

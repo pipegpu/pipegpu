@@ -7,13 +7,16 @@ import type { FragmentShader } from "../res/shader/FragmentShader";
  * @returns 
  */
 const parseFragmentState = (
-    fragmentShader: FragmentShader,
-    colorTargetStates: GPUColorTargetState[]
+    opts: {
+        debugLabel: string,
+        fragmentShader: FragmentShader,
+        colorTargetStates: GPUColorTargetState[]
+    }
 ): GPUFragmentState => {
     const fragmentState: GPUFragmentState = {
-        targets: colorTargetStates,
-        module: fragmentShader.getGpuShader(),
-        entryPoint: fragmentShader.getEntryPoint(),
+        targets: opts.colorTargetStates,
+        module: opts.fragmentShader.getGpuShader(),
+        entryPoint: opts.fragmentShader.getEntryPoint(),
     };
     return fragmentState;
 }

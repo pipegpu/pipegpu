@@ -24,6 +24,7 @@ interface PrimitiveDesc {
  */
 const parsePrimitiveState = (
     opts: {
+        debugLabel: string,
         primitiveDesc?: PrimitiveDesc,
         dispatch: RenderProperty,
     }
@@ -71,7 +72,7 @@ const parsePrimitiveState = (
             }
         default:
             {
-                console.log(`[E][parsePrimitiveState] unsupported cullFormat: ${cullFormat}`);
+                console.log(`[E][parsePrimitiveState] ${opts.debugLabel} unsupported cullFormat: ${cullFormat}`);
                 primitiveState.cullMode = 'none';
                 break;
             }
