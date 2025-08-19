@@ -1,6 +1,6 @@
 {
   "name": "pipegpu",
-  "version": "0.2.17",
+  "version": "0.3.0",
   "type": "module",
   "main": "src/index.ts",
   "scripts": {

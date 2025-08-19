@@ -111,6 +111,7 @@ class Context {
                 'maxComputeWorkgroupSizeZ': this.adapter?.limits.maxComputeWorkgroupSizeZ,
                 'maxComputeWorkgroupsPerDimension': this.adapter?.limits.maxComputeWorkgroupsPerDimension,
                 'maxComputeInvocationsPerWorkgroup': this.adapter?.limits.maxComputeInvocationsPerWorkgroup,
+                'maxStorageBuffersPerShaderStage': this.adapter?.limits.maxStorageBuffersPerShaderStage,
             }
         });
         this.gpuContext?.configure({

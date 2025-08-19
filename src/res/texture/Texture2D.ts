@@ -96,25 +96,30 @@ class Texture2D extends BaseTexture {
                 desc.baseArrayLayer = 0;
                 desc.arrayLayerCount = 1;
                 desc.baseMipLevel = k;
+                desc.mipLevelCount = 1;             // each view has 1 miplevel count.
                 switch (this.textureFormat) {
-                    case 'depth24plus':
                     case 'depth16unorm':
-                    case 'depth24plus-stencil8':
+                    case 'depth24plus':
                     case 'depth32float':
-                    case 'depth32float-stencil8':
                         {
                             desc.aspect = 'depth-only';
-                            desc.mipLevelCount = 1;
                             break;
                         }
                     case 'stencil8':
                         {
                             desc.aspect = 'stencil-only';
-                            desc.mipLevelCount = 1;
                             break;
                         }
+                    case 'depth24plus-stencil8':
+                    case 'depth32float-stencil8':
+                        {
+                            desc.aspect = 'depth-only';
+                            console.warn(`[W][Texture2D][getGpuTextureView] texture depth24plus-stencil8/depth32float-stencil8 are not 
+                                recommanded because we cannot guess it's aspect, so we use depth-only force. Therefore, we recommend using 
+                                depth16unorm'/'depth24plus'/'depth32float' for depth-only and 'stencil8' for stencil-only.`)
+                            break;
+                        };
                     default: {
-                        desc.mipLevelCount = this.mipmapCount - k;
                         desc.aspect = 'all';
                         break;
                     }
