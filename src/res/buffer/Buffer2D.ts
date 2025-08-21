@@ -47,9 +47,10 @@ class Buffer2D extends BaseBuffer {
         });
         this.typedArrayData2D = opts.typedArrayData2D;
         this.handler = opts.handler;
-        if (this.handler === undefined && this.typedArrayData2D === undefined) {
-            throw new Error(`[E][Buffer2D][constructor] create buffer error, either opts.handler or opts.typedArrayData2D must be assigned a value.`);
-        }
+        //
+        // if (this.handler === undefined && this.typedArrayData2D === undefined) {
+        //     throw new Error(`[E][Buffer2D][constructor] create buffer error, either opts.handler or opts.typedArrayData2D must be assigned a value.`);
+        // }
     }
 
     /**
@@ -63,7 +64,6 @@ class Buffer2D extends BaseBuffer {
         if (offset + byteLength > this.totalByteLength || rawData.byteLength > this.totalByteLength) {
             throw new Error(`[E][VertexBuffer][updateGpuBuffer] buffer bytelength oversized, maximum bytelength: ${this.totalByteLength}`);
         }
-
         // rawdata perphaps typeof ArrayBuffer
         this.ctx?.getGpuQueue().writeBuffer(
             this.buffer as GPUBuffer,
@@ -73,6 +73,14 @@ class Buffer2D extends BaseBuffer {
         );
     }
 
+    /**
+     * 
+     * create gpu buffer
+     * - with maximum byte length.
+     * - write data if typedArrayData2D is valid.
+     * - wirte data if handler is valid.
+     * 
+     */
     protected createGpuBuffer = () => {
         if (!this.buffer) {
             const desc: GPUBufferDescriptor = {
@@ -95,7 +103,7 @@ class Buffer2D extends BaseBuffer {
                 });
             }
         } else {
-            throw new Error(`[E][Buffer2D] createGpuBuffer failed. unsupport source data array.`)
+            console.warn(`[I][Buffer2D] empty source data.`)
         }
     }
 
