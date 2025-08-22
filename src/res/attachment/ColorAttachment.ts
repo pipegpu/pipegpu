@@ -35,7 +35,7 @@ class ColorAttachment extends BaseAttachment {
     /**
      * 
      */
-    private blendState: GPUBlendState | undefined;
+    private blendState?: GPUBlendState;
 
     /**
      * 
@@ -106,13 +106,13 @@ class ColorAttachment extends BaseAttachment {
      * 
      */
     protected override updateState = (): void => {
-        this.blendState = {
-            color: {},
-            alpha: {},
-        };
         switch (this.blendFormat) {
             case 'addAlphaSrcOneDst':
                 {
+                    this.blendState = {
+                        color: {},
+                        alpha: {},
+                    };
                     this.blendState.color.srcFactor = 'src-alpha';
                     this.blendState.color.dstFactor = 'one-minus-src-alpha';
                     this.blendState.color.operation = 'add';
@@ -123,6 +123,10 @@ class ColorAttachment extends BaseAttachment {
                 }
             case 'opaque':
                 {
+                    this.blendState = {
+                        color: {},
+                        alpha: {},
+                    };
                     this.blendState.color.srcFactor = 'one';
                     this.blendState.color.dstFactor = 'zero';
                     this.blendState.color.operation = 'add';
@@ -131,9 +135,15 @@ class ColorAttachment extends BaseAttachment {
                     this.blendState.alpha.operation = 'add';
                     break;
                 }
+            case 'disable':
+                {
+                    this.blendState = undefined;
+                    break;
+                }
             default:
                 {
-                    console.log(`[E][ColorAttachment][getBlendState] unsupport blend format: ${this.blendFormat}`);
+                    console.warn(`[W][ColorAttachment][getBlendState] unsupported blend format: ${this.blendFormat}. disable blend as default.`);
+                    this.blendState = undefined;
                     break;
                 }
         }
@@ -152,10 +162,11 @@ class ColorAttachment extends BaseAttachment {
     /**
      * 
      * @returns 
+     * 
      */
-    getGpuBlendState = (): GPUBlendState => {
+    getGpuBlendState = (): GPUBlendState | undefined => {
         this.updateState();
-        return this.blendState as GPUBlendState;
+        return this.blendState;
     }
 
     /**

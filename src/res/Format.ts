@@ -22,6 +22,7 @@ type TypedArray2DFormat = Array<TypedArray1DFormat>;
  * 
  */
 type BlendFormat =
+    | 'disable'             //
     | 'opaque'
     | 'addAlphaSrcOneDst'   // color = src * k + dst * ( 1- k);
     ;

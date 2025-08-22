@@ -176,14 +176,14 @@ class Context {
      * 
      */
     getViewportWidth = (): number => {
-        return this.contextDesc.width * this.contextDesc.devicePixelRatio;
+        return this.contextDesc.viewportWidth;
     }
 
     /**
      * 
      */
     getViewportHeight = (): number => {
-        return this.contextDesc.height * this.contextDesc.devicePixelRatio;
+        return this.contextDesc.viewportHeight;
     }
 
     /**

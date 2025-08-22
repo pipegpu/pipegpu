@@ -12,13 +12,22 @@ interface IContextOpts {
     selector: string;
 
     /**
+     * 
      * width of the context
+     * style width
+     * e.g
+     * - htmlCanvas.style.width = `${width}px`;
      *
      */
     width: number;
 
     /**
+     * 
      * height of the context
+     * style height
+     * e.g
+     * - htmlCanvas.style.height = `${height}px`;
+     *
      */
     height: number;
 
@@ -83,6 +92,16 @@ interface ContextDesc extends IContextOpts {
      * @param canvas the canvas element to be used as a context
      */
     canvas: HTMLCanvasElement;
+
+    /**
+     * 
+     */
+    viewportWidth: number;
+
+    /**
+     * 
+     */
+    viewportHeight: number;
 }
 
 /**
@@ -99,11 +118,11 @@ const parseContextDesc = (
 ): ContextDesc => {
     const container = document.body;
     let canvas = document.getElementById(opts.selector) as HTMLCanvasElement;
+    const viewportWidth = opts.width * devicePixelRatio;
+    const viewportHeight = opts.height * devicePixelRatio;
     if (canvas) {
-        const w = opts.width * devicePixelRatio;
-        const h = opts.height * devicePixelRatio;
-        canvas.width = w;
-        canvas.height = h;
+        canvas.width = viewportWidth;
+        canvas.height = viewportHeight;
         canvas.style.border = `0px`;
         canvas.style.margin = `0px`;
         canvas.style.padding = `0px`;
@@ -118,9 +137,11 @@ const parseContextDesc = (
         selector: opts.selector,
         width: opts.width,
         height: opts.height,
+        viewportWidth: viewportWidth,
+        viewportHeight: viewportHeight,
         devicePixelRatio: opts.devicePixelRatio || devicePixelRatio || 1.0,
         container: container,
-        canvas: canvas
+        canvas: canvas,
     };
     return desc;
 }
