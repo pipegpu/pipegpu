@@ -61,6 +61,11 @@ class RenderProperty extends BaseProperty {
      */
     private indirectBuffer?: IndirectBuffer;
 
+    /**
+     * 
+     * @param maxDrawCount 
+     */
+    constructor(maxDrawCount: number)
     constructor(maxDrawCount: number, instanceCount: number)
     constructor(indexBuffer: IndexedBuffer)
     constructor(indexBuffer: IndexedBuffer, instanceCount: number)
@@ -70,55 +75,82 @@ class RenderProperty extends BaseProperty {
     constructor(indexStorageBuffer: IndexedStorageBuffer, indexedIndirectBuffer: IndexedIndirectBuffer, indirectDrawCountBuffer: StorageBuffer, handler: MaxDrawCountHandle)
     constructor(indirectBuffer: IndirectBuffer)
     constructor(indirectBuffer: IndirectBuffer, indirectDrawCountBuffer: StorageBuffer, maxDrawCount: number)
-    constructor(a?: IndexedBuffer | IndirectBuffer | number | IndexedStorageBuffer, b?: number | IndexedIndirectBuffer | StorageBuffer, c?: StorageBuffer | number, d?: number | MaxDrawCountHandle) {
+    constructor(indirectBuffer: IndirectBuffer, indirectDrawCountBuffer: StorageBuffer, maxDrawCount: MaxDrawCountHandle)
+    constructor(a?: IndexedBuffer | IndirectBuffer | number | IndexedStorageBuffer, b?: number | IndexedIndirectBuffer | StorageBuffer, c?: StorageBuffer | number | MaxDrawCountHandle, d?: number | MaxDrawCountHandle) {
         super('[RenderProperty][constructor]');
-        if (typeof a === 'number' && typeof b === 'number') {
+        // maxDrawCount: number
+        if (typeof a === 'number' && b === undefined && c === undefined && d === undefined) {
+            this.propertyFormat = 'drawCount';
+            this.maxDrawCount = a;
+            this.instanceCount = 1;
+        }
+        //  maxDrawCount: number, instanceCount: number
+        else if (typeof a === 'number' && typeof b === 'number' && c === undefined && d === undefined) {
             this.propertyFormat = 'drawCount';
             this.maxDrawCount = a;
             this.instanceCount = b;
         }
-        if (a instanceof IndexedStorageBuffer && typeof b === 'number') {
+        // indexBuffer: IndexedBuffer
+        else if (a instanceof IndexedBuffer && b == undefined && c === undefined && d == undefined) {
+            this.propertyFormat = 'drawIndexed';
+            this.indexBuffer = a;
+            this.instanceCount = 1;
+        }
+        // indexBuffer: IndexedBuffer, instanceCount: number
+        else if (a instanceof IndexedBuffer && typeof b === 'number' && c === undefined && d === undefined) {
+            this.propertyFormat = 'drawIndexed';
+            this.indexBuffer = a;
+            this.instanceCount = b;
+        }
+        // indexBuffer: IndexedBuffer, instanceCount: number
+        else if (a instanceof IndexedStorageBuffer && typeof b === 'number' && c === undefined && d === undefined) {
             this.propertyFormat = 'drawIndexedStorage';
             this.indexedStorageBuffer = a;
             this.instanceCount = b;
         }
-        if (a instanceof IndexedBuffer) {
-            this.propertyFormat = 'drawIndexed';
-            this.indexBuffer = a;
-        }
-        if (a instanceof IndexedBuffer && typeof b === 'number') {
-            this.propertyFormat = 'drawIndexed';
-            this.indexBuffer = a;
-            this.instanceCount = b;
-        }
-        if (a instanceof IndirectBuffer) {
-            this.propertyFormat = 'drawIndirect';
-            this.indirectBuffer = a;
-        }
-        if (a instanceof IndirectBuffer && b instanceof StorageBuffer && typeof c === 'number') {
-            this.propertyFormat = 'multiDrawIndirect';
-            this.indirectBuffer = a;
-            this.indirectDrawCountBuffer = b;
-            this.maxDrawCount = c;
-        }
-        if (a instanceof IndexedStorageBuffer && b instanceof IndexedIndirectBuffer) {
+        // indexStorageBuffer: IndexedStorageBuffer, indexedIndirectBuffer: IndexedIndirectBuffer
+        else if (a instanceof IndexedStorageBuffer && b instanceof IndexedIndirectBuffer && c == undefined && d == undefined) {
             this.propertyFormat = 'drawIndexedIndirect'
             this.indexedStorageBuffer = a;
             this.indexedIndirectBuffer = b;
         }
-        if (a instanceof IndexedStorageBuffer && b instanceof IndexedIndirectBuffer && c instanceof StorageBuffer && typeof d === 'number') {
+        // indexStorageBuffer: IndexedStorageBuffer, indexedIndirectBuffer: IndexedIndirectBuffer, indirectDrawCountBuffer: StorageBuffer, maxDrawCount: number
+        else if (a instanceof IndexedStorageBuffer && b instanceof IndexedIndirectBuffer && c instanceof StorageBuffer && typeof d === 'number') {
             this.propertyFormat = 'multiDrawIndexedIndirect'
             this.indexedStorageBuffer = a;
             this.indexedIndirectBuffer = b;
             this.indirectDrawCountBuffer = c;
             this.maxDrawCount = d;
         }
-        if ((a instanceof IndexedStorageBuffer && b instanceof IndexedIndirectBuffer && c instanceof StorageBuffer && typeof d === "function" && d.length === 0)) {
+        // indexStorageBuffer: IndexedStorageBuffer, indexedIndirectBuffer: IndexedIndirectBuffer, indirectDrawCountBuffer: StorageBuffer, handler: MaxDrawCountHandle
+        else if ((a instanceof IndexedStorageBuffer && b instanceof IndexedIndirectBuffer && c instanceof StorageBuffer && typeof d === "function" && d.length === 0)) {
             this.propertyFormat = 'multiDrawIndexedIndirect'
             this.indexedStorageBuffer = a;
             this.indexedIndirectBuffer = b;
             this.indirectDrawCountBuffer = c;
             this.maxDrawCountHandler = d;
+        }
+        // indirectBuffer: IndirectBuffer
+        else if (a instanceof IndirectBuffer && b === undefined && c == undefined && d == undefined) {
+            this.propertyFormat = 'drawIndirect';
+            this.indirectBuffer = a;
+        }
+        // indirectBuffer: IndirectBuffer, indirectDrawCountBuffer: StorageBuffer, maxDrawCount: number
+        else if (a instanceof IndirectBuffer && b instanceof StorageBuffer && typeof c === 'number' && d == undefined) {
+            this.propertyFormat = 'multiDrawIndirect';
+            this.indirectBuffer = a;
+            this.indirectDrawCountBuffer = b;
+            this.maxDrawCount = c;
+        }
+        // indirectBuffer: IndirectBuffer, indirectDrawCountBuffer: StorageBuffer, maxDrawCount: MaxDrawCountHandle
+        else if (a instanceof IndirectBuffer && b instanceof StorageBuffer && typeof c === "function" && c.length === 0 && d === undefined) {
+            this.propertyFormat = 'multiDrawIndirect';
+            this.indirectBuffer = a;
+            this.indirectDrawCountBuffer = b;
+            this.maxDrawCountHandler = c;
+        }
+        else {
+            throw new Error(`[E] unsupported 'RenderProperty' constructor.`);
         }
     }
 

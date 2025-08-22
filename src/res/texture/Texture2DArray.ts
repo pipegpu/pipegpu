@@ -18,7 +18,7 @@ class Texture2DArray extends BaseTexture {
     constructor(
         opts: {
             id: number,
-            ctx: Context,
+            context: Context,
             width: number,
             height: number,
             array: number,
@@ -30,7 +30,7 @@ class Texture2DArray extends BaseTexture {
     ) {
         super({
             id: opts.id,
-            context: opts.ctx,
+            context: opts.context,
             width: opts.width,
             height: opts.height,
             depthOrArrayLayers: opts.array,

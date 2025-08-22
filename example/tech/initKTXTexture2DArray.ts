@@ -5,7 +5,7 @@ const initKTXTexture2DArray = async (compiler: Compiler, colorAttachments: Color
 
     let dispatch: RenderProperty;
     {
-        const indexData = new Int16Array([0, 1, 2, 0, 2, 3]);
+        const indexData = new Uint32Array([0, 1, 2, 0, 2, 3]);
         const indexBuffer = compiler.createIndexBuffer({
             rawData: indexData
         });

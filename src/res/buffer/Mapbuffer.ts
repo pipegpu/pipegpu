@@ -17,10 +17,14 @@ class MapBuffer extends StorageBuffer {
      */
     protected mapWriteBuffer!: GPUBuffer;
 
+    /**
+     * 
+     * @param opts 
+     */
     constructor(
         opts: {
             id: number,
-            ctx: Context,
+            context: Context,
             totalByteLength: number,
             typedArrayData2D?: TypedArray2DFormat,
             handler?: Handle2D
@@ -28,7 +32,7 @@ class MapBuffer extends StorageBuffer {
     ) {
         super({
             id: opts.id,
-            ctx: opts.ctx,
+            context: opts.context,
             bufferUsageFlags: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST | GPUBufferUsage.COPY_SRC,
             totalByteLength: opts.totalByteLength,
             typedArrayData2D: opts.typedArrayData2D,
@@ -45,7 +49,7 @@ class MapBuffer extends StorageBuffer {
             label: "[MapBuffer][createMapReadBuffer]",
             usage: GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST
         };
-        this.mapReadBuffer = this.ctx?.getGpuDevice().createBuffer(desc) as GPUBuffer;
+        this.mapReadBuffer = this.context?.getGpuDevice().createBuffer(desc) as GPUBuffer;
     }
 
     /**
@@ -57,7 +61,7 @@ class MapBuffer extends StorageBuffer {
             label: "[MapBuffer][createMapWriteBuffer]",
             usage: GPUBufferUsage.MAP_WRITE | GPUBufferUsage.COPY_SRC
         };
-        this.mapWriteBuffer = this.ctx?.getGpuDevice().createBuffer(desc) as GPUBuffer;
+        this.mapWriteBuffer = this.context?.getGpuDevice().createBuffer(desc) as GPUBuffer;
     }
 
     /**

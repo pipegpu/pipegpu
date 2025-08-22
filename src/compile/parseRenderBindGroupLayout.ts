@@ -5,7 +5,7 @@ import { parseBindGroupLayout } from "./parseBindGroupLayout";
 
 /**
  * 
- * @param ctx 
+ * @param context 
  * @param vertexShader 
  * @param fragmentShader 
  * @param bindGroupLayouts 

@@ -49,14 +49,14 @@ abstract class BaseShader {
      */
     constructor(
         opts: {
-            ctx: Context,
+            context: Context,
             shaderStage: GPUFlagsConstant,
             code: string,
             entryPoint: string
         }
     ) {
         this.id = BaseShader.hash32aID(opts.code, opts.entryPoint);
-        this.context = opts.ctx;
+        this.context = opts.context;
         this.shaderStage = opts.shaderStage;
         this.code = opts.code;
         this.entryPoint = opts.entryPoint;

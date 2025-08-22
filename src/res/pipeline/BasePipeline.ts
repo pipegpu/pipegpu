@@ -13,7 +13,7 @@ class BasePipeline {
     /**
      * 
      */
-    protected ctx: Context;
+    protected context: Context;
 
     /**
      * 
@@ -27,12 +27,12 @@ class BasePipeline {
     constructor(
         opts: {
             id: number,
-            ctx: Context,
+            context: Context,
             propertyFormat: PropertyFormat
         }
     ) {
         this.id = opts.id;
-        this.ctx = opts.ctx;
+        this.context = opts.context;
         this.propertyFormat = opts.propertyFormat;
     }
 

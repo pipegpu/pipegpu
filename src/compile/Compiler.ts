@@ -150,7 +150,7 @@ class Compiler {
     /**
      * 
      */
-    private ctx: Context;
+    private context: Context;
 
     /**
      * 
@@ -188,16 +188,16 @@ class Compiler {
      */
     constructor(
         opts: {
-            ctx: Context
+            context: Context
         }
     ) {
-        this.ctx = opts.ctx;
-        this.bufferState = new BufferState(this.ctx);
-        this.shaderState = new ShaderState(this.ctx);
-        this.textureState = new TextureState(this.ctx);
-        this.samplerState = new SamplerState(this.ctx);
-        this.pipelineState = new PipelineState(this.ctx);
-        this.attachmentState = new AttachmentState(this.ctx);
+        this.context = opts.context;
+        this.bufferState = new BufferState(this.context);
+        this.shaderState = new ShaderState(this.context);
+        this.textureState = new TextureState(this.context);
+        this.samplerState = new SamplerState(this.context);
+        this.pipelineState = new PipelineState(this.context);
+        this.attachmentState = new AttachmentState(this.context);
     }
 
     /**
@@ -243,7 +243,7 @@ class Compiler {
         const gourpIDWithBindGroupLayoutDescriptorMap: Map<number, GPUBindGroupLayoutDescriptor> = new Map();
         parseRenderBindGroupLayout({
             debugLabel: debugLabel,
-            context: this.ctx,
+            context: this.context,
             vertexShader: vertexShader,
             fragmentShader: fragmentShader,
             bindGroupLayouts: bindGroupLayouts,
@@ -286,7 +286,7 @@ class Compiler {
         // parse pipeline layout
         const pipelineLayout: GPUPipelineLayout = parsePipelineLayout({
             debugLabel: debugLabel,
-            context: this.ctx,
+            context: this.context,
             bindGroupLayouts: bindGroupLayouts
         });
 
@@ -309,7 +309,7 @@ class Compiler {
         emitUniforms(
             {
                 debugLabel: debugLabel,
-                context: this.ctx,
+                context: this.context,
                 vertexShader: vertexShader,
                 fragmentShader: fragmentShader,
                 bufferState: this.bufferState,
@@ -345,7 +345,7 @@ class Compiler {
         return new RenderHolder({
             debugLabel: debugLabel,
             id: uniqueID(),
-            ctx: this.ctx,
+            context: this.context,
             renderPipeline: renderPipeline,
             bufferState: this.bufferState,
             texturteState: this.textureState,
@@ -388,7 +388,7 @@ class Compiler {
         const gourpIDWithBindGroupLayoutDescriptorMap: Map<number, GPUBindGroupLayoutDescriptor> = new Map();
         parseComputeBindGroupLayout({
             debugLabel: debugLabel,
-            context: this.ctx,
+            context: this.context,
             computeShader: computeShader,
             bindGroupLayouts: bindGroupLayouts,
             gourpIDWithBindGroupLayoutMap: gourpIDWithBindGroupLayoutMap,
@@ -410,7 +410,7 @@ class Compiler {
         // parse pipeline layout
         const pipelineLayout: GPUPipelineLayout = parsePipelineLayout({
             debugLabel: debugLabel,
-            context: this.ctx,
+            context: this.context,
             bindGroupLayouts: bindGroupLayouts
         });
 
@@ -420,7 +420,7 @@ class Compiler {
         emitUniforms(
             {
                 debugLabel: debugLabel,
-                context: this.ctx,
+                context: this.context,
                 computeShader: computeShader,
                 bufferState: this.bufferState,
                 textureState: this.textureState,
@@ -450,7 +450,7 @@ class Compiler {
         return new ComputeHolder({
             debugLabel: debugLabel,
             id: uniqueID(),
-            ctx: this.ctx,
+            context: this.context,
             computePipeline: computePipeline,
             bufferState: this.bufferState,
             textureState: this.textureState,

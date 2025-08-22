@@ -52,7 +52,7 @@ class ComputeHolder extends BaseHolder {
         opts: {
             debugLabel: string,
             id: number,
-            ctx: Context,
+            context: Context,
             computePipeline: ComputePipeline,
             bufferState: BufferState,
             textureState: TextureState,
@@ -65,7 +65,7 @@ class ComputeHolder extends BaseHolder {
         super({
             debugLabel: opts.debugLabel,
             id: opts.id,
-            ctx: opts.ctx,
+            context: opts.context,
             poropertyFormat: 'computeHolder'
         });
         this.computePipeline = opts.computePipeline;

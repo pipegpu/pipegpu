@@ -22,7 +22,7 @@ class Buffer2D extends BaseBuffer {
     /**
      * 
      * @param {number}              opts.id 
-     * @param {Context}             opts.ctx
+     * @param {Context}             opts.context
      * @param {number}              opts.totalByteLength
      * @param {GPUBufferUsageFlags} opts.bufferUsageFlags
      * @param {TypedArray2DFormat}  opts.typedArrayData2D
@@ -32,7 +32,7 @@ class Buffer2D extends BaseBuffer {
     constructor(
         opts: {
             id: number,
-            ctx: Context,
+            context: Context,
             totalByteLength: number,
             bufferUsageFlags: GPUBufferUsageFlags
             typedArrayData2D?: TypedArray2DFormat,
@@ -41,7 +41,7 @@ class Buffer2D extends BaseBuffer {
     ) {
         super({
             id: opts.id,
-            ctx: opts.ctx,
+            context: opts.context,
             totalByteLength: opts.totalByteLength,
             bufferUsageFlags: opts.bufferUsageFlags | GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST
         });
@@ -65,7 +65,7 @@ class Buffer2D extends BaseBuffer {
             throw new Error(`[E][VertexBuffer][updateGpuBuffer] buffer bytelength oversized, maximum bytelength: ${this.totalByteLength}`);
         }
         // rawdata perphaps typeof ArrayBuffer
-        this.ctx?.getGpuQueue().writeBuffer(
+        this.context?.getGpuQueue().writeBuffer(
             this.buffer as GPUBuffer,
             offset,
             rawData,
@@ -87,7 +87,7 @@ class Buffer2D extends BaseBuffer {
                 size: this.totalByteLength,
                 usage: this.bufferUsageFlags as GPUBufferUsageFlags
             };
-            this.buffer = this.ctx!.getGpuDevice().createBuffer(desc);
+            this.buffer = this.context!.getGpuDevice().createBuffer(desc);
         }
         if (this.typedArrayData2D) {
             let offset: number = 0;

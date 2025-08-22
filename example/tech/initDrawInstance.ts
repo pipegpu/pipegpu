@@ -4,7 +4,7 @@ const initDrawInstance = (compiler: Compiler, colorAttachments: ColorAttachment[
 
     let dispatch: RenderProperty;
     {
-        const indexData = new Int32Array([0, 1, 2]);
+        const indexData = new Uint32Array([0, 1, 2]);
         const indexBuffer = compiler.createIndexBuffer({
             rawData: indexData
         });

@@ -25,22 +25,22 @@ class IndexedBuffer extends Buffer1D {
     constructor(
         opts: {
             id: number,
-            ctx: Context,
+            context: Context,
             totalByteLength: number,
             typedArrayData1D: TypedArray1DFormat,
         }
     ) {
         super({
             id: opts.id,
-            ctx: opts.ctx,
+            context: opts.context,
             totalByteLength: opts.totalByteLength,
             bufferUsageFlags: GPUBufferUsage.INDEX | GPUBufferUsage.COPY_DST,
             typedArrayData1D: opts.typedArrayData1D,
         });
         this.drawCount = this.typedArrayData1D!.byteLength / this.typedArrayData1D!.BYTES_PER_ELEMENT;
-        if (this.typedArrayData1D! instanceof Int16Array) {
+        if (this.typedArrayData1D! instanceof Uint16Array) {
             this.indexFormat = 'uint16';
-        } else if (this.typedArrayData1D! instanceof Int32Array) {
+        } else if (this.typedArrayData1D! instanceof Uint32Array) {
             this.indexFormat = 'uint32';
         } else {
             throw new Error(`[E][IndexBuffer][constructor] index data type error.`);

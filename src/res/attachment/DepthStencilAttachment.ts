@@ -76,7 +76,7 @@ class DepthStencilAttachment extends BaseAttachment {
     constructor(
         opts: {
             id: number,
-            ctx: Context,
+            context: Context,
             texture: Texture2D,
             depthLoadStoreFormat?: DepthLoadStoreFormat,
             depthCompareFunction?: GPUCompareFunction,
@@ -90,7 +90,7 @@ class DepthStencilAttachment extends BaseAttachment {
     ) {
         super({
             id: opts.id,
-            ctx: opts.ctx
+            context: opts.context
         });
         this.texture = opts.texture;
         this.depthLoadStoreFormat = opts.depthLoadStoreFormat || 'loadStore';

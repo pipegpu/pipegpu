@@ -19,14 +19,14 @@ class AttachmentState {
     /**
      * 
      */
-    private ctx: Context;
+    private context: Context;
 
     /**
      * 
-     * @param ctx 
+     * @param context 
      */
-    constructor(ctx: Context) {
-        this.ctx = ctx;
+    constructor(context: Context) {
+        this.context = context;
     }
 
     /**
@@ -55,7 +55,7 @@ class AttachmentState {
         if (!AttachmentState.ATTACHMENT_SET.has(colorAttachmentID)) {
             const colorAttachment: ColorAttachment = new ColorAttachment({
                 id: colorAttachmentID,
-                ctx: this.ctx,
+                context: this.context,
                 texture: opts.texture,
                 blendFormat: opts.blendFormat,
                 colorLoadStoreFormat: opts.colorLoadStoreFormat,
@@ -88,7 +88,7 @@ class AttachmentState {
         if (!AttachmentState.ATTACHMENT_SET.has(depthStencilAttachmentID)) {
             const depthStencilAttachment: DepthStencilAttachment = new DepthStencilAttachment({
                 id: depthStencilAttachmentID,
-                ctx: this.ctx,
+                context: this.context,
                 texture: opts.texture,
                 depthLoadStoreFormat: opts.depthLoadStoreFormat,
                 depthCompareFunction: opts.depthCompareFunction,

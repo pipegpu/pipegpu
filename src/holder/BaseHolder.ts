@@ -13,7 +13,7 @@ abstract class BaseHolder {
     /**
      * 
      */
-    protected ctx: Context;
+    protected context: Context;
 
     /**
      * 
@@ -33,12 +33,12 @@ abstract class BaseHolder {
         opts: {
             debugLabel: string,
             id: number,
-            ctx: Context,
+            context: Context,
             poropertyFormat: PropertyFormat
         }
     ) {
         this.id = opts.id;
-        this.ctx = opts.ctx;
+        this.context = opts.context;
         this.poropertyFormat = opts.poropertyFormat;
         this.debugLabel = opts.debugLabel;
     }

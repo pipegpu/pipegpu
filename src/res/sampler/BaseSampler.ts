@@ -90,7 +90,7 @@ abstract class BaseSampler {
     constructor(
         opts: {
             id: number,
-            ctx: Context,
+            context: Context,
             addressModeU?: GPUAddressMode,
             addressModeV?: GPUAddressMode,
             addressModeW?: GPUAddressMode,
@@ -105,7 +105,7 @@ abstract class BaseSampler {
         }
     ) {
         this.id = opts.id;
-        this.context = opts.ctx;
+        this.context = opts.context;
         this.addressModeU = opts.addressModeU || 'clamp-to-edge';
         this.addressModeV = opts.addressModeV || 'clamp-to-edge';
         this.addressModeW = opts.addressModeW || 'clamp-to-edge';

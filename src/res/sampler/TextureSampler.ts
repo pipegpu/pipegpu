@@ -13,7 +13,7 @@ class TextureSampler extends BaseSampler {
     constructor(
         opts: {
             id: number,
-            ctx: Context,
+            context: Context,
             addressModeU?: GPUAddressMode,
             addressModeV?: GPUAddressMode,
             addressModeW?: GPUAddressMode,

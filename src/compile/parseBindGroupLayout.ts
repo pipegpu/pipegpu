@@ -2,7 +2,7 @@ import type { Context } from "../res/Context"
 
 /**
  * 
- * @param ctx 
+ * @param context 
  * @param collectedBindgroupLayoutEntriesMap 
  * @param bindGroupLayouts 
  * @param gourpIDWithBindGroupLayoutMap 

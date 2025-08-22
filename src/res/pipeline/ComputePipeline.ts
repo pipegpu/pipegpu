@@ -22,13 +22,13 @@ class ComputePipeline extends BasePipeline {
     constructor(
         opts: {
             id: number,
-            ctx: Context,
+            context: Context,
             computePipelineDescriptor: GPUComputePipelineDescriptor
         }
     ) {
         super({
             id: opts.id,
-            ctx: opts.ctx,
+            context: opts.context,
             propertyFormat: 'computePipeline'
         });
         this.computePipelineDescriptor = opts.computePipelineDescriptor;
@@ -38,7 +38,7 @@ class ComputePipeline extends BasePipeline {
      * 
      */
     private createGpuComputePipeline = (): void => {
-        this.computePipeline = this.ctx.getGpuDevice().createComputePipeline(this.computePipelineDescriptor);
+        this.computePipeline = this.context.getGpuDevice().createComputePipeline(this.computePipelineDescriptor);
     }
 
     /**

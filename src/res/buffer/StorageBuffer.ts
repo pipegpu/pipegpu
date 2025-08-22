@@ -13,7 +13,7 @@ class StorageBuffer extends Buffer2D {
     /**
      * 
      * @param {number}              opts.id
-     * @param {Context}             opts.ctx
+     * @param {Context}             opts.context
      * @param {number}              opts.totalByteLength
      * @param {GPUBufferUsageFlags} opts.bufferUsageFlags
      * @param {TypedArray2DFormat}  opts.typedArrayData2D
@@ -23,7 +23,7 @@ class StorageBuffer extends Buffer2D {
     constructor(
         opts: {
             id: number,
-            ctx: Context,
+            context: Context,
             totalByteLength: number,
             bufferUsageFlags?: GPUBufferUsageFlags
             typedArrayData2D?: TypedArray2DFormat,
@@ -32,7 +32,7 @@ class StorageBuffer extends Buffer2D {
     ) {
         super({
             id: opts.id,
-            ctx: opts.ctx,
+            context: opts.context,
             totalByteLength: opts.totalByteLength,
             bufferUsageFlags: opts.bufferUsageFlags || GPUBufferUsage.STORAGE | GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
             typedArrayData2D: opts.typedArrayData2D,

@@ -22,13 +22,13 @@ class RenderPipeline extends BasePipeline {
     constructor(
         opts: {
             id: number,
-            ctx: Context,
+            context: Context,
             renderPipelineDescriptor: GPURenderPipelineDescriptor
         }
     ) {
         super({
             id: opts.id,
-            ctx: opts.ctx,
+            context: opts.context,
             propertyFormat: 'renderPipeline'
         });
         this.renderPipelineDescriptor = opts.renderPipelineDescriptor;
@@ -38,7 +38,7 @@ class RenderPipeline extends BasePipeline {
      * 
      */
     private createGpuRenderPipeline = (): void => {
-        this.renderPipeline = this.ctx.getGpuDevice().createRenderPipeline(this.renderPipelineDescriptor);
+        this.renderPipeline = this.context.getGpuDevice().createRenderPipeline(this.renderPipelineDescriptor);
     }
 
     /**

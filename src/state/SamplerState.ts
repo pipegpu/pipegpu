@@ -15,14 +15,14 @@ class SamplerState {
     /**
      * 
      */
-    ctx: Context;
+    private context: Context;
 
     /**
      * 
      * @param opts 
      */
-    constructor(ctx: Context) {
-        this.ctx = ctx;
+    constructor(context: Context) {
+        this.context = context;
     }
 
     /**
@@ -55,7 +55,7 @@ class SamplerState {
         const samplerID: number = uniqueID();
         const sampler: TextureSampler = new TextureSampler({
             id: samplerID,
-            ctx: this.ctx,
+            context: this.context,
             addressModeU: opts.addressModeU,
             addressModeV: opts.addressModeV,
             addressModeW: opts.addressModeW,

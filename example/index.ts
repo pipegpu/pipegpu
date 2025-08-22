@@ -25,7 +25,7 @@ import { initTexelCopy, texelCopyDebugBuffer } from './tech/initTexelCopy.ts';
         requestFeatures: ['texture-compression-bc', 'chromium-experimental-multi-draw-indirect']
     });
     await context.init();
-    const compiler: Compiler = new Compiler({ ctx: context });
+    const compiler: Compiler = new Compiler({ context: context });
 
     // color attachment
     const surfaceTexture = compiler.createSurfaceTexture2D();
@@ -59,7 +59,7 @@ import { initTexelCopy, texelCopyDebugBuffer } from './tech/initTexelCopy.ts';
     const drawIndexedStorage = await initMultiDrawIndirectWithStorageVertex(compiler, colorAttachments, depthStencilAttachment);
     const texelCopy: BaseHolder[] = await initTexelCopy(compiler, colorAttachments, depthStencilAttachment) as BaseHolder[];
 
-    // const graph: OrderedGraph = new OrderedGraph(ctx);
+    // const graph: OrderedGraph = new OrderedGraph(context);
     // const renderLoop = () => {
     //     graph.append(holder);
     //     graph.build();

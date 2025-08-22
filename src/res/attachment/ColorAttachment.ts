@@ -49,7 +49,7 @@ class ColorAttachment extends BaseAttachment {
     constructor(
         opts: {
             id: number,
-            ctx: Context,
+            context: Context,
             texture: BaseTexture,
             blendFormat?: BlendFormat,
             colorLoadStoreFormat?: ColorLoadStoreFormat
@@ -58,7 +58,7 @@ class ColorAttachment extends BaseAttachment {
     ) {
         super({
             id: opts.id,
-            ctx: opts.ctx
+            context: opts.context
         });
         this.clearColor.r = opts.clearColor ? opts.clearColor[0] : this.clearColor.r;
         this.clearColor.g = opts.clearColor ? opts.clearColor[1] : this.clearColor.g;
@@ -174,7 +174,7 @@ class ColorAttachment extends BaseAttachment {
      * @returns 
      */
     getTextureFormat = (): GPUTextureFormat => {
-        return this.texture?.getTextureFormat() || this.ctx.getPreferredTextureFormat();
+        return this.texture?.getTextureFormat() || this.context.getPreferredTextureFormat();
     }
 }
 

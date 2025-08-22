@@ -16,14 +16,14 @@ class PipelineState {
     /**
      * 
      */
-    private ctx: Context;
+    private context: Context;
 
     /**
      * 
      * @param opts 
      */
-    constructor(ctx: Context) {
-        this.ctx = ctx;
+    constructor(context: Context) {
+        this.context = context;
     }
 
     /**
@@ -46,7 +46,7 @@ class PipelineState {
         const renderPipelineID: number = uniqueID();
         const pipeline = new RenderPipeline({
             id: renderPipelineID,
-            ctx: this.ctx,
+            context: this.context,
             renderPipelineDescriptor: renderPipelineDescriptor
         });
         PipelineState.PIPELINE_SET.set(renderPipelineID, pipeline);
@@ -61,7 +61,7 @@ class PipelineState {
         const computePipelineID: number = uniqueID();
         const pipeline = new ComputePipeline({
             id: computePipelineID,
-            ctx: this.ctx,
+            context: this.context,
             computePipelineDescriptor: computePipelineDescriptor
         });
         PipelineState.PIPELINE_SET.set(computePipelineID, pipeline);

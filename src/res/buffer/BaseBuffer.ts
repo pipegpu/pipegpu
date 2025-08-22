@@ -54,7 +54,7 @@ abstract class BaseBuffer {
     /**
      * 
      */
-    protected ctx: Context | undefined;
+    protected context: Context | undefined;
 
     /**
      * 
@@ -77,13 +77,13 @@ abstract class BaseBuffer {
     constructor(
         opts: {
             id: number,
-            ctx: Context,
+            context: Context,
             bufferUsageFlags: GPUBufferUsageFlags,
             totalByteLength: number,
         }
     ) {
         this.id = opts.id;
-        this.ctx = opts.ctx;
+        this.context = opts.context;
         this.bufferUsageFlags = opts.bufferUsageFlags;
         this.totalByteLength = opts.totalByteLength;
         if (!this.totalByteLength) {

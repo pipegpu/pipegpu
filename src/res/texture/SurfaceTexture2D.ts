@@ -13,18 +13,18 @@ class SurfaceTexture2D extends BaseTexture {
     constructor(
         opts: {
             id: number,
-            ctx: Context,
+            context: Context,
             appendixTextureUsages?: number,
         }
     ) {
         super({
             id: opts.id,
-            context: opts.ctx,
-            width: opts.ctx.getViewportWidth(),
-            height: opts.ctx.getViewportHeight(),
+            context: opts.context,
+            width: opts.context.getViewportWidth(),
+            height: opts.context.getViewportHeight(),
             textureUsageFlags: (opts.appendixTextureUsages || 0) | GPUTextureUsage.COPY_DST | GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
             propertyFormat: 'texture2D',
-            textureFormat: opts.ctx.getPreferredTextureFormat(),
+            textureFormat: opts.context.getPreferredTextureFormat(),
         });
     }
 

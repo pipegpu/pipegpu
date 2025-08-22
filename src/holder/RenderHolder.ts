@@ -64,7 +64,7 @@ class RenderHolder extends BaseHolder {
         opts: {
             debugLabel: string,
             id: number,
-            ctx: Context,
+            context: Context,
             renderPipeline: RenderPipeline,
             bufferState: BufferState,
             texturteState: TextureState,
@@ -79,7 +79,7 @@ class RenderHolder extends BaseHolder {
         super({
             debugLabel: opts.debugLabel,
             id: opts.id,
-            ctx: opts.ctx,
+            context: opts.context,
             poropertyFormat: 'renderHolder'
         });
         this.renderPipeline = opts.renderPipeline;

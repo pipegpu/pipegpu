@@ -10,13 +10,13 @@ class FragmentShader extends BaseShader {
 
     constructor(
         opts: {
-            ctx: Context,
+            context: Context,
             code: string,
             entryPoint: string
         }
     ) {
         super({
-            ctx: opts.ctx,
+            context: opts.context,
             code: opts.code,
             entryPoint: opts.entryPoint,
             shaderStage: GPUShaderStage.FRAGMENT

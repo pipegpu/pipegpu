@@ -20,14 +20,14 @@ class TextureState {
     /**
      * 
      */
-    private ctx: Context;
+    private context: Context;
 
     /**
      * 
      * @param opts 
      */
-    constructor(ctx: Context) {
-        this.ctx = ctx;
+    constructor(context: Context) {
+        this.context = context;
     }
 
     /**
@@ -60,7 +60,7 @@ class TextureState {
         const textureID: number = uniqueID();
         const texture: Texture2D = new Texture2D({
             id: textureID,
-            context: this.ctx,
+            context: this.context,
             width: opts.width,
             height: opts.height,
             textureData: opts.textureData,
@@ -91,7 +91,7 @@ class TextureState {
         const textureID: number = uniqueID();
         const texture: TextureStorage2D = new TextureStorage2D({
             id: textureID,
-            context: this.ctx,
+            context: this.context,
             width: opts.width,
             height: opts.height,
             textureData: opts.textureData,
@@ -113,7 +113,7 @@ class TextureState {
         const textureID: number = uniqueID();
         const texture = new SurfaceTexture2D({
             id: textureID,
-            ctx: this.ctx
+            context: this.context
         });
         TextureState.TEXTURE_SET.set(textureID, texture);
         return texture;
@@ -138,7 +138,7 @@ class TextureState {
         const textureArrayID: number = uniqueID();
         const texture = new Texture2DArray({
             id: textureArrayID,
-            ctx: this.ctx,
+            context: this.context,
             width: opts.width,
             height: opts.height,
             array: opts.array,

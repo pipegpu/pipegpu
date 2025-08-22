@@ -23,15 +23,15 @@ class BufferState {
     /**
      * 
      */
-    private ctx: Context;
+    private context: Context;
 
     /**
      * 
      * @param opts 
      * 
      */
-    constructor(ctx: Context) {
-        this.ctx = ctx;
+    constructor(context: Context) {
+        this.context = context;
     }
 
     /**
@@ -61,7 +61,7 @@ class BufferState {
         const bufferID: number = uniqueID();
         const buffer: IndexedBuffer = new IndexedBuffer({
             id: bufferID,
-            ctx: this.ctx,
+            context: this.context,
             totalByteLength: opts.rawData.byteLength,
             typedArrayData1D: opts.rawData
         });
@@ -85,7 +85,7 @@ class BufferState {
         const bufferID = uniqueID();
         const buffer: UniformBuffer = new UniformBuffer({
             id: bufferID,
-            ctx: this.ctx,
+            context: this.context,
             totalByteLength: opts.totalByteLength,
             typedArrayData1D: opts.rawData,
             handler: opts.handler
@@ -110,7 +110,7 @@ class BufferState {
         const bufferID: number = uniqueID();
         const buffer: MapBuffer = new MapBuffer({
             id: bufferID,
-            ctx: this.ctx,
+            context: this.context,
             totalByteLength: opts.totalByteLength,
             typedArrayData2D: opts.rawData,
             handler: opts.handler
@@ -135,7 +135,7 @@ class BufferState {
         const bufferID: number = uniqueID();
         const buffer: StorageBuffer = new StorageBuffer({
             id: bufferID,
-            ctx: this.ctx,
+            context: this.context,
             totalByteLength: opts.totalByteLength,
             typedArrayData2D: opts.rawData,
             bufferUsageFlags: opts.bufferUsageFlags,
@@ -159,7 +159,7 @@ class BufferState {
         const bufferID: number = uniqueID();
         const buffer: IndexedStorageBuffer = new IndexedStorageBuffer({
             id: bufferID,
-            ctx: this.ctx,
+            context: this.context,
             totalByteLength: opts.totalByteLength,
             typedArrayData2D: opts.rawData,
             handler: opts.handler
@@ -185,7 +185,7 @@ class BufferState {
         const bufferID: number = uniqueID();
         const buffer: VertexBuffer = new VertexBuffer({
             id: bufferID,
-            ctx: this.ctx,
+            context: this.context,
             totalByteLength: opts.totalByteLength,
             typedArrayData1D: opts.rawData,
             handler: opts.handler
@@ -204,7 +204,7 @@ class BufferState {
         const bufferID: number = uniqueID();
         const buffer: IndirectBuffer = new IndirectBuffer({
             id: bufferID,
-            ctx: this.ctx,
+            context: this.context,
             totalByteLength: opts.totalByteLength,
             typedArrayData2D: opts.rawData,
             handler: opts.handler
@@ -223,7 +223,7 @@ class BufferState {
         const bufferID: number = uniqueID();
         const buffer: IndexedIndirectBuffer = new IndexedIndirectBuffer({
             id: bufferID,
-            ctx: this.ctx,
+            context: this.context,
             totalByteLength: opts.totalByteLength,
             typedArrayData2D: opts.rawData,
             handler: opts.handler,

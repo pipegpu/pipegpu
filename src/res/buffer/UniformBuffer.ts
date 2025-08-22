@@ -15,7 +15,7 @@ class UniformBuffer extends Buffer1D {
     constructor(
         opts: {
             id: number,
-            ctx: Context,
+            context: Context,
             totalByteLength: number,
             typedArrayData1D?: TypedArray1DFormat,
             handler?: Handle1D
@@ -23,7 +23,7 @@ class UniformBuffer extends Buffer1D {
     ) {
         super({
             id: opts.id,
-            ctx: opts.ctx,
+            context: opts.context,
             totalByteLength: opts.totalByteLength,
             bufferUsageFlags: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
             typedArrayData1D: opts.typedArrayData1D,

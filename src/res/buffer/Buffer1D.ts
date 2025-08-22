@@ -19,7 +19,7 @@ class Buffer1D extends BaseBuffer {
     /**
      * 
      * @param {number}              opts.id 
-     * @param {Context}             opts.ctx
+     * @param {Context}             opts.context
      * @param {number}              opts.totalByteLength
      * @param {GPUBufferUsageFlags} opts.bufferUsageFlags
      * @param {TypedArray1DFormat}  [opts.typedArrayData1D] - either opts.handler or opts.typedArrayData1D must be assigned a value.
@@ -29,7 +29,7 @@ class Buffer1D extends BaseBuffer {
     constructor(
         opts: {
             id: number,
-            ctx: Context,
+            context: Context,
             totalByteLength: number,
             bufferUsageFlags: GPUBufferUsageFlags
             typedArrayData1D?: TypedArray1DFormat,
@@ -38,7 +38,7 @@ class Buffer1D extends BaseBuffer {
     ) {
         super({
             id: opts.id,
-            ctx: opts.ctx,
+            context: opts.context,
             bufferUsageFlags: opts.bufferUsageFlags,
             totalByteLength: opts.totalByteLength,
         });
@@ -62,7 +62,7 @@ class Buffer1D extends BaseBuffer {
         }
         // align 4 byte for input byteLength
         // const algin4 = align4Byte(byteLength);
-        this.ctx?.getGpuQueue().writeBuffer(
+        this.context?.getGpuQueue().writeBuffer(
             this.buffer as GPUBuffer,
             offset,
             rawData,
@@ -79,7 +79,7 @@ class Buffer1D extends BaseBuffer {
                 size: this.totalByteLength,
                 usage: this.bufferUsageFlags as GPUBufferUsageFlags
             };
-            this.buffer = this.ctx!.getGpuDevice().createBuffer(desc);
+            this.buffer = this.context!.getGpuDevice().createBuffer(desc);
         }
         if (this.typedArrayData1D) {
             this.updateGpuBuffer(0, this.typedArrayData1D!.byteLength, this.typedArrayData1D!);

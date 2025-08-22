@@ -12,7 +12,7 @@ abstract class BaseAttachment {
     /**
      * 
      */
-    protected ctx: Context;
+    protected context: Context;
 
     /**
      * 
@@ -21,10 +21,10 @@ abstract class BaseAttachment {
     constructor(
         opts: {
             id: number,
-            ctx: Context
+            context: Context
         }
     ) {
-        this.ctx = opts.ctx;
+        this.context = opts.context;
         this.id = opts.id;
     }
 

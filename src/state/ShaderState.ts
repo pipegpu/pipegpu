@@ -17,16 +17,16 @@ class ShaderState {
     /**
      * 
      */
-    private ctx: Context;
+    private context: Context;
 
     /**
      * 
      * @param opts 
      */
     constructor(
-        ctx: Context,
+        context: Context,
     ) {
-        this.ctx = ctx;
+        this.context = context;
     }
 
     /**
@@ -50,7 +50,7 @@ class ShaderState {
         const shaderID: number = BaseShader.hash32aID(opts.code, opts.entryPoint);
         if (!ShaderState.CACHE.has(shaderID)) {
             const shader: VertexShader = new VertexShader({
-                ctx: this.ctx,
+                context: this.context,
                 code: opts.code,
                 entryPoint: opts.entryPoint
             });
@@ -71,7 +71,7 @@ class ShaderState {
         const shaderID: number = BaseShader.hash32aID(opts.code, opts.entryPoint);
         if (!ShaderState.CACHE.has(shaderID)) {
             const shader = new FragmentShader({
-                ctx: this.ctx,
+                context: this.context,
                 code: opts.code,
                 entryPoint: opts.entryPoint
             });
@@ -92,7 +92,7 @@ class ShaderState {
         const shaderID: number = BaseShader.hash32aID(opts.code, opts.entryPoint);
         if (!ShaderState.CACHE.has(shaderID)) {
             const shader = new ComputeShader({
-                ctx: this.ctx,
+                context: this.context,
                 code: opts.code,
                 entryPoint: opts.entryPoint
             });

@@ -23,7 +23,7 @@ class IndexedIndirectBuffer extends StorageBuffer {
     constructor(
         opts: {
             id: number,
-            ctx: Context,
+            context: Context,
             totalByteLength: number,
             typedArrayData2D?: TypedArray2DFormat,
             handler?: Handle2D,
@@ -31,7 +31,7 @@ class IndexedIndirectBuffer extends StorageBuffer {
     ) {
         super({
             id: opts.id,
-            ctx: opts.ctx,
+            context: opts.context,
             totalByteLength: opts.totalByteLength,
             bufferUsageFlags: GPUBufferUsage.INDIRECT | GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST | GPUBufferUsage.COPY_SRC,
             typedArrayData2D: opts.typedArrayData2D,
