@@ -98,8 +98,6 @@ class Buffer2D extends BaseBuffer {
                     this.updateGpuBuffer(detail.offset, detail.byteLength, detail.rawData);
                 });
             }
-        } else {
-            console.warn(`[I][Buffer2D] empty source data.`)
         }
     }
 
