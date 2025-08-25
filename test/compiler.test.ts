@@ -43,3 +43,18 @@ test('compiler create vertex buffer.', async () => {
     assert(vertexBuffer.getByteLength() == 12 * 4, `vertex buffer byteLength.`);
     assert(vertexBuffer.getID() > 0, `vaild vertex buffer id`);
 });
+
+test('compiler create mapbuffer.', async () => {
+    const storageMapBuffer = compiler.createMapBuffer({
+        totalByteLength: 4,
+        rawData2D: [new Float32Array([1.0])],
+        appendixBufferUsageFlags: GPUBufferUsage.STORAGE,
+    });
+    const querySetMapBuffer = compiler.createMapBuffer({
+        totalByteLength: 4,
+        rawData2D: [new Float32Array([1.0])],
+        appendixBufferUsageFlags: GPUBufferUsage.QUERY_RESOLVE,
+    });
+    assert(storageMapBuffer !== undefined, `storage map buffer vaild.`);
+    assert(querySetMapBuffer !== undefined, `queryset map buffer valid.`)
+});

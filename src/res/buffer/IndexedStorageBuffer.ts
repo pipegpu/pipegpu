@@ -38,15 +38,15 @@ class IndexedStorageBuffer extends StorageBuffer {
             context: opts.context,
             totalByteLength: opts.totalByteLength,
             bufferUsageFlags: GPUBufferUsage.INDEX | GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
-            typedArrayData2D: opts.typedArrayData2D,
+            rawData2D: opts.typedArrayData2D,
             handler: opts.handler,
         });
 
         // check silced indexed buffer type.
         // TODO runtime handle check WIP.
-        if (this.typedArrayData2D) {
+        if (this.rawData2D) {
             let format = 'none';
-            this.typedArrayData2D.forEach(typedarray => {
+            this.rawData2D.forEach(typedarray => {
                 if (typedarray instanceof Uint16Array && ('uint16' === format || 'none' === format)) {
                     format = 'uint16';
                     this.drawCount += typedarray.length;

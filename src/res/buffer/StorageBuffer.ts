@@ -26,7 +26,7 @@ class StorageBuffer extends Buffer2D {
             context: Context,
             totalByteLength: number,
             bufferUsageFlags?: GPUBufferUsageFlags
-            typedArrayData2D?: TypedArray2DFormat,
+            rawData2D?: TypedArray2DFormat,
             handler?: Handle2D
         }
     ) {
@@ -35,7 +35,7 @@ class StorageBuffer extends Buffer2D {
             context: opts.context,
             totalByteLength: opts.totalByteLength,
             bufferUsageFlags: opts.bufferUsageFlags || GPUBufferUsage.STORAGE | GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
-            typedArrayData2D: opts.typedArrayData2D,
+            rawData2D: opts.rawData2D,
             handler: opts.handler
         });
     }

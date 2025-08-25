@@ -17,7 +17,7 @@ class Buffer2D extends BaseBuffer {
     /**
      * 
      */
-    protected typedArrayData2D?: TypedArray2DFormat;
+    protected rawData2D?: TypedArray2DFormat;
 
     /**
      * 
@@ -35,7 +35,7 @@ class Buffer2D extends BaseBuffer {
             context: Context,
             totalByteLength: number,
             bufferUsageFlags: GPUBufferUsageFlags
-            typedArrayData2D?: TypedArray2DFormat,
+            rawData2D?: TypedArray2DFormat,
             handler?: Handle2D,
         }
     ) {
@@ -45,12 +45,8 @@ class Buffer2D extends BaseBuffer {
             totalByteLength: opts.totalByteLength,
             bufferUsageFlags: opts.bufferUsageFlags | GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST
         });
-        this.typedArrayData2D = opts.typedArrayData2D;
+        this.rawData2D = opts.rawData2D;
         this.handler = opts.handler;
-        //
-        // if (this.handler === undefined && this.typedArrayData2D === undefined) {
-        //     throw new Error(`[E][Buffer2D][constructor] create buffer error, either opts.handler or opts.typedArrayData2D must be assigned a value.`);
-        // }
     }
 
     /**
@@ -89,9 +85,9 @@ class Buffer2D extends BaseBuffer {
             };
             this.buffer = this.context!.getGpuDevice().createBuffer(desc);
         }
-        if (this.typedArrayData2D) {
+        if (this.rawData2D) {
             let offset: number = 0;
-            this.typedArrayData2D?.forEach(typedArray => {
+            this.rawData2D?.forEach(typedArray => {
                 this.updateGpuBuffer(offset, typedArray.byteLength, typedArray);
                 offset += typedArray.byteLength;
             });
@@ -107,6 +103,13 @@ class Buffer2D extends BaseBuffer {
         }
     }
 
+    /**
+     * 
+     * @param _encoder 
+     * @param frameStage 
+     * @returns 
+     * 
+     */
     override getGpuBuffer(_encoder?: GPUCommandEncoder | null, frameStage?: FrameStageFormat): GPUBuffer {
         if (!this.buffer) {
             this.createGpuBuffer();

@@ -68,16 +68,16 @@ import { initTexelCopy, texelCopyDebugBuffer } from './tech/initTexelCopy.ts';
     // requestAnimationFrame(renderLoop);
 
     const holderArray: BaseHolder[] = [];
-    // holderArray.push(drawIndexedStorage);
-    // holderArray.push(texture2DHolder);
-    // holderArray.push(drawCountHolder);
-    // holderArray.push(drawIndexedHolder);
-    // holderArray.push(drawInstanceHolder);
-    // holderArray.push(texture2DArrayHolder);
-    // holderArray.push(drawIndirect);
-    // holderArray.push(multiDrawIndirect);
-    // holderArray.push(drawIndexedIndirect);
-    // holderArray.push(multiDrawIndexedIndirect);
+    holderArray.push(drawIndexedStorage);
+    holderArray.push(texture2DHolder);
+    holderArray.push(drawCountHolder);
+    holderArray.push(drawIndexedHolder);
+    holderArray.push(drawInstanceHolder);
+    holderArray.push(texture2DArrayHolder);
+    holderArray.push(drawIndirect);
+    holderArray.push(multiDrawIndirect);
+    holderArray.push(drawIndexedIndirect);
+    holderArray.push(multiDrawIndexedIndirect);
     holderArray.push(texelCopy[0]);
     holderArray.push(texelCopy[1]);
 

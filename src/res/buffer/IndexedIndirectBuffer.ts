@@ -34,7 +34,7 @@ class IndexedIndirectBuffer extends StorageBuffer {
             context: opts.context,
             totalByteLength: opts.totalByteLength,
             bufferUsageFlags: GPUBufferUsage.INDIRECT | GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST | GPUBufferUsage.COPY_SRC,
-            typedArrayData2D: opts.typedArrayData2D,
+            rawData2D: opts.typedArrayData2D,
             handler: opts.handler
         });
         // check total bytelength align by 20.
@@ -64,7 +64,7 @@ class IndexedIndirectBuffer extends StorageBuffer {
      * @returns 
      */
     getIndexIndirectCount = (): number => {
-        return this.typedArrayData2D?.length || 0;
+        return this.rawData2D?.length || 0;
     }
 
 }

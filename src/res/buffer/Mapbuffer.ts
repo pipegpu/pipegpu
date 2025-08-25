@@ -5,6 +5,11 @@ import { StorageBuffer } from "./StorageBuffer";
 
 /**
  * 
+ * mapbuffer is cpu-gps sync buffer.
+ * - map read buffer.
+ * - map write buffer.
+ * - map self buffer. support storage buffer as default. also support query set usage.
+ * 
  */
 class MapBuffer extends StorageBuffer {
     /**
@@ -26,16 +31,17 @@ class MapBuffer extends StorageBuffer {
             id: number,
             context: Context,
             totalByteLength: number,
-            typedArrayData2D?: TypedArray2DFormat,
+            appendixBufferUsageFlags?: number,
+            rawData2D?: TypedArray2DFormat,
             handler?: Handle2D
         }
     ) {
         super({
             id: opts.id,
             context: opts.context,
-            bufferUsageFlags: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST | GPUBufferUsage.COPY_SRC,
+            bufferUsageFlags: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST | GPUBufferUsage.COPY_SRC | (opts.appendixBufferUsageFlags || 0),
             totalByteLength: opts.totalByteLength,
-            typedArrayData2D: opts.typedArrayData2D,
+            rawData2D: opts.rawData2D,
             handler: opts.handler,
         });
     }

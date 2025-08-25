@@ -587,11 +587,12 @@ class Compiler {
     createMapBuffer = (
         opts: {
             totalByteLength: number,
-            rawData?: TypedArray2DFormat,
+            appendixBufferUsageFlags?: number,
+            rawData2D?: TypedArray2DFormat,
             handler?: Handle2D
         }
     ): MapBuffer => {
-        return this.bufferState.createMapBuffer(opts)
+        return this.bufferState.createMapBuffer(opts);
     }
 
     /**

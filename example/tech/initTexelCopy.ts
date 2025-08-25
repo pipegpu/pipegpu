@@ -65,7 +65,7 @@ fn cp_main(@builtin(global_invocation_id) global_id: vec3<u32>)
 
     texelCopyDebugBuffer = compiler.createMapBuffer({
         totalByteLength: 4,
-        rawData: [new Float32Array([0])],
+        rawData2D: [new Float32Array([0])],
     });
 
     const desc0: ComputeHolderDesc = {

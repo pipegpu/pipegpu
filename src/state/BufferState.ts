@@ -103,7 +103,8 @@ class BufferState {
     createMapBuffer = (
         opts: {
             totalByteLength: number,
-            rawData?: TypedArray2DFormat,
+            appendixBufferUsageFlags?: number,
+            rawData2D?: TypedArray2DFormat,
             handler?: Handle2D
         }
     ): MapBuffer => {
@@ -112,7 +113,8 @@ class BufferState {
             id: bufferID,
             context: this.context,
             totalByteLength: opts.totalByteLength,
-            typedArrayData2D: opts.rawData,
+            appendixBufferUsageFlags: opts.appendixBufferUsageFlags,
+            rawData2D: opts.rawData2D,
             handler: opts.handler
         });
         BufferState.BUFFER_SET.set(bufferID, buffer);
@@ -137,7 +139,7 @@ class BufferState {
             id: bufferID,
             context: this.context,
             totalByteLength: opts.totalByteLength,
-            typedArrayData2D: opts.rawData,
+            rawData2D: opts.rawData,
             bufferUsageFlags: opts.bufferUsageFlags,
             handler: opts.handler
         });
