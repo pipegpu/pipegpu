@@ -1,5 +1,5 @@
 # pipegpu
-
+[![npm version](https://badge.fury.io/js/pipegpu.svg)](https://badge.fury.io/js/pipegpu)
 > pipegpu is a functional webgpu library, written in typescript. helpes you quickly implement render/compute logic.
 
 ## unit test
