@@ -4,6 +4,7 @@ import type { MultiSampleFormat } from "../res/Format"
  * 
  * @param multiSampleFormat 
  * @param multiSampleState 
+ * 
  */
 const parseMultisampleState = (
     opts: {

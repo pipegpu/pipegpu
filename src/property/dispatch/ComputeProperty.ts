@@ -12,8 +12,11 @@ type WorkSizeHandle = { (): number; }
 
 /**
  * 
+ * @class ComputeProperty
+ * 
  */
 class ComputeProperty extends BaseProperty {
+
     /**
      * 
      */
@@ -109,6 +112,7 @@ class ComputeProperty extends BaseProperty {
         }
         return this.groupZ as number;
     }
+
 }
 
 export {

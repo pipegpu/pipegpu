@@ -15,6 +15,7 @@ import type { TextureState } from "../state/TextureState"
  * @param _encoder 
  * @param _bufferState 
  * @param _textureState 
+ * 
  */
 const emptyUniformHandler: UniformHandle = (_frameStage: FrameStageFormat, _encoder: GPUCommandEncoder, _bufferState: BufferState, _textureState: TextureState): void => { }
 
@@ -34,6 +35,7 @@ interface IUniformRecord {
  * @param uniformRecordMap 
  * @param bufferUniformRecordsMap 
  * @returns 
+ * 
  */
 const parseUniform = (
     opts: {

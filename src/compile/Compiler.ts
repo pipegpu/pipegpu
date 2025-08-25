@@ -56,56 +56,57 @@ import type { IndexedIndirectBuffer } from "../res/buffer/IndexedIndirectBuffer"
  * 
  */
 interface RenderHolderDesc {
-
     /**
      * debug label(stats info head bar)
      */
     label: string,
 
     /**
-     * 
+     * vertex shader.
      */
     vertexShader: VertexShader,
 
     /**
-     * 
+     * fragment shader.
      */
     fragmentShader: FragmentShader,
 
     /**
-     * 
+     * parse attributes.
      */
-    attributes?: Attributes,
+    attributes: Attributes,
 
     /**
-     * 
+     * parse uniforms.
      */
-    uniforms?: Uniforms,
+    uniforms: Uniforms,
 
     /**
-     * 
+     * parse dispatch.
      */
+    dispatch: RenderProperty,
+
+    /**
+     * color attachment
+     * - surface color attachments.
+     * - fbo attachments.
+     */
+    colorAttachments: ColorAttachment[],
+
+    /**
+     * depth stencil attachments.
+     */
+    depthStencilAttachment: DepthStencilAttachment,
+
+    /**
+    * 
+    */
     multiSampleFormat?: MultiSampleFormat,
 
     /**
      * 
      */
-    dispatch: RenderProperty,
-
-    /**
-     * 
-     */
     primitiveDesc?: PrimitiveDesc,
-
-    /**
-     * 
-     */
-    colorAttachments: ColorAttachment[],
-
-    /**
-     * 
-     */
-    depthStencilAttachment: DepthStencilAttachment,
 }
 
 /**

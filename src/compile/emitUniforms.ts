@@ -8,6 +8,13 @@ import type { SamplerState } from "../state/SamplerState"
 import type { TextureState } from "../state/TextureState"
 import type { IUniformRecord } from "./parseUniform"
 
+/**
+ * 
+ * @param opts 
+ * @param slotBindGroupMap 
+ * @param mergedUniformResourceMap 
+ * 
+ */
 const emitUniforms = (
     opts: {
         debugLabel: string,

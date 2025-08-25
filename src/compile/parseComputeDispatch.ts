@@ -1,6 +1,12 @@
 import type { ComputeProperty } from "../property/dispatch/ComputeProperty"
 import type { ComputeHandle } from "../res/Handle"
 
+/**
+ * 
+ * @param opts 
+ * @returns 
+ * 
+ */
 const parseComputeDispatch = (
     opts: {
         debugLabel: string,

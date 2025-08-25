@@ -21,6 +21,7 @@ interface PrimitiveDesc {
  * @param primitiveDesc 
  * @param dispatch 
  * @returns 
+ * 
  */
 const parsePrimitiveState = (
     opts: {

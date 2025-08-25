@@ -4,7 +4,8 @@ import type { IAttributeRecord } from "./parseAttribute"
 
 /**
  * 
- * @param vertexFormat 
+ * @param vertexFormat
+ * 
  */
 const getVertexFormatStride = (vertexFormat: GPUVertexFormat, debugLabel: string): number => {
     switch (vertexFormat) {
@@ -40,13 +41,14 @@ const getVertexFormatStride = (vertexFormat: GPUVertexFormat, debugLabel: string
 
 /**
  * 
- * @param vertexShader 
- * @param attributeRecordMap 
- * @param bufferAttributeRecordsMap 
- * @param vertexBufferLayouts 
- * @param vertexBufferIDAttributesMap 
- * @param vertexState 
- * @param slotBufferIDMap 
+ * @param vertexShader
+ * @param attributeRecordMap
+ * @param bufferAttributeRecordsMap
+ * @param vertexBufferLayouts
+ * @param vertexBufferIDAttributesMap
+ * @param vertexState
+ * @param slotBufferIDMap
+ * 
  */
 const emitAttributes = (
     opts: {

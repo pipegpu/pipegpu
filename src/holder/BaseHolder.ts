@@ -28,6 +28,7 @@ abstract class BaseHolder {
     /**
      * 
      * @param opts 
+     * 
      */
     constructor(
         opts: {
@@ -46,6 +47,7 @@ abstract class BaseHolder {
     /**
      * 
      * @returns 
+     * 
      */
     getID = (): number => {
         return this.id;
@@ -54,6 +56,7 @@ abstract class BaseHolder {
     /**
      * 
      * @returns 
+     * 
      */
     getPropertyFormat = (): PropertyFormat => {
         return this.poropertyFormat;
@@ -62,8 +65,9 @@ abstract class BaseHolder {
     /**
      * 
      * @param encoder 
+     * 
      */
-    abstract build(encoder: GPUCommandEncoder): void;
+    abstract build(_encoder: GPUCommandEncoder): void;
 }
 
 export {

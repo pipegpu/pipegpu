@@ -19,6 +19,8 @@ type MaxDrawCountHandle = { (): number; }
 
 /**
  * 
+ * @class RenderProperty
+ * 
  */
 class RenderProperty extends BaseProperty {
     /**
@@ -199,6 +201,10 @@ class RenderProperty extends BaseProperty {
         throw new Error(`[E][RenderProperty][getIndexFormat] missing indexBuffer in 'RenderProperty'.`);
     }
 
+    /**
+     * 
+     * @returns 
+     */
     getIndexedIndirectBuffer = (): IndexedIndirectBuffer | undefined => {
         if (this.indexedIndirectBuffer) {
             return this.indexedIndirectBuffer;
@@ -206,6 +212,10 @@ class RenderProperty extends BaseProperty {
         throw new Error(`[E][RenderProperty][getIndexedIndirectBuffer] invalid indexed indirect buffer.`);
     }
 
+    /**
+     * 
+     * @returns 
+     */
     getIndexStorageBuffer = (): IndexedStorageBuffer | undefined => {
         if (this.indexedStorageBuffer) {
             return this.indexedStorageBuffer;
@@ -213,6 +223,11 @@ class RenderProperty extends BaseProperty {
         throw new Error(`[E][RenderProperty][getIndexStorageBuffer] invalid index storage buffer.`);
     }
 
+    /**
+     * 
+     * @returns 
+     * 
+     */
     getIndirectCountBuffer = (): StorageBuffer | undefined => {
         if (this.indirectDrawCountBuffer) {
             return this.indirectDrawCountBuffer;
@@ -220,6 +235,11 @@ class RenderProperty extends BaseProperty {
         throw new Error(`[E][RenderProperty][getIndirectCountBuffer] invalid indirect draw count buffer for multiDrawIndirect.`);
     }
 
+    /**
+     * 
+     * @returns 
+     * 
+     */
     getIndirectBuffer = (): IndirectBuffer | undefined => {
         if (this.indirectBuffer) {
             return this.indirectBuffer;

@@ -17,6 +17,7 @@ interface IAttributeRecord {
 /**
  * 
  * @param opts 
+ * 
  */
 const parseAttribute = (
     opts: {

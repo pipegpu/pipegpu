@@ -5,6 +5,7 @@ import type { FragmentShader } from "../res/shader/FragmentShader";
  * @param fragmentShader 
  * @param colorTargetStates 
  * @returns 
+ * 
  */
 const parseFragmentState = (
     opts: {

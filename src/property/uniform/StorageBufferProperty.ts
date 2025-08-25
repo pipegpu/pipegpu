@@ -3,6 +3,8 @@ import { BaseProperty } from "../BaseProperty";
 
 /**
  * 
+ * @class StorageBufferProperty
+ * 
  */
 class StorageBufferProperty extends BaseProperty {
 
@@ -24,6 +26,7 @@ class StorageBufferProperty extends BaseProperty {
     /**
      * 
      * @returns 
+     * 
      */
     getStorageBufferID = () => {
         return this.buffer.getID();

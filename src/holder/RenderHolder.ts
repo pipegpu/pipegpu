@@ -96,6 +96,7 @@ class RenderHolder extends BaseHolder {
     /**
      * 
      * @param encoder 
+     * 
      */
     override build = (encoder: GPUCommandEncoder): void => {
         // support:

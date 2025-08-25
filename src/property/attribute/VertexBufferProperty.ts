@@ -3,6 +3,8 @@ import { BaseProperty } from "../BaseProperty";
 
 /**
  * 
+ * @class vertex buffer property
+ * 
  */
 class VertexBufferProperty extends BaseProperty {
 

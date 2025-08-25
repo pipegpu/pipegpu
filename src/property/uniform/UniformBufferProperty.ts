@@ -3,8 +3,11 @@ import { BaseProperty } from "../BaseProperty";
 
 /**
  * 
+ * @class UniformBufferProperty
+ * 
  */
 class UniformBufferProperty extends BaseProperty {
+
     /**
      * 
      */
@@ -23,10 +26,12 @@ class UniformBufferProperty extends BaseProperty {
     /**
      * 
      * @returns 
+     * 
      */
     getUniformBufferID = (): number => {
         return this.buffer.getID();
     }
+
 }
 
 export {

@@ -1,6 +1,12 @@
 import type { DepthStencilAttachment } from "../res/attachment/DepthStencilAttachment"
 import type { PipelineState } from "../state/PipelineState"
 
+/**
+ * 
+ * @param opts 
+ * @returns 
+ * 
+ */
 const emitRenderPipeline = (
     opts: {
         debugLabel: string,

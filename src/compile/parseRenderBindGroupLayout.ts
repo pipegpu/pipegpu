@@ -12,6 +12,7 @@ import { parseBindGroupLayout } from "./parseBindGroupLayout";
  * @param gourpIDWithBindGroupLayoutMap 
  * @param gourpIDWithBindGroupLayoutDescriptorMap 
  * @returns 
+ * 
  */
 const parseRenderBindGroupLayout = (
     opts: {
