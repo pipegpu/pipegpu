@@ -3,6 +3,8 @@ import type { PropertyFormat } from "../res/Format"
 
 /**
  * 
+ * @class BaseHolder
+ * 
  */
 abstract class BaseHolder {
     /**
@@ -51,6 +53,15 @@ abstract class BaseHolder {
      */
     getID = (): number => {
         return this.id;
+    }
+
+    /**
+     * 
+     * @returns 
+     * 
+     */
+    getDebugLabel = (): string => {
+        return this.debugLabel;
     }
 
     /**
