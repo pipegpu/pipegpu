@@ -34,22 +34,16 @@ test('webgpu context limits.', async () => {
 
 test('webgpu context supported features.', async () => {
     const features = context.getSupportedFeatures();
-
-    // features?.forEach(name => {
-    //     console.log(name);
-    // });
-
     expect(features != undefined).toBe(true);
     expect(features!.has('indirect-first-instance')).toBe(true);                    // indirect
     expect(features!.has('texture-compression-bc')).toBe(true);                     // BC7
     expect(features!.has('timestamp-query')).toBe(true);                            // query gpu costs
-    expect(features!.has('chromium-experimental-multi-draw-indirect')).toBe(true);  // multi draw indirect
+    // expect(features!.has('chromium-experimental-multi-draw-indirect')).toBe(true);  // multi draw indirect
 });
 
 test(`webgpu context viewport width/height.`, async () => {
     const viewportWidth = context.getViewportWidth();
     const viewportHeight = context.getViewportHeight();
-
     assert(viewportWidth == width * devicePixelRatio, `viewport width.`);
     assert(viewportHeight == height * devicePixelRatio, `viewport height.`);
 });

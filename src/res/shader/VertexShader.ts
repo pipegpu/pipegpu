@@ -50,9 +50,6 @@ class VertexShader extends BaseShader {
      * 
      */
     getVertexAttributeMap = (): Map<string, GPUVertexAttribute> | undefined => {
-        // if (!this.shader) {
-        //     this.reflect();
-        // }
         return this.reflectedAttributes?.attributeMap;
     }
 
@@ -62,9 +59,6 @@ class VertexShader extends BaseShader {
      * 
      */
     getOrderedAttribute = (): GPUVertexAttribute[] | undefined => {
-        // if (!this.shader) {
-        //     this.reflect();
-        // }
         return this.reflectedAttributes?.attributeOdered;
     }
 
@@ -75,9 +69,6 @@ class VertexShader extends BaseShader {
      * 
      */
     getAttributeNameByLocation = (location: number): string | undefined => {
-        // if (!this.shader) {
-        //     this.reflect();
-        // }
         return this.reflectedAttributes?.locationMap.get(location);
     }
 
@@ -87,9 +78,6 @@ class VertexShader extends BaseShader {
      * 
      */
     getAttributeCount = (): number | undefined => {
-        // if (!this.shader) {
-        //     this.reflect();
-        // }
         return this.reflectedAttributes?.attributeCount;
     }
 

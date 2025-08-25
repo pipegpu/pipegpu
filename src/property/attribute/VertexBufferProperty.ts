@@ -5,6 +5,7 @@ import { BaseProperty } from "../BaseProperty";
  * 
  */
 class VertexBufferProperty extends BaseProperty {
+
     /**
      * 
      */
@@ -27,6 +28,7 @@ class VertexBufferProperty extends BaseProperty {
     getVertexBufferID = (): number => {
         return this.vertexBuffer.getID();
     }
+
 }
 
 export {

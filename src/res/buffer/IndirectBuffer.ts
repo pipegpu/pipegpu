@@ -37,6 +37,10 @@ class IndirectBuffer extends StorageBuffer {
             typedArrayData2D: opts.typedArrayData2D,
             handler: opts.handler,
         });
+        // check total bytelength align by 16.
+        if (this.totalByteLength % 16 !== 0) {
+            throw new Error(`[E][IndirectBuffer] indirect buffer align byte length is 16, please cheack buffer total byte length. current total byte length: ${this.totalByteLength}`);
+        }
     }
 
     getStride = (): number => {

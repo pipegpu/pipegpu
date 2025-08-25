@@ -75,7 +75,7 @@ class RenderProperty extends BaseProperty {
     constructor(indexStorageBuffer: IndexedStorageBuffer, indexedIndirectBuffer: IndexedIndirectBuffer, indirectDrawCountBuffer: StorageBuffer, handler: MaxDrawCountHandle)
     constructor(indirectBuffer: IndirectBuffer)
     constructor(indirectBuffer: IndirectBuffer, indirectDrawCountBuffer: StorageBuffer, maxDrawCount: number)
-    constructor(indirectBuffer: IndirectBuffer, indirectDrawCountBuffer: StorageBuffer, maxDrawCount: MaxDrawCountHandle)
+    constructor(indirectBuffer: IndirectBuffer, indirectDrawCountBuffer: StorageBuffer, handler: MaxDrawCountHandle)
     constructor(a?: IndexedBuffer | IndirectBuffer | number | IndexedStorageBuffer, b?: number | IndexedIndirectBuffer | StorageBuffer, c?: StorageBuffer | number | MaxDrawCountHandle, d?: number | MaxDrawCountHandle) {
         super('[RenderProperty][constructor]');
         // maxDrawCount: number

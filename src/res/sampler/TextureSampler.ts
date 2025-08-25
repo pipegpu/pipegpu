@@ -6,6 +6,7 @@ import { BaseSampler } from "./BaseSampler";
  * 
  */
 class TextureSampler extends BaseSampler {
+
     /**
      * 
      * @param opts 

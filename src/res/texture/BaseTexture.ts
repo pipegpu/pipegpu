@@ -6,6 +6,7 @@ import type { FrameStageFormat, PropertyFormat } from "../Format";
  * 
  * @param propertyFormat 
  * @returns 
+ * 
  */
 const getTextureViewDimension = (propertyFormat: PropertyFormat): GPUTextureViewDimension => {
     switch (propertyFormat) {
@@ -24,7 +25,7 @@ const getTextureViewDimension = (propertyFormat: PropertyFormat): GPUTextureView
         case 'textureStorage2D':
             return "2d";
         default:
-            console.log(`[E][getTextureViewDimension] unspported texture property format: ${propertyFormat}`);
+            console.warn(`[W][getTextureViewDimension] unspported texture property format: ${propertyFormat}`);
             return '2d';
     }
 }
@@ -33,6 +34,7 @@ const getTextureViewDimension = (propertyFormat: PropertyFormat): GPUTextureView
  * 
  * @param propertyFormat 
  * @returns 
+ * 
  */
 const getTextureDimension = (propertyFormat: PropertyFormat): GPUTextureDimension => {
     switch (propertyFormat) {
@@ -51,11 +53,19 @@ const getTextureDimension = (propertyFormat: PropertyFormat): GPUTextureDimensio
         case 'textureStorage2D':
             return "2d";
         default:
-            console.log(`[E][getTextureDimension] unspported texture property format: ${propertyFormat}`);
+            console.warn(`[W][getTextureDimension] unspported texture property format: ${propertyFormat}`);
             return '2d';
     }
 }
 
+/**
+ * 
+ * @param width 
+ * @param height 
+ * @param textureFormat 
+ * @returns 
+ * 
+ */
 const getTexelCopyBufferLayout = (width: number, height: number, textureFormat: GPUTextureFormat): GPUTexelCopyBufferLayout => {
     const layout: GPUTexelCopyBufferLayout = {};
     switch (textureFormat) {
@@ -185,7 +195,7 @@ const getTexelCopyBufferLayout = (width: number, height: number, textureFormat: 
         case 'astc-12x12-unorm':
         case 'astc-12x12-unorm-srgb':
             {
-                throw new Error("[E][getTexelCopyBufferLayout] unsupport astc format.");
+                throw new Error("[E][getTexelCopyBufferLayout] unsupport astc format in PC platform.");
             }
         default:
             {
