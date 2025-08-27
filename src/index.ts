@@ -45,7 +45,7 @@ export * from './property/dispatch/RenderProperty.ts'
  * - shader
  * - texture
  */
-export type { Handle1DBffer as Handle1D, Handle2DBuffer as Handle2D, HandleBufferDetail as HandleDetail } from './res/buffer/BaseBuffer.ts'
+export * from './res/buffer/BaseBuffer.ts'
 export * from './res/buffer/IndexedBuffer.ts'
 export * from './res/buffer/IndexedIndirectBuffer.ts'
 export * from './res/buffer/IndexedStorageBuffer.ts'
