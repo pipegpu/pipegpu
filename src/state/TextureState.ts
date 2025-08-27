@@ -1,3 +1,4 @@
+import type { Handle2DBuffer, HandleTextureArray } from "../res/buffer/BaseBuffer";
 import type { Context } from "../res/Context"
 import type { TypedArray1DFormat, TypedArray2DFormat } from "../res/Format";
 import type { BaseTexture } from "../res/texture/BaseTexture";
@@ -129,14 +130,15 @@ class TextureState {
             width: number,
             height: number,
             array: number,
-            appendixTextureUsages?: number,
             textureDataArray?: TypedArray2DFormat,
+            handler?: HandleTextureArray,
             textureFormat?: GPUTextureFormat,
-            mipmapCount?: number
+            mipmapCount?: number,
+            appendixTextureUsages?: number,
         }
     ): Texture2DArray => {
         const textureArrayID: number = uniqueID();
-        const texture = new Texture2DArray({
+        const texture: Texture2DArray = new Texture2DArray({
             id: textureArrayID,
             context: this.context,
             width: opts.width,
@@ -144,6 +146,7 @@ class TextureState {
             array: opts.array,
             appendixTextureUsages: opts.appendixTextureUsages,
             textureDataArray: opts.textureDataArray,
+            handler: opts.handler,
             textureFormat: opts.textureFormat,
             mipmapCount: opts.mipmapCount,
         });

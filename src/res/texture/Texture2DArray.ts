@@ -1,3 +1,4 @@
+import type { HandleTextureArray } from "../buffer/BaseBuffer";
 import type { Context } from "../Context";
 import type { FrameStageFormat, TypedArray2DFormat } from "../Format";
 import { BaseTexture } from "./BaseTexture";
@@ -13,6 +14,11 @@ class Texture2DArray extends BaseTexture {
 
     /**
      * 
+     */
+    protected handler?: HandleTextureArray;
+
+    /**
+     * 
      * @param opts 
      */
     constructor(
@@ -24,6 +30,7 @@ class Texture2DArray extends BaseTexture {
             array: number,
             appendixTextureUsages?: number,
             textureDataArray?: TypedArray2DFormat,
+            handler?: HandleTextureArray,
             textureFormat?: GPUTextureFormat,
             mipmapCount?: number
         }
@@ -40,6 +47,7 @@ class Texture2DArray extends BaseTexture {
             propertyFormat: 'texture2DArray'
         });
         this.textureData2DArray = opts.textureDataArray;
+        this.handler = opts.handler;
     }
 
     /**
@@ -59,6 +67,23 @@ class Texture2DArray extends BaseTexture {
             for (let index: number = 0, len = this.textureData2DArray.length; index < len; index++) {
                 destination.origin = [0, 0, index];
                 this.context.getGpuQueue().writeTexture(destination, (this.textureData2DArray[index] as Uint8Array).buffer, dataLayout, oneLayerExtent3d);
+            }
+        } else if (this.handler && !this.isDetphTexture()) {
+            const handData = this.handler();
+            if (handData.rewrite) {
+                const destination: GPUTexelCopyTextureInfo = {
+                    texture: this.texture!
+                };
+                const dataLayout: GPUTexelCopyBufferLayout = this.getTexelCopyBufferLayout();
+                const oneLayerExtent3d: GPUExtent3DDict = {
+                    width: this.width,
+                    height: this.height,
+                    depthOrArrayLayers: 1,
+                };
+                handData.details.forEach(detail => {
+                    destination.origin = [0, 0, detail.depthOrArrayLayerIndex];
+                    this.context.getGpuQueue().writeTexture(destination, (detail.rawData as Uint8Array).buffer, dataLayout, oneLayerExtent3d);
+                });
             }
         }
     }

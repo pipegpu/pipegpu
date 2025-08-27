@@ -1,6 +1,6 @@
 import { type Context } from "../Context";
 import { type TypedArray2DFormat } from "../Format";
-import { type Handle2D } from "./BaseBuffer";
+import { type Handle2DBuffer } from "./BaseBuffer";
 import { Buffer2D } from "./Buffer2D";
 
 /**
@@ -17,7 +17,7 @@ class StorageBuffer extends Buffer2D {
      * @param {number}              opts.totalByteLength
      * @param {GPUBufferUsageFlags} opts.bufferUsageFlags
      * @param {TypedArray2DFormat}  opts.typedArrayData2D
-     * @param {Handle2D}            opts.handler
+     * @param {Handle2DBuffer}            opts.handler
      * 
      */
     constructor(
@@ -27,7 +27,7 @@ class StorageBuffer extends Buffer2D {
             totalByteLength: number,
             bufferUsageFlags?: GPUBufferUsageFlags
             rawData2D?: TypedArray2DFormat,
-            handler?: Handle2D
+            handler?: Handle2DBuffer
         }
     ) {
         super({

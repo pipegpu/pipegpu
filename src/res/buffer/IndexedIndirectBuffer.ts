@@ -1,6 +1,6 @@
 import type { Context } from "../Context";
 import type { TypedArray2DFormat } from "../Format";
-import type { Handle2D } from "./BaseBuffer";
+import type { Handle2DBuffer } from "./BaseBuffer";
 import { StorageBuffer } from "./StorageBuffer";
 
 /**
@@ -26,7 +26,7 @@ class IndexedIndirectBuffer extends StorageBuffer {
             context: Context,
             totalByteLength: number,
             typedArrayData2D?: TypedArray2DFormat,
-            handler?: Handle2D,
+            handler?: Handle2DBuffer,
         }
     ) {
         super({

@@ -1,4 +1,4 @@
-import { BaseBuffer, type Handle1D } from "./BaseBuffer";
+import { BaseBuffer, type Handle1DBffer } from "./BaseBuffer";
 import type { Context } from "../Context"
 import type { FrameStageFormat, TypedArray1DFormat } from "../Format";
 
@@ -9,7 +9,7 @@ class Buffer1D extends BaseBuffer {
     /**
      * 
      */
-    protected handler?: Handle1D;
+    protected handler?: Handle1DBffer;
 
     /**
     * 
@@ -23,7 +23,7 @@ class Buffer1D extends BaseBuffer {
      * @param {number}              opts.totalByteLength
      * @param {GPUBufferUsageFlags} opts.bufferUsageFlags
      * @param {TypedArray1DFormat}  [opts.typedArrayData1D] - either opts.handler or opts.typedArrayData1D must be assigned a value.
-     * @param {Handle1D}            [opts.handler]          - either opts.handler or opts.typedArrayData1D must be assigned a value.
+     * @param {Handle1DBffer}            [opts.handler]          - either opts.handler or opts.typedArrayData1D must be assigned a value.
      * 
      */
     constructor(
@@ -33,7 +33,7 @@ class Buffer1D extends BaseBuffer {
             totalByteLength: number,
             bufferUsageFlags: GPUBufferUsageFlags
             typedArrayData1D?: TypedArray1DFormat,
-            handler?: Handle1D,
+            handler?: Handle1DBffer,
         }
     ) {
         super({

@@ -1,6 +1,6 @@
 import type { Context } from "../Context";
 import type { FrameStageFormat, TypedArray1DFormat, TypedArray2DFormat } from "../Format";
-import { BaseBuffer, type Handle2D } from "./BaseBuffer";
+import { BaseBuffer, type Handle2DBuffer } from "./BaseBuffer";
 
 /**
  * 
@@ -12,7 +12,7 @@ class Buffer2D extends BaseBuffer {
     /**
      * 
      */
-    protected handler?: Handle2D;
+    protected handler?: Handle2DBuffer;
 
     /**
      * 
@@ -26,7 +26,7 @@ class Buffer2D extends BaseBuffer {
      * @param {number}              opts.totalByteLength
      * @param {GPUBufferUsageFlags} opts.bufferUsageFlags
      * @param {TypedArray2DFormat}  opts.typedArrayData2D
-     * @param {Handle2D}            opts.handler
+     * @param {Handle2DBuffer}            opts.handler
      * 
      */
     constructor(
@@ -36,7 +36,7 @@ class Buffer2D extends BaseBuffer {
             totalByteLength: number,
             bufferUsageFlags: GPUBufferUsageFlags
             rawData2D?: TypedArray2DFormat,
-            handler?: Handle2D,
+            handler?: Handle2DBuffer,
         }
     ) {
         super({
@@ -64,7 +64,7 @@ class Buffer2D extends BaseBuffer {
         this.context?.getGpuQueue().writeBuffer(
             this.buffer as GPUBuffer,
             offset,
-            rawData,
+            rawData instanceof ArrayBuffer ? rawData : rawData.buffer,
             0
         );
     }

@@ -1,4 +1,4 @@
-import type { BaseBuffer, Handle1D, Handle2D } from "../res/buffer/BaseBuffer";
+import type { BaseBuffer, Handle1DBffer, Handle2DBuffer } from "../res/buffer/BaseBuffer";
 import { IndexedBuffer } from "../res/buffer/IndexedBuffer";
 import { IndexedIndirectBuffer } from "../res/buffer/IndexedIndirectBuffer";
 import { IndexedStorageBuffer } from "../res/buffer/IndexedStorageBuffer";
@@ -79,7 +79,7 @@ class BufferState {
         opts: {
             totalByteLength: number,
             rawData?: TypedArray1DFormat
-            handler?: Handle1D,
+            handler?: Handle1DBffer,
         }
     ): UniformBuffer => {
         const bufferID = uniqueID();
@@ -105,7 +105,7 @@ class BufferState {
             totalByteLength: number,
             appendixBufferUsageFlags?: number,
             rawData2D?: TypedArray2DFormat,
-            handler?: Handle2D
+            handler?: Handle2DBuffer
         }
     ): MapBuffer => {
         const bufferID: number = uniqueID();
@@ -131,7 +131,7 @@ class BufferState {
             totalByteLength: number,
             bufferUsageFlags?: GPUBufferUsageFlags,
             rawData?: TypedArray2DFormat,
-            handler?: Handle2D
+            handler?: Handle2DBuffer
         }
     ): StorageBuffer => {
         const bufferID: number = uniqueID();
@@ -155,7 +155,7 @@ class BufferState {
         opts: {
             totalByteLength: number,
             rawData?: TypedArray2DFormat,
-            handler?: Handle2D
+            handler?: Handle2DBuffer
         }
     ): IndexedStorageBuffer => {
         const bufferID: number = uniqueID();
@@ -181,7 +181,7 @@ class BufferState {
         opts: {
             totalByteLength: number,
             rawData?: TypedArray1DFormat
-            handler?: Handle1D
+            handler?: Handle1DBffer
         }
     ): VertexBuffer => {
         const bufferID: number = uniqueID();
@@ -200,7 +200,7 @@ class BufferState {
         opts: {
             totalByteLength: number,
             rawData?: TypedArray2DFormat,
-            handler?: Handle2D,
+            handler?: Handle2DBuffer,
         }
     ): IndirectBuffer => {
         const bufferID: number = uniqueID();
@@ -219,7 +219,7 @@ class BufferState {
         opts: {
             totalByteLength: number,
             rawData?: TypedArray2DFormat,
-            handler?: Handle2D,
+            handler?: Handle2DBuffer,
         }
     ): IndexedIndirectBuffer => {
         const bufferID: number = uniqueID();

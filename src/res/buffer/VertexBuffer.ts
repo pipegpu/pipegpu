@@ -1,6 +1,6 @@
 import { type Context } from "../Context"
 import { type TypedArray1DFormat } from "../Format";
-import { type Handle1D } from "./BaseBuffer"
+import { type Handle1DBffer } from "./BaseBuffer"
 import { Buffer1D } from "./Buffer1D";
 
 /**
@@ -17,7 +17,7 @@ class VertexBuffer extends Buffer1D {
             context: Context,
             totalByteLength: number,
             typedArrayData1D?: TypedArray1DFormat,
-            handler?: Handle1D
+            handler?: Handle1DBffer
         }
     ) {
         super({

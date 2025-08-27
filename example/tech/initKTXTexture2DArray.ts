@@ -121,7 +121,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4f {
         dataArray.push(ktxDataPack2.data);
         dataArray.push(ktxDataPack3.data);
 
-        const texture2DArray = compiler.crateTexture2DArray(
+        const texture2DArray = compiler.createTexture2DArray(
             {
                 width: PRESET_WIDTH,
                 height: PRESET_HEIGHT,

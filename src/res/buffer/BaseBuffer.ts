@@ -1,7 +1,7 @@
 import { Context } from "../Context.ts"
 import type { FrameStageFormat, TypedArray1DFormat } from "../Format.ts";
 
-type HandleDetail = {
+type HandleBufferDetail = {
     /**
      * 
      * gpu buffer byte offset
@@ -24,21 +24,41 @@ type HandleDetail = {
     rawData: TypedArray1DFormat | ArrayBuffer
 };
 
+type HandleTextureDetail = {
+    /**
+     * the index of texture, also seen as offset.
+     */
+    depthOrArrayLayerIndex: number,
+
+    /**
+     * 
+     */
+    rawData: TypedArray1DFormat | ArrayBuffer
+};
+
 /**
  * e.g for vertex / index / unfiorm buffer.
  * rewrite buffer
  */
-type Handle1D = () => {
+type Handle1DBffer = () => {
     rewrite: boolean,
-    detail: HandleDetail
+    detail: HandleBufferDetail
 };
 
 /**
  * e.g for storage buffer.
  */
-type Handle2D = () => {
+type Handle2DBuffer = () => {
     rewrite: boolean,
-    details: Array<HandleDetail>
+    details: Array<HandleBufferDetail>
+};
+
+/**
+ * e.g for texture 2d array.
+ */
+type HandleTextureArray = ()=>{
+    rewrite:boolean,
+    details: Array<HandleTextureDetail>
 };
 
 /**
@@ -116,6 +136,9 @@ abstract class BaseBuffer {
 }
 
 export {
-    type Handle1D, type Handle2D, type HandleDetail,
+    type Handle1DBffer, 
+    type Handle2DBuffer, 
+    type HandleBufferDetail, 
+    type HandleTextureArray,
     BaseBuffer
 }

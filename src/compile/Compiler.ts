@@ -6,7 +6,7 @@ import type { RenderProperty } from "../property/dispatch/RenderProperty";
 import type { Attributes, Uniforms } from "../property/Properties";
 import type { ColorAttachment } from "../res/attachment/ColorAttachment";
 import type { DepthStencilAttachment } from "../res/attachment/DepthStencilAttachment";
-import type { Handle1D, Handle2D } from "../res/buffer/BaseBuffer";
+import type { Handle1DBffer, Handle2DBuffer, HandleTextureArray } from "../res/buffer/BaseBuffer";
 import type { UniformBuffer } from "../res/buffer/UniformBuffer";
 import type { VertexBuffer } from "../res/buffer/VertexBuffer";
 import { Context } from "../res/Context";
@@ -473,7 +473,7 @@ class Compiler {
         opts: {
             totalByteLength: number,
             rawData?: TypedArray1DFormat,
-            handler?: Handle1D,
+            handler?: Handle1DBffer,
         }
     ): VertexBuffer => {
         return this.bufferState.createVertexBuffer(opts);
@@ -507,7 +507,7 @@ class Compiler {
         opts: {
             totalByteLength: number,
             rawData?: TypedArray1DFormat,
-            handler?: Handle1D
+            handler?: Handle1DBffer
         }
     ): UniformBuffer => {
         return this.bufferState.createUniformBuffer(opts);
@@ -524,7 +524,7 @@ class Compiler {
             totalByteLength: number,
             bufferUsageFlags?: GPUBufferUsageFlags,
             rawData?: TypedArray2DFormat,
-            handler?: Handle2D
+            handler?: Handle2DBuffer
         }
     ): StorageBuffer => {
         return this.bufferState.createStorageBuffer(opts);
@@ -539,7 +539,7 @@ class Compiler {
         opts: {
             totalByteLength: number,
             rawData?: TypedArray2DFormat,
-            handler?: Handle2D
+            handler?: Handle2DBuffer
         }
     ): IndexedStorageBuffer => {
         return this.bufferState.createIndexedStorageBuffer(opts);
@@ -556,7 +556,7 @@ class Compiler {
         opts: {
             totalByteLength: number,
             rawData?: TypedArray2DFormat,
-            handler?: Handle2D,
+            handler?: Handle2DBuffer,
         }
     ): IndirectBuffer => {
         return this.bufferState.createIndirectBuffer(opts);
@@ -571,7 +571,7 @@ class Compiler {
         opts: {
             totalByteLength: number,
             rawData?: TypedArray2DFormat,
-            handler?: Handle2D,
+            handler?: Handle2DBuffer,
         }
     ): IndexedIndirectBuffer => {
         return this.bufferState.createIndexedIndirectBuffer(opts);
@@ -589,7 +589,7 @@ class Compiler {
             totalByteLength: number,
             appendixBufferUsageFlags?: number,
             rawData2D?: TypedArray2DFormat,
-            handler?: Handle2D
+            handler?: Handle2DBuffer
         }
     ): MapBuffer => {
         return this.bufferState.createMapBuffer(opts);
@@ -731,12 +731,13 @@ class Compiler {
      * @returns 
      * 
      */
-    crateTexture2DArray = (
+    createTexture2DArray = (
         opts: {
             width: number,
             height: number,
             array: number,
             textureDataArray?: TypedArray2DFormat,
+            handler?:HandleTextureArray,
             textureFormat?: GPUTextureFormat,
             mipmapCount?: number,
             appendixTextureUsages?: number,

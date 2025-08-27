@@ -1,5 +1,5 @@
 import { Attributes, ColorAttachment, DepthStencilAttachment, RenderHolder, RenderProperty, Uniforms, type BaseHolder, type Compiler, type RenderHolderDesc } from "../../src";
-import type { Handle2D } from "../../src/res/buffer/BaseBuffer";
+import type { Handle2DBuffer } from "../../src/res/buffer/BaseBuffer";
 import type { IndexedIndirectBuffer } from "../../src/res/buffer/IndexedIndirectBuffer";
 import type { IndexedStorageBuffer } from "../../src/res/buffer/IndexedStorageBuffer";
 
@@ -18,7 +18,7 @@ const initMultiDrawIndexedIndirect = (compiler: Compiler, colorAttachments: Colo
         // indexed indirect buffer.
         const indexedIndirectData1 = new Uint32Array([indexData1.byteLength / indexData1.BYTES_PER_ELEMENT, 1, 0, 0, 0]);
         const indexedIndirectData2 = new Uint32Array([indexData2.byteLength / indexData2.BYTES_PER_ELEMENT, 1, indexData1.byteLength / indexData1.BYTES_PER_ELEMENT, 0, 0]);
-        const handler: Handle2D = () => {
+        const handler: Handle2DBuffer = () => {
             const details: any[] = [];
             details.push({
                 offset: 0,
