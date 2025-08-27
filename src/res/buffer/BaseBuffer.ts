@@ -138,7 +138,8 @@ abstract class BaseBuffer {
 export {
     type Handle1DBffer, 
     type Handle2DBuffer, 
-    type HandleBufferDetail, 
+    type HandleBufferDetail,
+    type HandleTextureDetail,
     type HandleTextureArray,
     BaseBuffer
 }
