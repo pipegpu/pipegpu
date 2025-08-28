@@ -63,10 +63,12 @@ class Buffer1D extends BaseBuffer {
         }
         // align 4 byte for input byteLength
         // const algin4 = align4Byte(byteLength);
+        // 
         this.context?.getGpuQueue().writeBuffer(
             this.buffer as GPUBuffer,
             offset,
-            rawData instanceof ArrayBuffer ? rawData : rawData.buffer,
+            rawData,
+            // rawData instanceof ArrayBuffer ? rawData : rawData.buffer,
             0
         );
     }

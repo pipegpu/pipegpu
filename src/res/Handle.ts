@@ -29,7 +29,7 @@ type HookHandle = { (encoder: GPUCommandEncoder): void };
 /**
  * 
  */
-type BufferDetailHandle = {
+type BufferHandleDetail = {
     /**
      * 
      * gpu buffer byte offset
@@ -73,7 +73,7 @@ type TextureDetailHandle = {
  */
 type BufferHandle = () => {
     rewrite: boolean,
-    detail: BufferDetailHandle
+    detail: BufferHandleDetail
 };
 
 /**
@@ -81,7 +81,7 @@ type BufferHandle = () => {
  */
 type BufferArrayHandle = () => {
     rewrite: boolean,
-    details: Array<BufferDetailHandle>
+    details: Array<BufferHandleDetail>
 };
 
 /**
@@ -99,7 +99,7 @@ export {
     type HookHandle,
     type BufferHandle,
     type BufferArrayHandle,
-    type BufferDetailHandle,
+    type BufferHandleDetail,
     type TextureDetailHandle,
     type TextureArrayHandle,
 }
