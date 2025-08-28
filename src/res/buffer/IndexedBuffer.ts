@@ -1,5 +1,5 @@
 import type { Context } from "../Context";
-import type { FrameStageFormat, TypedArray1DFormat } from "../Format";
+import type { FrameStageFormat } from "../Format";
 import { Buffer1D } from "./Buffer1D";
 
 /**
@@ -27,7 +27,7 @@ class IndexedBuffer extends Buffer1D {
             id: number,
             context: Context,
             totalByteLength: number,
-            typedArrayData1D: TypedArray1DFormat,
+            typedArrayData1D: Uint16Array | Uint32Array,
         }
     ) {
         super({
@@ -35,13 +35,14 @@ class IndexedBuffer extends Buffer1D {
             context: opts.context,
             totalByteLength: opts.totalByteLength,
             bufferUsageFlags: GPUBufferUsage.INDEX | GPUBufferUsage.COPY_DST,
-            typedArrayData1D: opts.typedArrayData1D,
+            rawData: opts.typedArrayData1D,
         });
-        this.drawCount = this.typedArrayData1D!.byteLength / this.typedArrayData1D!.BYTES_PER_ELEMENT;
         if (this.typedArrayData1D! instanceof Uint16Array) {
             this.indexFormat = 'uint16';
+            this.drawCount = this.typedArrayData1D!.byteLength / this.typedArrayData1D!.BYTES_PER_ELEMENT;
         } else if (this.typedArrayData1D! instanceof Uint32Array) {
             this.indexFormat = 'uint32';
+            this.drawCount = this.typedArrayData1D!.byteLength / this.typedArrayData1D!.BYTES_PER_ELEMENT;
         } else {
             throw new Error(`[E][IndexBuffer][constructor] index data type error.`);
         }

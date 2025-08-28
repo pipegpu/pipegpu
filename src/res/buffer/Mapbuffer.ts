@@ -1,6 +1,6 @@
 import type { Context } from "../Context";
 import type { FrameStageFormat, TypedArray1DFormat, TypedArray2DFormat } from "../Format";
-import type { Handle2DBuffer } from "./BaseBuffer";
+import type { BufferArrayHandle } from "../Handle";
 import { StorageBuffer } from "./StorageBuffer";
 
 /**
@@ -32,8 +32,8 @@ class MapBuffer extends StorageBuffer {
             context: Context,
             totalByteLength: number,
             appendixBufferUsageFlags?: number,
-            rawData2D?: TypedArray2DFormat,
-            handler?: Handle2DBuffer
+            rawDataArray?: TypedArray2DFormat,
+            handler?: BufferArrayHandle
         }
     ) {
         super({
@@ -41,13 +41,16 @@ class MapBuffer extends StorageBuffer {
             context: opts.context,
             bufferUsageFlags: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST | GPUBufferUsage.COPY_SRC | (opts.appendixBufferUsageFlags || 0),
             totalByteLength: opts.totalByteLength,
-            rawData2D: opts.rawData2D,
+            rawDataArray: opts.rawDataArray,
             handler: opts.handler,
         });
     }
 
     /**
      * 
+     *  read buffer.
+     *  - copy gpu buffer to read buffer in each frame.
+     *  - read buffer support PullSync in CPU stage.
      */
     private createMapReadBuffer = () => {
         let desc: GPUBufferDescriptor = {
@@ -59,6 +62,10 @@ class MapBuffer extends StorageBuffer {
     }
 
     /**
+     * 
+     * write buffer.
+     * - copy wirte buffer to gpu-side buffer in each frame.
+     * - wirte buffer support PushSnyc in CPU stage.
      * 
      */
     private createMapWriteBuffer = () => {
@@ -72,10 +79,13 @@ class MapBuffer extends StorageBuffer {
 
     /**
      * 
+     * @description TODO:: fit typedarray format.
+     * @deprecated 
      * @param byteOffset 
      * @param byteLength 
      * @param typedArray 
      * @returns 
+     * 
      */
     public async PushDataAsync(byteOffset: number, byteLength: number, typedArray: TypedArray1DFormat) {
         if (!this.buffer) {
@@ -113,8 +123,7 @@ class MapBuffer extends StorageBuffer {
         const offset = byteOffset || 0;
         const len = byteLength || 0;
         if (offset + len > totalByteLength) {
-            console.log(`[E][MapBuffer][PullDataAsync] pull gpu-side buffer failed. byte length oversize: ${offset + len}.`);
-            return;
+            throw new Error(`[E][MapBuffer][PullDataAsync] pull gpu-side buffer failed. byte length oversize: ${offset + len}.`);
         }
         await this.mapReadBuffer.mapAsync(GPUMapMode.READ, 0, totalByteLength);
         const arrayBuffer = this.mapReadBuffer.getMappedRange();
@@ -125,9 +134,10 @@ class MapBuffer extends StorageBuffer {
 
     /**
      * 
-     * @param _encoder 
-     * @param _frameStage 
+     * @param encoder 
+     * @param frameStage 
      * @returns 
+     * 
      */
     override getGpuBuffer = (encoder: GPUCommandEncoder, frameStage: FrameStageFormat): GPUBuffer => {
         super.getGpuBuffer(encoder, frameStage);

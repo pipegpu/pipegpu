@@ -1,6 +1,6 @@
 import type { Context } from "../Context";
 import type { TypedArray2DFormat } from "../Format";
-import type { Handle2DBuffer } from "./BaseBuffer";
+import type { BufferArrayHandle } from "../Handle";
 import { StorageBuffer } from "./StorageBuffer";
 
 /**
@@ -25,8 +25,8 @@ class IndexedIndirectBuffer extends StorageBuffer {
             id: number,
             context: Context,
             totalByteLength: number,
-            typedArrayData2D?: TypedArray2DFormat,
-            handler?: Handle2DBuffer,
+            rawDataArray?: TypedArray2DFormat | Array<ArrayBuffer>,
+            handler?: BufferArrayHandle,
         }
     ) {
         super({
@@ -34,7 +34,7 @@ class IndexedIndirectBuffer extends StorageBuffer {
             context: opts.context,
             totalByteLength: opts.totalByteLength,
             bufferUsageFlags: GPUBufferUsage.INDIRECT | GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST | GPUBufferUsage.COPY_SRC,
-            rawData2D: opts.typedArrayData2D,
+            rawDataArray: opts.rawDataArray,
             handler: opts.handler
         });
         // check total bytelength align by 20.
@@ -64,7 +64,7 @@ class IndexedIndirectBuffer extends StorageBuffer {
      * @returns 
      */
     getIndexIndirectCount = (): number => {
-        return this.rawData2D?.length || 0;
+        return this.rawDataArray?.length || 0;
     }
 
 }

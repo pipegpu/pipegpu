@@ -149,6 +149,6 @@ const parseUniform = (
 
 export {
     type IUniformRecord,
-    type UniformHandle,
+    type UniformHandle as UniformHandle,
     parseUniform
 }

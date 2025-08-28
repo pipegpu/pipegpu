@@ -1,5 +1,5 @@
 import { Attributes, ColorAttachment, DepthStencilAttachment, RenderHolder, RenderProperty, Uniforms, type BaseHolder, type Compiler, type RenderHolderDesc } from "../../src";
-import type { Handle2DBuffer } from "../../src/res/buffer/BaseBuffer";
+import type { HandleBufferArray } from "../../src/res/buffer/BaseBuffer";
 import type { IndexedIndirectBuffer } from "../../src/res/buffer/IndexedIndirectBuffer";
 import type { IndexedStorageBuffer } from "../../src/res/buffer/IndexedStorageBuffer";
 
@@ -12,13 +12,13 @@ const initMultiDrawIndexedIndirect = (compiler: Compiler, colorAttachments: Colo
         const indexData1 = new Uint32Array([3, 4, 5, 5, 4, 3]);
         const indexStorageBuffer: IndexedStorageBuffer = compiler.createIndexedStorageBuffer({
             totalByteLength: indexData1.byteLength + indexData2.byteLength,
-            rawData: [indexData1, indexData2],
+            rawDataArray: [indexData1, indexData2],
         });
 
         // indexed indirect buffer.
         const indexedIndirectData1 = new Uint32Array([indexData1.byteLength / indexData1.BYTES_PER_ELEMENT, 1, 0, 0, 0]);
         const indexedIndirectData2 = new Uint32Array([indexData2.byteLength / indexData2.BYTES_PER_ELEMENT, 1, indexData1.byteLength / indexData1.BYTES_PER_ELEMENT, 0, 0]);
-        const handler: Handle2DBuffer = () => {
+        const handler: HandleBufferArray = () => {
             const details: any[] = [];
             details.push({
                 offset: 0,
@@ -46,7 +46,7 @@ const initMultiDrawIndexedIndirect = (compiler: Compiler, colorAttachments: Colo
         const indirectDrawCountData = new Uint32Array([3]);
         const indirectDrawCountBuffer = compiler.createStorageBuffer({
             totalByteLength: indirectDrawCountData.byteLength,
-            rawData: [indirectDrawCountData],
+            rawDataArray: [indirectDrawCountData],
             bufferUsageFlags: GPUBufferUsage.INDIRECT
         });
 

@@ -86,14 +86,16 @@ const getTextureFormatByTexelType = (binding: VariableInfo): GPUTextureFormat =>
             return 'r32float';
         case 'r32uint':
             return 'r32uint';
+        case 'rgba32uint':
+            return 'rgba32uint';
         case 'rgba8sint':
             return 'rgba8sint';
         case 'rgba8snorm':
-            return 'rgba8snorm'
+            return 'rgba8snorm';
         case 'rgba8uint':
-            return 'rgba8uint'
+            return 'rgba8uint';
         case 'rgba8unorm':
-            return 'rgba8unorm'
+            return 'rgba8unorm';
         default:
             {
                 console.warn(`[W][getTextureFormatByTexelType] texel type: ${t}`)

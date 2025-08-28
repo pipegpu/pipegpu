@@ -125,7 +125,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4f {
             {
                 width: PRESET_WIDTH,
                 height: PRESET_HEIGHT,
-                array: 3,
+                depthOrArrayLayers: 3,
                 textureDataArray: dataArray,
                 textureFormat: 'bc7-rgba-unorm',
                 mipmapCount: 1

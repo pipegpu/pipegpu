@@ -1,4 +1,4 @@
-import type { BaseBuffer, Handle1DBffer, Handle2DBuffer } from "../res/buffer/BaseBuffer";
+import type { BaseBuffer } from "../res/buffer/BaseBuffer";
 import { IndexedBuffer } from "../res/buffer/IndexedBuffer";
 import { IndexedIndirectBuffer } from "../res/buffer/IndexedIndirectBuffer";
 import { IndexedStorageBuffer } from "../res/buffer/IndexedStorageBuffer";
@@ -9,6 +9,7 @@ import { UniformBuffer } from "../res/buffer/UniformBuffer";
 import { VertexBuffer } from "../res/buffer/VertexBuffer";
 import type { Context } from "../res/Context";
 import type { TypedArray1DFormat, TypedArray2DFormat } from "../res/Format";
+import type { BufferHandle, BufferArrayHandle } from "../res/Handle";
 import { uniqueID } from "../util/uniqueID";
 
 /**
@@ -55,7 +56,7 @@ class BufferState {
      */
     createIndexBuffer(
         opts: {
-            rawData: TypedArray1DFormat,
+            rawData: Uint16Array | Uint32Array,
         }
     ): IndexedBuffer {
         const bufferID: number = uniqueID();
@@ -78,8 +79,8 @@ class BufferState {
     createUniformBuffer = (
         opts: {
             totalByteLength: number,
-            rawData?: TypedArray1DFormat
-            handler?: Handle1DBffer,
+            rawData?: TypedArray1DFormat | ArrayBuffer,
+            handler?: BufferHandle,
         }
     ): UniformBuffer => {
         const bufferID = uniqueID();
@@ -87,7 +88,7 @@ class BufferState {
             id: bufferID,
             context: this.context,
             totalByteLength: opts.totalByteLength,
-            typedArrayData1D: opts.rawData,
+            rawData: opts.rawData,
             handler: opts.handler
         });
         BufferState.BUFFER_SET.set(bufferID, buffer);
@@ -104,8 +105,8 @@ class BufferState {
         opts: {
             totalByteLength: number,
             appendixBufferUsageFlags?: number,
-            rawData2D?: TypedArray2DFormat,
-            handler?: Handle2DBuffer
+            rawDataArray?: TypedArray2DFormat,
+            handler?: BufferArrayHandle
         }
     ): MapBuffer => {
         const bufferID: number = uniqueID();
@@ -114,7 +115,7 @@ class BufferState {
             context: this.context,
             totalByteLength: opts.totalByteLength,
             appendixBufferUsageFlags: opts.appendixBufferUsageFlags,
-            rawData2D: opts.rawData2D,
+            rawDataArray: opts.rawDataArray,
             handler: opts.handler
         });
         BufferState.BUFFER_SET.set(bufferID, buffer);
@@ -125,13 +126,14 @@ class BufferState {
      * 
      * @param opts 
      * @returns 
+     * 
      */
     createStorageBuffer = (
         opts: {
             totalByteLength: number,
             bufferUsageFlags?: GPUBufferUsageFlags,
-            rawData?: TypedArray2DFormat,
-            handler?: Handle2DBuffer
+            rawDataArray?: TypedArray2DFormat | Array<ArrayBuffer>,
+            handler?: BufferArrayHandle
         }
     ): StorageBuffer => {
         const bufferID: number = uniqueID();
@@ -139,7 +141,7 @@ class BufferState {
             id: bufferID,
             context: this.context,
             totalByteLength: opts.totalByteLength,
-            rawData2D: opts.rawData,
+            rawDataArray: opts.rawDataArray,
             bufferUsageFlags: opts.bufferUsageFlags,
             handler: opts.handler
         });
@@ -149,13 +151,14 @@ class BufferState {
 
     /**
      * 
-     * @param opts 
+     * @param opts
+     * 
      */
     createIndexedStorageBuffer = (
         opts: {
             totalByteLength: number,
-            rawData?: TypedArray2DFormat,
-            handler?: Handle2DBuffer
+            rawDataArray?: Array<Uint16Array> | Array<Uint32Array>,
+            handler?: BufferArrayHandle
         }
     ): IndexedStorageBuffer => {
         const bufferID: number = uniqueID();
@@ -163,7 +166,7 @@ class BufferState {
             id: bufferID,
             context: this.context,
             totalByteLength: opts.totalByteLength,
-            typedArrayData2D: opts.rawData,
+            rawDataArray: opts.rawDataArray,
             handler: opts.handler
         });
         BufferState.BUFFER_SET.set(bufferID, buffer);
@@ -181,7 +184,7 @@ class BufferState {
         opts: {
             totalByteLength: number,
             rawData?: TypedArray1DFormat
-            handler?: Handle1DBffer
+            handler?: BufferHandle
         }
     ): VertexBuffer => {
         const bufferID: number = uniqueID();
@@ -189,18 +192,24 @@ class BufferState {
             id: bufferID,
             context: this.context,
             totalByteLength: opts.totalByteLength,
-            typedArrayData1D: opts.rawData,
+            rawData: opts.rawData,
             handler: opts.handler
         });
         BufferState.BUFFER_SET.set(bufferID, buffer);
         return BufferState.BUFFER_SET.get(bufferID) as VertexBuffer;
     }
 
+    /**
+     * 
+     * @param opts 
+     * @returns 
+     * 
+     */
     createIndirectBuffer = (
         opts: {
             totalByteLength: number,
-            rawData?: TypedArray2DFormat,
-            handler?: Handle2DBuffer,
+            rawDataArray?: TypedArray2DFormat | Array<ArrayBuffer>,
+            handler?: BufferArrayHandle,
         }
     ): IndirectBuffer => {
         const bufferID: number = uniqueID();
@@ -208,18 +217,24 @@ class BufferState {
             id: bufferID,
             context: this.context,
             totalByteLength: opts.totalByteLength,
-            typedArrayData2D: opts.rawData,
+            rawDataArray: opts.rawDataArray,
             handler: opts.handler
         });
         BufferState.BUFFER_SET.set(bufferID, buffer);
         return BufferState.BUFFER_SET.get(bufferID) as IndirectBuffer;
     }
 
+    /**
+     * 
+     * @param opts 
+     * @returns 
+     * 
+     */
     createIndexedIndirectBuffer = (
         opts: {
             totalByteLength: number,
-            rawData?: TypedArray2DFormat,
-            handler?: Handle2DBuffer,
+            rawDataArray?: TypedArray2DFormat | Array<ArrayBuffer>,
+            handler?: BufferArrayHandle,
         }
     ): IndexedIndirectBuffer => {
         const bufferID: number = uniqueID();
@@ -227,7 +242,7 @@ class BufferState {
             id: bufferID,
             context: this.context,
             totalByteLength: opts.totalByteLength,
-            typedArrayData2D: opts.rawData,
+            rawDataArray: opts.rawDataArray,
             handler: opts.handler,
         });
         BufferState.BUFFER_SET.set(bufferID, buffer);

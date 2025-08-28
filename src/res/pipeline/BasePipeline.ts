@@ -5,6 +5,7 @@ import type { PropertyFormat } from "../Format"
  * 
  */
 class BasePipeline {
+
     /**
      * 
      */
@@ -51,6 +52,7 @@ class BasePipeline {
     getPropertyFormat = () => {
         return this.propertyFormat;
     }
+
 }
 
 

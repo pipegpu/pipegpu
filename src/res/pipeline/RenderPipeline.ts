@@ -3,8 +3,11 @@ import { BasePipeline } from "./BasePipeline";
 
 /**
  * 
+ * @class RenderPipeline
+ * 
  */
 class RenderPipeline extends BasePipeline {
+
     /**
     * 
     */
@@ -50,6 +53,7 @@ class RenderPipeline extends BasePipeline {
         }
         return this.renderPipeline as GPURenderPipeline;
     }
+
 }
 
 export {

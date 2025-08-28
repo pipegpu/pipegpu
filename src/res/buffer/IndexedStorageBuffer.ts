@@ -1,6 +1,6 @@
 import type { Context } from "../Context";
-import type { FrameStageFormat, TypedArray2DFormat } from "../Format";
-import type { Handle2DBuffer } from "./BaseBuffer";
+import type { FrameStageFormat } from "../Format";
+import type { BufferArrayHandle } from "../Handle";
 import { StorageBuffer } from "./StorageBuffer";
 
 /**
@@ -29,8 +29,8 @@ class IndexedStorageBuffer extends StorageBuffer {
             id: number,
             context: Context,
             totalByteLength: number,
-            typedArrayData2D?: TypedArray2DFormat,
-            handler?: Handle2DBuffer
+            rawDataArray?: Array<Uint16Array> | Array<Uint32Array>,
+            handler?: BufferArrayHandle
         }
     ) {
         super({
@@ -38,15 +38,14 @@ class IndexedStorageBuffer extends StorageBuffer {
             context: opts.context,
             totalByteLength: opts.totalByteLength,
             bufferUsageFlags: GPUBufferUsage.INDEX | GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
-            rawData2D: opts.typedArrayData2D,
+            rawDataArray: opts.rawDataArray,
             handler: opts.handler,
         });
-
         // check silced indexed buffer type.
-        // TODO runtime handle check WIP.
-        if (this.rawData2D) {
+        // TODO runtime 'handle' check WIP.
+        if (this.rawDataArray) {
             let format = 'none';
-            this.rawData2D.forEach(typedarray => {
+            this.rawDataArray.forEach(typedarray => {
                 if (typedarray instanceof Uint16Array && ('uint16' === format || 'none' === format)) {
                     format = 'uint16';
                     this.drawCount += typedarray.length;

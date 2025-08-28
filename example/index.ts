@@ -14,6 +14,7 @@ import { initDrawIndexedIndirect } from './tech/initDrawIndexedIndirect.ts'
 import { initMultiDrawIndexedIndirect } from './tech/initMultiDrawIndexedIndirect.ts'
 import { initMultiDrawIndirectWithStorageVertex } from './tech/initMultiDrawIndirectWithStorageVertex.ts';
 import { initTexelCopy, texelCopyDebugBuffer } from './tech/initTexelCopy.ts';
+import { initDrawWithArrayBuffer } from './tech/initDrawWithArrayBuffer.ts';
 
 (async () => {
 
@@ -58,6 +59,7 @@ import { initTexelCopy, texelCopyDebugBuffer } from './tech/initTexelCopy.ts';
     const multiDrawIndexedIndirect = await initMultiDrawIndexedIndirect(compiler, colorAttachments, depthStencilAttachment);
     const drawIndexedStorage = await initMultiDrawIndirectWithStorageVertex(compiler, colorAttachments, depthStencilAttachment);
     const texelCopy: BaseHolder[] = await initTexelCopy(compiler, colorAttachments, depthStencilAttachment) as BaseHolder[];
+    const dawWithArrayBuffer = await initDrawWithArrayBuffer(compiler, colorAttachments, depthStencilAttachment);
 
     // const graph: OrderedGraph = new OrderedGraph(context);
     // const renderLoop = () => {
@@ -80,6 +82,7 @@ import { initTexelCopy, texelCopyDebugBuffer } from './tech/initTexelCopy.ts';
     holderArray.push(multiDrawIndexedIndirect);
     holderArray.push(texelCopy[0]);
     holderArray.push(texelCopy[1]);
+    holderArray.push(dawWithArrayBuffer);
 
 
     const renderLoop = async () => {

@@ -47,12 +47,12 @@ test('compiler create vertex buffer.', async () => {
 test('compiler create mapbuffer.', async () => {
     const storageMapBuffer = compiler.createMapBuffer({
         totalByteLength: 4,
-        rawData2D: [new Float32Array([1.0])],
+        rawDataArray: [new Float32Array([1.0])],
         appendixBufferUsageFlags: GPUBufferUsage.STORAGE,
     });
     const querySetMapBuffer = compiler.createMapBuffer({
         totalByteLength: 4,
-        rawData2D: [new Float32Array([1.0])],
+        rawDataArray: [new Float32Array([1.0])],
         appendixBufferUsageFlags: GPUBufferUsage.QUERY_RESOLVE,
     });
     assert(storageMapBuffer !== undefined, `storage map buffer vaild.`);

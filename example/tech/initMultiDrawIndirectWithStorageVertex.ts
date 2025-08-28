@@ -6,7 +6,7 @@ const initMultiDrawIndirectWithStorageVertex = (compiler: Compiler, colorAttachm
     {
         const indexStorageBuffer = compiler.createIndexedStorageBuffer({
             totalByteLength: 6 * 4 * 2,
-            rawData: [
+            rawDataArray: [
                 new Uint32Array([0, 1, 2, 2, 1, 0]),
                 new Uint32Array([3, 4, 5, 5, 4, 3])
             ],
@@ -14,7 +14,7 @@ const initMultiDrawIndirectWithStorageVertex = (compiler: Compiler, colorAttachm
 
         const indexedIndirectBuffer = compiler.createIndexedIndirectBuffer({
             totalByteLength: 20 * 2,
-            rawData: [
+            rawDataArray: [
                 new Uint32Array([6, 1, 0, 0, 0]),
                 new Uint32Array([6, 1, 6, 0, 0])
             ],
@@ -22,7 +22,7 @@ const initMultiDrawIndirectWithStorageVertex = (compiler: Compiler, colorAttachm
 
         const indirectDrawCountBuffer = compiler.createStorageBuffer({
             totalByteLength: 4,
-            rawData: [new Uint32Array([2])],
+            rawDataArray: [new Uint32Array([2])],
             bufferUsageFlags: GPUBufferUsage.INDIRECT
         });
 
@@ -96,7 +96,7 @@ fn fs_main(f:FRAGMENT) -> @location(0) vec4f {
     {
         const positionBuffer = compiler.createStorageBuffer({
             totalByteLength: 4 * 6 * 4,
-            rawData: [
+            rawDataArray: [
                 new Float32Array([-0.2, -0.2, 0.0, 0.0]),
                 new Float32Array([0.2, -0.2, 0.0, 0.0]),
                 new Float32Array([0.0, 0.2, 0.0, 0.0]),

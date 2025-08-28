@@ -1,6 +1,7 @@
-import { BaseBuffer, type Handle1DBffer } from "./BaseBuffer";
+import { BaseBuffer } from "./BaseBuffer";
 import type { Context } from "../Context"
 import type { FrameStageFormat, TypedArray1DFormat } from "../Format";
+import type { BufferHandle } from "../Handle";
 
 /**
  * 
@@ -9,12 +10,12 @@ class Buffer1D extends BaseBuffer {
     /**
      * 
      */
-    protected handler?: Handle1DBffer;
+    protected handler?: BufferHandle;
 
     /**
     * 
     */
-    protected typedArrayData1D?: TypedArray1DFormat;
+    protected typedArrayData1D?: TypedArray1DFormat | ArrayBuffer;
 
     /**
      * 
@@ -22,8 +23,8 @@ class Buffer1D extends BaseBuffer {
      * @param {Context}             opts.context
      * @param {number}              opts.totalByteLength
      * @param {GPUBufferUsageFlags} opts.bufferUsageFlags
-     * @param {TypedArray1DFormat}  [opts.typedArrayData1D] - either opts.handler or opts.typedArrayData1D must be assigned a value.
-     * @param {Handle1DBffer}            [opts.handler]          - either opts.handler or opts.typedArrayData1D must be assigned a value.
+     * @param {TypedArray1DFormat}  [opts.typedArrayData1D]     - either opts.handler or opts.typedArrayData1D must be assigned a value.
+     * @param {BufferHandle}       [opts.handler]              - either opts.handler or opts.typedArrayData1D must be assigned a value.
      * 
      */
     constructor(
@@ -32,8 +33,8 @@ class Buffer1D extends BaseBuffer {
             context: Context,
             totalByteLength: number,
             bufferUsageFlags: GPUBufferUsageFlags
-            typedArrayData1D?: TypedArray1DFormat,
-            handler?: Handle1DBffer,
+            rawData?: TypedArray1DFormat | ArrayBuffer,
+            handler?: BufferHandle,
         }
     ) {
         super({
@@ -43,7 +44,7 @@ class Buffer1D extends BaseBuffer {
             totalByteLength: opts.totalByteLength,
         });
         this.handler = opts.handler;
-        this.typedArrayData1D = opts.typedArrayData1D;
+        this.typedArrayData1D = opts.rawData;
         if (!this.handler && !this.typedArrayData1D) {
             throw new Error(`[E][Buffer1D][constructor] create buffer error, either opts.handler or opts.typedArrayData1D must be assigned a value.`);
         }
@@ -65,7 +66,7 @@ class Buffer1D extends BaseBuffer {
         this.context?.getGpuQueue().writeBuffer(
             this.buffer as GPUBuffer,
             offset,
-            rawData as ArrayBuffer,
+            rawData instanceof ArrayBuffer ? rawData : rawData.buffer,
             0
         );
     }

@@ -1,20 +1,6 @@
 import { Attributes, ColorAttachment, DepthStencilAttachment, RenderHolder, RenderProperty, Uniforms, type BaseHolder, type Compiler, type RenderHolderDesc } from "../../src";
 
-const initDrawIndriect = (compiler: Compiler, colorAttachments: ColorAttachment[], depthStencilAttachment: DepthStencilAttachment): BaseHolder => {
-
-    const indirectBufferData = new Uint32Array([
-        6,
-        1,
-        0,
-        0
-    ]);
-    const indirectBuffer = compiler.createIndirectBuffer({
-        totalByteLength: indirectBufferData.byteLength,
-        rawDataArray: [indirectBufferData],
-    });
-
-    const dispatch: RenderProperty = new RenderProperty(indirectBuffer);
-
+const initDrawWithArrayBuffer = (compiler: Compiler, colorAttachments: ColorAttachment[], depthStencilAttachment: DepthStencilAttachment): BaseHolder => {
     //
     let desc: RenderHolderDesc = {
         label: '[DEMO][render]',
@@ -42,7 +28,7 @@ const initDrawIndriect = (compiler: Compiler, colorAttachments: ColorAttachment[
         }),
         attributes: new Attributes(),
         uniforms: new Uniforms(),
-        dispatch: dispatch,
+        dispatch: new RenderProperty(6, 1),
         colorAttachments: colorAttachments,
         depthStencilAttachment: depthStencilAttachment,
     };
@@ -52,7 +38,7 @@ const initDrawIndriect = (compiler: Compiler, colorAttachments: ColorAttachment[
     const vertexBuffer = compiler.createVertexBuffer({
         totalByteLength: 12 * 4,
         handler: () => {
-            const arrayData = new Float32Array([-0.15 + Math.sin((seed++) * 0.01), -0.5, 0.5, -0.5, 0.0, 0.5, -0.55, -0.5, -0.05, 0.5, -0.55, 0.5]);
+            const arrayData = new Float32Array([-0.15 + Math.sin((seed++) * 0.01), -0.25, 0.15, -0.5, 0.0, 0.5, -0.55, -0.5, -0.05, 0.5, -0.55, 0.8]);
             return {
                 rewrite: true,
                 detail: {
@@ -68,7 +54,7 @@ const initDrawIndriect = (compiler: Compiler, colorAttachments: ColorAttachment[
     const uniformBufferR = compiler.createUniformBuffer({
         totalByteLength: 1 * 4,
         handler: () => {
-            const arrayData = new Float32Array([Math.cos(seed * 0.01)]);
+            const arrayData = new Float32Array([Math.sin(seed * 0.01)]);
             return {
                 rewrite: true,
                 detail: {
@@ -83,19 +69,23 @@ const initDrawIndriect = (compiler: Compiler, colorAttachments: ColorAttachment[
         totalByteLength: 1 * 4,
         rawData: new Float32Array([0.2]),
     });
-    const uniformBufferB = compiler.createUniformBuffer({
-        totalByteLength: 1 * 4,
-        rawData: new Float32Array([0.0]),
-    });
 
     desc.uniforms?.assign("uColorR", uniformBufferR);
     desc.uniforms?.assign("uColorG", uniformBufferG);
-    desc.uniforms?.assign("uColorB", uniformBufferB);
-
+    {
+        const arrayBufferB = new ArrayBuffer(4);
+        const arrayBufferBView = new Float32Array(arrayBufferB, 0);
+        arrayBufferBView.set(new Float32Array([1.0]));
+        const uniformBufferB = compiler.createUniformBuffer({
+            totalByteLength: 1 * 4,
+            rawData: arrayBufferB // new Float32Array([0.0]),
+        });
+        desc.uniforms?.assign("uColorB", uniformBufferB);
+    }
     const holder: RenderHolder | undefined = compiler.compileRenderHolder(desc);
     return holder;
 }
 
 export {
-    initDrawIndriect
+    initDrawWithArrayBuffer
 }

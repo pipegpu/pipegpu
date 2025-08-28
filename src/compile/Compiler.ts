@@ -6,12 +6,11 @@ import type { RenderProperty } from "../property/dispatch/RenderProperty";
 import type { Attributes, Uniforms } from "../property/Properties";
 import type { ColorAttachment } from "../res/attachment/ColorAttachment";
 import type { DepthStencilAttachment } from "../res/attachment/DepthStencilAttachment";
-import type { Handle1DBffer, Handle2DBuffer, HandleTextureArray } from "../res/buffer/BaseBuffer";
 import type { UniformBuffer } from "../res/buffer/UniformBuffer";
 import type { VertexBuffer } from "../res/buffer/VertexBuffer";
 import { Context } from "../res/Context";
 import type { BlendFormat, ColorLoadStoreFormat, DepthLoadStoreFormat, MultiSampleFormat, StencilLoadStoreFormat, StencilStateFormat, TypedArray1DFormat, TypedArray2DFormat } from "../res/Format";
-import type { ComputeHandle, HookHandle, RenderHandle } from "../res/Handle";
+import type { ComputeHandle, HookHandle, RenderHandle, BufferHandle, BufferArrayHandle, TextureArrayHandle } from "../res/Handle";
 import type { ComputeShader } from "../res/shader/ComputeShader";
 import type { FragmentShader } from "../res/shader/FragmentShader";
 import type { VertexShader } from "../res/shader/VertexShader";
@@ -473,10 +472,14 @@ class Compiler {
         opts: {
             totalByteLength: number,
             rawData?: TypedArray1DFormat,
-            handler?: Handle1DBffer,
+            handler?: BufferHandle,
         }
     ): VertexBuffer => {
-        return this.bufferState.createVertexBuffer(opts);
+        return this.bufferState.createVertexBuffer({
+            totalByteLength: opts.totalByteLength,
+            rawData: opts.rawData,
+            handler: opts.handler
+        });
     }
 
     /**
@@ -487,13 +490,15 @@ class Compiler {
      */
     createIndexBuffer = (
         opts: {
-            rawData: TypedArray1DFormat,
+            rawData: Uint16Array | Uint32Array,
         }
     ): IndexedBuffer => {
         if (opts.rawData.byteLength % 4 !== 0) {
             throw new Error(`[E][Compiler][createIndexBuffer] buffer bytelength must align with 4. current index buffer byte length: ${opts.rawData.byteLength}`);
         }
-        return this.bufferState.createIndexBuffer(opts);
+        return this.bufferState.createIndexBuffer({
+            rawData: opts.rawData
+        });
     }
 
     /**
@@ -506,11 +511,15 @@ class Compiler {
     createUniformBuffer = (
         opts: {
             totalByteLength: number,
-            rawData?: TypedArray1DFormat,
-            handler?: Handle1DBffer
+            rawData?: TypedArray1DFormat | ArrayBuffer,
+            handler?: BufferHandle
         }
     ): UniformBuffer => {
-        return this.bufferState.createUniformBuffer(opts);
+        return this.bufferState.createUniformBuffer({
+            totalByteLength: opts.totalByteLength,
+            rawData: opts.rawData,
+            handler: opts.handler
+        });
     }
 
     /**
@@ -523,11 +532,16 @@ class Compiler {
         opts: {
             totalByteLength: number,
             bufferUsageFlags?: GPUBufferUsageFlags,
-            rawData?: TypedArray2DFormat,
-            handler?: Handle2DBuffer
+            rawDataArray?: TypedArray2DFormat | Array<ArrayBuffer>,
+            handler?: BufferArrayHandle
         }
     ): StorageBuffer => {
-        return this.bufferState.createStorageBuffer(opts);
+        return this.bufferState.createStorageBuffer({
+            totalByteLength: opts.totalByteLength,
+            bufferUsageFlags: opts.bufferUsageFlags,
+            rawDataArray: opts.rawDataArray,
+            handler: opts.handler
+        });
     }
 
     /**
@@ -538,11 +552,15 @@ class Compiler {
     createIndexedStorageBuffer = (
         opts: {
             totalByteLength: number,
-            rawData?: TypedArray2DFormat,
-            handler?: Handle2DBuffer
+            rawDataArray?: Array<Uint16Array> | Array<Uint32Array>,
+            handler?: BufferArrayHandle
         }
     ): IndexedStorageBuffer => {
-        return this.bufferState.createIndexedStorageBuffer(opts);
+        return this.bufferState.createIndexedStorageBuffer({
+            totalByteLength: opts.totalByteLength,
+            rawDataArray: opts.rawDataArray,
+            handler: opts.handler
+        });
     }
 
     /**
@@ -555,26 +573,36 @@ class Compiler {
     createIndirectBuffer = (
         opts: {
             totalByteLength: number,
-            rawData?: TypedArray2DFormat,
-            handler?: Handle2DBuffer,
+            rawDataArray?: TypedArray2DFormat,
+            handler?: BufferArrayHandle,
         }
     ): IndirectBuffer => {
-        return this.bufferState.createIndirectBuffer(opts);
+        return this.bufferState.createIndirectBuffer({
+            totalByteLength: opts.totalByteLength,
+            rawDataArray: opts.rawDataArray,
+            handler: opts.handler
+        });
     }
 
     /**
+     * 
      * [index_count, instance_count, first_index, vertex_offset, first_instance]
      * @param opts 
      * @returns 
+     * 
      */
     createIndexedIndirectBuffer = (
         opts: {
             totalByteLength: number,
-            rawData?: TypedArray2DFormat,
-            handler?: Handle2DBuffer,
+            rawDataArray?: TypedArray2DFormat,
+            handler?: BufferArrayHandle,
         }
     ): IndexedIndirectBuffer => {
-        return this.bufferState.createIndexedIndirectBuffer(opts);
+        return this.bufferState.createIndexedIndirectBuffer({
+            totalByteLength: opts.totalByteLength,
+            rawDataArray: opts.rawDataArray,
+            handler: opts.handler,
+        });
     }
 
 
@@ -588,17 +616,21 @@ class Compiler {
         opts: {
             totalByteLength: number,
             appendixBufferUsageFlags?: number,
-            rawData2D?: TypedArray2DFormat,
-            handler?: Handle2DBuffer
+            rawDataArray?: TypedArray2DFormat,
+            handler?: BufferArrayHandle
         }
     ): MapBuffer => {
-        return this.bufferState.createMapBuffer(opts);
+        return this.bufferState.createMapBuffer({
+            totalByteLength: opts.totalByteLength,
+            appendixBufferUsageFlags: opts.appendixBufferUsageFlags,
+            rawDataArray: opts.rawDataArray,
+            handler: opts.handler
+        });
     }
 
     /**
      * 
      * @param opts 
-     * @param id 
      * @returns 
      * 
      */
@@ -608,13 +640,15 @@ class Compiler {
             entryPoint: string
         }
     ): VertexShader => {
-        return this.shaderState.createVertexShader(opts);
+        return this.shaderState.createVertexShader({
+            code: opts.code,
+            entryPoint: opts.entryPoint
+        });
     }
 
     /**
      * 
      * @param opts 
-     * @param id 
      * @returns 
      * 
      */
@@ -624,13 +658,15 @@ class Compiler {
             entryPoint: string
         }
     ): FragmentShader => {
-        return this.shaderState.createFragmentShader(opts);
+        return this.shaderState.createFragmentShader({
+            code: opts.code,
+            entryPoint: opts.entryPoint
+        });
     }
 
     /**
      * 
      * @param opts 
-     * @param id 
      * @returns 
      * 
      */
@@ -640,13 +676,15 @@ class Compiler {
             entryPoint: string
         }
     ): ComputeShader => {
-        return this.shaderState.createComputeShader(opts);
+        return this.shaderState.createComputeShader({
+            code: opts.code,
+            entryPoint: opts.entryPoint
+        });
     }
 
     /**
      * 
      * @param opts 
-     * @param id 
      * @returns 
      * 
      */
@@ -658,13 +696,17 @@ class Compiler {
             clearColor?: number[]
         }
     ): ColorAttachment => {
-        return this.attachmentState.createColorAttachment(opts);
+        return this.attachmentState.createColorAttachment({
+            texture: opts.texture,
+            blendFormat: opts.blendFormat,
+            colorLoadStoreFormat: opts.colorLoadStoreFormat,
+            clearColor: opts.clearColor
+        });
     }
 
     /**
      * 
      * @param opts 
-     * @param id 
      * @returns 
      * 
      */
@@ -681,12 +723,23 @@ class Compiler {
             stencilClearValue?: number,
         }
     ): DepthStencilAttachment => {
-        return this.attachmentState.createDepthStencilAttachment(opts);
+        return this.attachmentState.createDepthStencilAttachment({
+            texture: opts.texture,
+            depthLoadStoreFormat: opts.depthLoadStoreFormat,
+            depthCompareFunction: opts.depthCompareFunction,
+            stencilFunctionFormat: opts.stencilFunctionFormat,
+            stencilLoadStoreFormat: opts.stencilLoadStoreFormat,
+            depthReadOnly: opts.depthReadOnly,
+            depthClearValue: opts.depthClearValue,
+            stencilReadOnly: opts.stencilReadOnly,
+            stencilClearValue: opts.stencilClearValue,
+        });
     }
 
     /**
      * 
-     * @returns 
+     * @description link to surface for rendering in each frame.
+     * @returns SurfaceTexture2D
      * 
      */
     createSurfaceTexture2D = () => {
@@ -706,7 +759,14 @@ class Compiler {
             appendixTextureUsages?: number,
         }
     ) => {
-        return this.textureState.createTexutre2D(opts);
+        return this.textureState.createTexutre2D({
+            width: opts.width,
+            height: opts.height,
+            textureData: opts.textureData,
+            textureFormat: opts.textureFormat,
+            mipmapCount: opts.mipmapCount,
+            appendixTextureUsages: opts.appendixTextureUsages,
+        });
     }
 
     /**
@@ -722,7 +782,14 @@ class Compiler {
             appendixTextureUsages?: number,
         }
     ) => {
-        return this.textureState.createTextureStorage2D(opts);
+        return this.textureState.createTextureStorage2D({
+            width: opts.width,
+            height: opts.height,
+            textureData: opts.textureData,
+            textureFormat: opts.textureFormat,
+            mipmapCount: opts.mipmapCount,
+            appendixTextureUsages: opts.appendixTextureUsages,
+        });
     }
 
     /**
@@ -735,17 +802,31 @@ class Compiler {
         opts: {
             width: number,
             height: number,
-            array: number,
+            depthOrArrayLayers: number,
             textureDataArray?: TypedArray2DFormat,
-            handler?:HandleTextureArray,
+            handler?: TextureArrayHandle,
             textureFormat?: GPUTextureFormat,
             mipmapCount?: number,
             appendixTextureUsages?: number,
         }
     ) => {
-        return this.textureState.createTexture2DArray(opts);
+        return this.textureState.createTexture2DArray({
+            width: opts.width,
+            height: opts.height,
+            depthOrArrayLayers: opts.depthOrArrayLayers,
+            textureDataArray: opts.textureDataArray,
+            handler: opts.handler,
+            textureFormat: opts.textureFormat,
+            mipmapCount: opts.mipmapCount,
+            appendixTextureUsages: opts.appendixTextureUsages,
+        });
     }
 
+    /**
+     * 
+     * @param opts 
+     * @returns 
+     */
     createTextureSampler = (
         opts: {
             addressModeU?: GPUAddressMode,
@@ -761,7 +842,19 @@ class Compiler {
             samplerBindingType?: GPUSamplerBindingType,
         }
     ) => {
-        return this.samplerState.createTextureSampler(opts);
+        return this.samplerState.createTextureSampler({
+            addressModeU: opts.addressModeU,
+            addressModeV: opts.addressModeV,
+            addressModeW: opts.addressModeW,
+            magFilter: opts.magFilter,
+            minFilter: opts.minFilter,
+            mipmapFilter: opts.mipmapFilter,
+            lodMinClamp: opts.lodMinClamp,
+            lodMaxClamp: opts.lodMaxClamp,
+            anisotropy: opts.anisotropy,
+            compareFunction: opts.compareFunction,
+            samplerBindingType: opts.samplerBindingType
+        });
     }
 
 }

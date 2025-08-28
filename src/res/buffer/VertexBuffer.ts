@@ -1,12 +1,15 @@
 import { type Context } from "../Context"
 import { type TypedArray1DFormat } from "../Format";
-import { type Handle1DBffer } from "./BaseBuffer"
+import type { BufferHandle } from "../Handle";
 import { Buffer1D } from "./Buffer1D";
 
 /**
+ * 
  * @class VertexBuffer
+ * 
  */
 class VertexBuffer extends Buffer1D {
+
     /**
      * 
      * @param opts 
@@ -16,8 +19,8 @@ class VertexBuffer extends Buffer1D {
             id: number,
             context: Context,
             totalByteLength: number,
-            typedArrayData1D?: TypedArray1DFormat,
-            handler?: Handle1DBffer
+            rawData?: TypedArray1DFormat,
+            handler?: BufferHandle
         }
     ) {
         super({
@@ -25,10 +28,11 @@ class VertexBuffer extends Buffer1D {
             context: opts.context,
             totalByteLength: opts.totalByteLength,
             bufferUsageFlags: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
-            typedArrayData1D: opts.typedArrayData1D,
+            rawData: opts.rawData,
             handler: opts.handler
         });
     }
+
 }
 
 export {

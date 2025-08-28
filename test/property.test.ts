@@ -43,7 +43,7 @@ test('property: attribute.', async () => {
 test('property: uniform.', async () => {
     const storageBuffer = compiler.createStorageBuffer({
         totalByteLength: 4,
-        rawData: [new Float32Array([1.0])]
+        rawDataArray: [new Float32Array([1.0])]
     });
 
     const propertyName = 'uniformName';
@@ -92,7 +92,7 @@ test('property: dispatch render property.', async () => {
         id: 2,
         context: context,
         totalByteLength: 4 * 3,
-        typedArrayData2D: [new Uint32Array([1, 2, 3])]
+        rawDataArray: [new Uint32Array([1, 2, 3])]
     });
 
     const indirectBuffer: IndirectBuffer = new IndirectBuffer({

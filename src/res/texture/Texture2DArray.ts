@@ -1,12 +1,13 @@
-import type { HandleTextureArray } from "../buffer/BaseBuffer";
 import type { Context } from "../Context";
 import type { FrameStageFormat, TypedArray2DFormat } from "../Format";
+import type { TextureArrayHandle } from "../Handle";
 import { BaseTexture } from "./BaseTexture";
 
 /**
  * 
  */
 class Texture2DArray extends BaseTexture {
+
     /**
      * 
      */
@@ -15,7 +16,7 @@ class Texture2DArray extends BaseTexture {
     /**
      * 
      */
-    protected handler?: HandleTextureArray;
+    protected handler?: TextureArrayHandle;
 
     /**
      * 
@@ -27,10 +28,10 @@ class Texture2DArray extends BaseTexture {
             context: Context,
             width: number,
             height: number,
-            array: number,
+            depthOrArrayLayers: number,
             appendixTextureUsages?: number,
             textureDataArray?: TypedArray2DFormat,
-            handler?: HandleTextureArray,
+            handler?: TextureArrayHandle,
             textureFormat?: GPUTextureFormat,
             mipmapCount?: number
         }
@@ -40,7 +41,7 @@ class Texture2DArray extends BaseTexture {
             context: opts.context,
             width: opts.width,
             height: opts.height,
-            depthOrArrayLayers: opts.array,
+            depthOrArrayLayers: opts.depthOrArrayLayers,
             textureUsageFlags: (opts.appendixTextureUsages || 0) | GPUTextureUsage.COPY_DST | GPUTextureUsage.TEXTURE_BINDING,
             textureFormat: opts.textureFormat,
             mipmapCount: opts.mipmapCount,
@@ -161,6 +162,7 @@ class Texture2DArray extends BaseTexture {
         }
         return this.textureViews[this.mipCurosr];
     }
+
 }
 
 export {

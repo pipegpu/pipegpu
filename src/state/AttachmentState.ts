@@ -11,6 +11,7 @@ import { uniqueID } from "../util/uniqueID";
  * 
  */
 class AttachmentState {
+
     /**
      * 
      */
@@ -24,6 +25,7 @@ class AttachmentState {
     /**
      * 
      * @param context 
+     * 
      */
     constructor(context: Context) {
         this.context = context;
@@ -32,6 +34,8 @@ class AttachmentState {
     /**
      * 
      * @param attachmentID 
+     * @returns 
+     * 
      */
     getAttachment = (attachmentID: number): BaseAttachment | undefined => {
         if (!AttachmentState.ATTACHMENT_SET.has(attachmentID)) {
@@ -42,6 +46,8 @@ class AttachmentState {
 
     /**
      * 
+     * @param opts 
+     * @returns 
      */
     createColorAttachment = (
         opts: {
@@ -69,7 +75,7 @@ class AttachmentState {
     /**
      * 
      * @param opts 
-     * @param id 
+     * @returns 
      */
     createDepthStencilAttachment = (
         opts: {
@@ -103,6 +109,7 @@ class AttachmentState {
         }
         return AttachmentState.ATTACHMENT_SET.get(depthStencilAttachmentID) as DepthStencilAttachment;
     }
+
 }
 
 export {

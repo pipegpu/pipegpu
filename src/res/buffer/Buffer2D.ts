@@ -1,6 +1,7 @@
 import type { Context } from "../Context";
 import type { FrameStageFormat, TypedArray1DFormat, TypedArray2DFormat } from "../Format";
-import { BaseBuffer, type Handle2DBuffer } from "./BaseBuffer";
+import type { BufferArrayHandle } from "../Handle";
+import { BaseBuffer } from "./BaseBuffer";
 
 /**
  * 
@@ -12,12 +13,12 @@ class Buffer2D extends BaseBuffer {
     /**
      * 
      */
-    protected handler?: Handle2DBuffer;
+    protected handler?: BufferArrayHandle;
 
     /**
      * 
      */
-    protected rawData2D?: TypedArray2DFormat;
+    protected rawDataArray?: TypedArray2DFormat | Array<ArrayBuffer>;
 
     /**
      * 
@@ -26,7 +27,7 @@ class Buffer2D extends BaseBuffer {
      * @param {number}              opts.totalByteLength
      * @param {GPUBufferUsageFlags} opts.bufferUsageFlags
      * @param {TypedArray2DFormat}  opts.typedArrayData2D
-     * @param {Handle2DBuffer}            opts.handler
+     * @param {BufferArrayHandle}            opts.handler
      * 
      */
     constructor(
@@ -35,8 +36,8 @@ class Buffer2D extends BaseBuffer {
             context: Context,
             totalByteLength: number,
             bufferUsageFlags: GPUBufferUsageFlags
-            rawData2D?: TypedArray2DFormat,
-            handler?: Handle2DBuffer,
+            rawData?: TypedArray2DFormat | Array<ArrayBuffer>,
+            handler?: BufferArrayHandle,
         }
     ) {
         super({
@@ -45,7 +46,7 @@ class Buffer2D extends BaseBuffer {
             totalByteLength: opts.totalByteLength,
             bufferUsageFlags: opts.bufferUsageFlags | GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST
         });
-        this.rawData2D = opts.rawData2D;
+        this.rawDataArray = opts.rawData;
         this.handler = opts.handler;
     }
 
@@ -64,7 +65,7 @@ class Buffer2D extends BaseBuffer {
         this.context?.getGpuQueue().writeBuffer(
             this.buffer as GPUBuffer,
             offset,
-            rawData as ArrayBuffer,
+            rawData instanceof ArrayBuffer ? rawData : rawData.buffer,
             0
         );
     }
@@ -85,9 +86,9 @@ class Buffer2D extends BaseBuffer {
             };
             this.buffer = this.context!.getGpuDevice().createBuffer(desc);
         }
-        if (this.rawData2D) {
+        if (this.rawDataArray) {
             let offset: number = 0;
-            this.rawData2D?.forEach(typedArray => {
+            this.rawDataArray?.forEach(typedArray => {
                 this.updateGpuBuffer(offset, typedArray.byteLength, typedArray);
                 offset += typedArray.byteLength;
             });

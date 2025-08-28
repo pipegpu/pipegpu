@@ -81,23 +81,27 @@ fn fs_main(in:VSOutput) -> @location(0) vec4f {
         colorDataArray.push(new Float32Array([1.0, 0.0, 0.0, 1.0]));
         colorDataArray.push(new Float32Array([0.0, 1.0, 0.0, 1.0]));
         colorDataArray.push(new Float32Array([0.0, 0.0, 1.0, 1.0]));
-        colorDataArray.push(new Float32Array([1.0, 1.0, 1.0, 1.0]));
+        colorDataArray.push(new Float32Array([1.0, 0.3, 1.0, 1.0]));
         const colorBuffer = compiler.createStorageBuffer({
             totalByteLength: 4 * 4 * 4,
-            rawData: colorDataArray
+            rawDataArray: colorDataArray
         });
         desc.uniforms?.assign("ssbo_color", colorBuffer);
     }
 
     {
-        const offsetBufferDataArray: Float32Array[] = [];
-        offsetBufferDataArray.push(new Float32Array([0.15, 0.0]));
-        offsetBufferDataArray.push(new Float32Array([0.0, 0.15]));
-        offsetBufferDataArray.push(new Float32Array([0.15, 0.15]));
-        offsetBufferDataArray.push(new Float32Array([-0.15, 0.3]));
+        const buffer = new ArrayBuffer(4 * 8);
+        const bufferView0 = new Float32Array(buffer, 4 * 0);
+        const bufferView1 = new Float32Array(buffer, 4 * 2);
+        const bufferView2 = new Float32Array(buffer, 4 * 4);
+        const bufferView3 = new Float32Array(buffer, 4 * 6);
+        bufferView0.set(new Float32Array([0.15, 0.0]));
+        bufferView1.set(new Float32Array([0.0, 0.15]));
+        bufferView2.set(new Float32Array([0.15, 0.15]));
+        bufferView3.set(new Float32Array([-0.15, 0.3]));
         const offsetBuffer = compiler.createStorageBuffer({
             totalByteLength: 4 * 2 * 4,
-            rawData: offsetBufferDataArray
+            rawDataArray: [buffer]
         });
         desc.uniforms?.assign("ssbo_offset", offsetBuffer);
     }
