@@ -52,6 +52,7 @@ class Texture2D extends BaseTexture {
             };
             const dataLayout: GPUTexelCopyBufferLayout = this.getTexelCopyBufferLayout();
             this.context.getGpuQueue().writeTexture(destination, this.textureData, dataLayout, this.extent3d);
+            this.textureData = undefined;
         }
     }
 

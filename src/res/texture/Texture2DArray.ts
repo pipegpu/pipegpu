@@ -55,7 +55,7 @@ class Texture2DArray extends BaseTexture {
      * 
      */
     protected refreshTextureDataSource() {
-        if (this.textureData2DArray && !this.isDetphTexture()) {
+        if (this.textureData2DArray && this.textureData2DArray.length > 0 && !this.isDetphTexture()) {
             const destination: GPUTexelCopyTextureInfo = {
                 texture: this.texture!
             };
@@ -69,6 +69,9 @@ class Texture2DArray extends BaseTexture {
                 destination.origin = [0, 0, index];
                 this.context.getGpuQueue().writeTexture(destination, (this.textureData2DArray[index] as Uint8Array).buffer, dataLayout, oneLayerExtent3d);
             }
+            // clear
+            this.textureData2DArray.length = 0;
+            this.textureData2DArray = undefined;
         } else if (this.handler && !this.isDetphTexture()) {
             const handData = this.handler();
             if (handData.rewrite) {
@@ -85,6 +88,8 @@ class Texture2DArray extends BaseTexture {
                     destination.origin = [0, 0, detail.depthOrArrayLayerIndex];
                     this.context.getGpuQueue().writeTexture(destination, (detail.rawData as Uint8Array).buffer, dataLayout, oneLayerExtent3d);
                 });
+                // clear
+                handData.details.length = 0
             }
         }
     }
@@ -115,6 +120,7 @@ class Texture2DArray extends BaseTexture {
         if (!this.texture) {
             this.createGpuTexture();
         }
+        this.refreshTextureDataSource();
         return this.texture!;
     }
 
