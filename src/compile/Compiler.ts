@@ -470,6 +470,7 @@ class Compiler {
      */
     createVertexBuffer = (
         opts: {
+            debugLabel?: number,
             totalByteLength: number,
             rawData?: TypedArray1DFormat,
             handler?: BufferHandle,
@@ -490,6 +491,7 @@ class Compiler {
      */
     createIndexBuffer = (
         opts: {
+            debugLabel?: number,
             rawData: Uint16Array | Uint32Array,
         }
     ): IndexedBuffer => {
@@ -510,11 +512,15 @@ class Compiler {
      */
     createUniformBuffer = (
         opts: {
+            debugLabel?: number,
             totalByteLength: number,
             rawData?: TypedArray1DFormat | ArrayBuffer,
             handler?: BufferHandle
         }
     ): UniformBuffer => {
+        if (opts.totalByteLength >= this.context.getLimits().maxUniformBufferBindingSize) {
+            throw new Error(`[E][createUniformBuffer] ${opts.debugLabel} total byte length vaild.`)
+        }
         return this.bufferState.createUniformBuffer({
             totalByteLength: opts.totalByteLength,
             rawData: opts.rawData,
@@ -530,12 +536,16 @@ class Compiler {
      */
     createStorageBuffer = (
         opts: {
+            debugLabel?: number,
             totalByteLength: number,
             bufferUsageFlags?: GPUBufferUsageFlags,
             rawDataArray?: TypedArray2DFormat | Array<ArrayBuffer>,
             handler?: BufferArrayHandle
         }
     ): StorageBuffer => {
+        if (opts.totalByteLength >= this.context.getLimits().maxStorageBufferBindingSize) {
+            throw new Error(`[E][createStorageBuffer] ${opts.debugLabel} total byte length vaild.`)
+        }
         return this.bufferState.createStorageBuffer({
             totalByteLength: opts.totalByteLength,
             bufferUsageFlags: opts.bufferUsageFlags,
@@ -551,11 +561,15 @@ class Compiler {
      */
     createIndexedStorageBuffer = (
         opts: {
+            debugLabel?: number,
             totalByteLength: number,
             rawDataArray?: Array<Uint16Array> | Array<Uint32Array>,
             handler?: BufferArrayHandle
         }
     ): IndexedStorageBuffer => {
+        if (opts.totalByteLength >= this.context.getLimits().maxStorageBufferBindingSize) {
+            throw new Error(`[E][createIndexedStorageBuffer] ${opts.debugLabel} total byte length vaild.`)
+        }
         return this.bufferState.createIndexedStorageBuffer({
             totalByteLength: opts.totalByteLength,
             rawDataArray: opts.rawDataArray,
@@ -572,11 +586,15 @@ class Compiler {
      */
     createIndirectBuffer = (
         opts: {
+            debugLabel?: number,
             totalByteLength: number,
             rawDataArray?: TypedArray2DFormat,
             handler?: BufferArrayHandle,
         }
     ): IndirectBuffer => {
+        if (opts.totalByteLength >= this.context.getLimits().maxStorageBufferBindingSize) {
+            throw new Error(`[E][createIndirectBuffer] ${opts.debugLabel} total byte length vaild.`)
+        }
         return this.bufferState.createIndirectBuffer({
             totalByteLength: opts.totalByteLength,
             rawDataArray: opts.rawDataArray,
@@ -593,11 +611,15 @@ class Compiler {
      */
     createIndexedIndirectBuffer = (
         opts: {
+            debugLabel?: number,
             totalByteLength: number,
             rawDataArray?: TypedArray2DFormat,
             handler?: BufferArrayHandle,
         }
     ): IndexedIndirectBuffer => {
+        if (opts.totalByteLength >= this.context.getLimits().maxStorageBufferBindingSize) {
+            throw new Error(`[E][createIndexedIndirectBuffer] ${opts.debugLabel} total byte length vaild.`)
+        }
         return this.bufferState.createIndexedIndirectBuffer({
             totalByteLength: opts.totalByteLength,
             rawDataArray: opts.rawDataArray,
@@ -614,12 +636,16 @@ class Compiler {
      */
     createMapBuffer = (
         opts: {
+            debugLabel?: number,
             totalByteLength: number,
             appendixBufferUsageFlags?: number,
             rawDataArray?: TypedArray2DFormat,
             handler?: BufferArrayHandle
         }
     ): MapBuffer => {
+        if (opts.totalByteLength >= this.context.getLimits().maxStorageBufferBindingSize) {
+            throw new Error(`[E][createMapBuffer] ${opts.debugLabel} total byte length vaild.`)
+        }
         return this.bufferState.createMapBuffer({
             totalByteLength: opts.totalByteLength,
             appendixBufferUsageFlags: opts.appendixBufferUsageFlags,
@@ -636,6 +662,7 @@ class Compiler {
      */
     createVertexShader = (
         opts: {
+            debugLabel?: number,
             code: string,
             entryPoint: string
         }
@@ -654,6 +681,7 @@ class Compiler {
      */
     createFragmentShader = (
         opts: {
+            debugLabel?: number,
             code: string,
             entryPoint: string
         }
@@ -672,6 +700,7 @@ class Compiler {
      */
     createComputeShader = (
         opts: {
+            debugLabel?: number,
             code: string,
             entryPoint: string
         }
@@ -690,6 +719,7 @@ class Compiler {
      */
     createColorAttachment = (
         opts: {
+            debugLabel?: number,
             texture: BaseTexture,
             blendFormat?: BlendFormat,
             colorLoadStoreFormat?: ColorLoadStoreFormat,
@@ -712,6 +742,7 @@ class Compiler {
      */
     createDepthStencilAttachment = (
         opts: {
+            debugLabel?: number,
             texture: Texture2D,
             depthLoadStoreFormat?: DepthLoadStoreFormat,
             depthCompareFunction?: GPUCompareFunction,
@@ -751,6 +782,7 @@ class Compiler {
      */
     createTexture2D = (
         opts: {
+            debugLabel?: number,
             width: number,
             height: number,
             textureData?: TypedArray1DFormat,
@@ -774,6 +806,7 @@ class Compiler {
      */
     createTextureStorage2D = (
         opts: {
+            debugLabel?: number,
             width: number,
             height: number,
             textureData?: TypedArray1DFormat,
@@ -800,6 +833,7 @@ class Compiler {
      */
     createTexture2DArray = (
         opts: {
+            debugLabel?: number,
             width: number,
             height: number,
             depthOrArrayLayers: number,
@@ -829,6 +863,7 @@ class Compiler {
      */
     createTextureSampler = (
         opts: {
+            debugLabel?: number,
             addressModeU?: GPUAddressMode,
             addressModeV?: GPUAddressMode,
             addressModeW?: GPUAddressMode,
