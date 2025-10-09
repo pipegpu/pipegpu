@@ -58,3 +58,13 @@ test('compiler create mapbuffer.', async () => {
     assert(storageMapBuffer !== undefined, `storage map buffer vaild.`);
     assert(querySetMapBuffer !== undefined, `queryset map buffer valid.`)
 });
+
+test('compiler create texture2d.', async () => {
+    const texture2d = compiler.createTexture2D({
+        debugLabel: 1,
+        width: 1024,
+        height: 1024,
+        mipmapCount: 7
+    });
+    assert(texture2d !== undefined, `texture2d vaild.`);
+});
