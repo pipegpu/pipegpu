@@ -1,20 +1,22 @@
 import {
-    type RenderHolderDesc, type RenderHolder, type ColorAttachment,
-    Context, Compiler, RenderProperty, Attributes, Uniforms,
-    BaseHolder
-} from '../src/index';
-import { initDrawCount } from './tech/initDrawCount';
-import { initDrawIndexed } from './tech/initDrawIndexed';
-import { initDrawInstance } from './tech/initDrawInstance';
-import { initKTXTexture2D } from './tech/initKTXTexture2D';
-import { initKTXTexture2DArray } from './tech/initKTXTexture2DArray';
-import { initDrawIndriect } from './tech/initDrawIndirect';
-import { initMultiDrawIndirect } from './tech/initMultiDrawIndirect';
+    type ColorAttachment,
+    Context,
+    Compiler,
+    BaseHolder,
+} from '../src/index'
+
+import { initDrawCount } from './tech/initDrawCount'
+import { initDrawIndexed } from './tech/initDrawIndexed'
+import { initDrawInstance } from './tech/initDrawInstance'
+import { initKTXTexture2D } from './tech/initKTXTexture2D'
+import { initKTXTexture2DArray } from './tech/initKTXTexture2DArray'
+import { initDrawIndriect } from './tech/initDrawIndirect'
+import { initMultiDrawIndirect } from './tech/initMultiDrawIndirect'
 import { initDrawIndexedIndirect } from './tech/initDrawIndexedIndirect.ts'
 import { initMultiDrawIndexedIndirect } from './tech/initMultiDrawIndexedIndirect.ts'
-import { initMultiDrawIndirectWithStorageVertex } from './tech/initMultiDrawIndirectWithStorageVertex.ts';
-import { initTexelCopy, texelCopyDebugBuffer } from './tech/initTexelCopy.ts';
-import { initDrawWithArrayBuffer } from './tech/initDrawWithArrayBuffer.ts';
+import { initMultiDrawIndirectWithStorageVertex } from './tech/initMultiDrawIndirectWithStorageVertex.ts'
+import { initTexelCopy } from './tech/initTexelCopy.ts'
+import { initDrawWithArrayBuffer } from './tech/initDrawWithArrayBuffer.ts'
 
 (async () => {
 

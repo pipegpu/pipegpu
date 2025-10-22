@@ -69,7 +69,7 @@ const parseRenderDispatch = (
                 return (encoder: GPURenderPassEncoder): void => {
                     const indirectBuffer: IndirectBuffer = opts.dispatch.getIndirectBuffer()!;
                     const indirectCountBuffer: StorageBuffer = opts.dispatch.getIndirectCountBuffer()!;
-                    const maxDrawCount: number = opts.dispatch.getMaxDrawCount()!;
+                    const maxDrawCount: number = Math.min(opts.dispatch.getMaxDrawCount()!, 65535 * 64);
                     (encoder as any).multiDrawIndirect(indirectBuffer.getGpuBuffer(null, 'frameBegin'), 0, maxDrawCount, indirectCountBuffer.getGpuBuffer(null, 'frameBegin'), 0);
                 };
             }
@@ -88,7 +88,7 @@ const parseRenderDispatch = (
                     const indexedStorageBuffer: IndexedStorageBuffer = opts.dispatch.getIndexStorageBuffer()!;
                     const indexedIndirectBuffer: IndexedIndirectBuffer = opts.dispatch.getIndexedIndirectBuffer()!;
                     const indirectCountBuffer: StorageBuffer = opts.dispatch.getIndirectCountBuffer()!;
-                    const maxDrawCount: number = opts.dispatch.getMaxDrawCount()!;
+                    const maxDrawCount: number = Math.min(opts.dispatch.getMaxDrawCount()!, 65535 * 64);
                     encoder.setIndexBuffer(indexedStorageBuffer.getGpuBuffer(null, 'frameBegin'), indexedStorageBuffer.getIndexedFormat());
                     (encoder as any).multiDrawIndexedIndirect(indexedIndirectBuffer.getGpuBuffer(null, 'frameBegin'), 0, maxDrawCount, indirectCountBuffer.getGpuBuffer(null, 'frameBegin'), 0);
                 };

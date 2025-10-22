@@ -1,6 +1,6 @@
 {
   "name": "pipegpu",
-  "version": "0.3.16",
+  "version": "0.4.0",
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
@@ -13,12 +13,12 @@
   "devDependencies": {
     "@vitest/browser": "^3.2.4",
     "@vitest/coverage-istanbul": "^3.2.4",
-    "@wdio/cli": "^9.19.1",
-    "@webgpu/types": "^0.1.64",
-    "typescript": "~5.8.3",
-    "vite": "^6.3.5",
+    "@wdio/cli": "^9.20.0",
+    "@webgpu/types": "^0.1.66",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.11",
     "vitest": "^3.2.4",
-    "webdriverio": "^9.19.1"
+    "webdriverio": "^9.20.0"
   },
   "dependencies": {
     "wgsl_reflect": "^1.2.3"
