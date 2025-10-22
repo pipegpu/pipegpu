@@ -65,7 +65,7 @@ class Buffer2D extends BaseBuffer {
         this.context?.getGpuQueue().writeBuffer(
             this.buffer as GPUBuffer,
             offset,
-            rawData,
+            rawData as GPUAllowSharedBufferSource,
             // rawData instanceof ArrayBuffer ? rawData : rawData.buffer,
             0
         );
