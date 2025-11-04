@@ -127,6 +127,13 @@ class Context {
     /**
      * 
      */
+    get GPUDescription(): string {
+        return this.adapter?.info.description || "unknown";
+    }
+
+    /**
+     * 
+     */
     getSupportedFeatures = () => {
         return this.features;
     }

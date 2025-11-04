@@ -30,6 +30,8 @@ import { initDrawWithArrayBuffer } from './tech/initDrawWithArrayBuffer.ts'
     await context.init();
     const compiler: Compiler = new Compiler({ context: context });
 
+    console.log(context.GPUDescription);
+
     // color attachment
     const surfaceTexture = compiler.createSurfaceTexture2D();
     const surfaceColorAttachment = compiler.createColorAttachment({
