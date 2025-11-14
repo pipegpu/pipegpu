@@ -20,15 +20,25 @@ import { initDrawWithArrayBuffer } from './tech/initDrawWithArrayBuffer.ts'
 
 (async () => {
 
+    const W = window.innerWidth;
+    const H = window.innerHeight;
+    const SELECTOR = `sketchpad`;
+
     const context: Context = new Context({
-        selector: "sketchpad",
-        width: 800,
-        height: 600,
+        selector: SELECTOR,
+        width: W,
+        height: H,
         devicePixelRatio: devicePixelRatio,
         requestFeatures: ['texture-compression-bc', 'chromium-experimental-multi-draw-indirect']
     });
     await context.init();
     const compiler: Compiler = new Compiler({ context: context });
+    {
+        const canvas: HTMLCanvasElement = document.getElementById(SELECTOR) as HTMLCanvasElement;
+        canvas.style.top = `0px`;
+        canvas.style.position = `fixed`;
+        canvas.style.pointerEvents = 'none';
+    }
 
     console.log(context.GPUDescription);
 
