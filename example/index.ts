@@ -17,6 +17,7 @@ import { initMultiDrawIndexedIndirect } from './tech/initMultiDrawIndexedIndirec
 import { initMultiDrawIndirectWithStorageVertex } from './tech/initMultiDrawIndirectWithStorageVertex.ts'
 import { initTexelCopy } from './tech/initTexelCopy.ts'
 import { initDrawWithArrayBuffer } from './tech/initDrawWithArrayBuffer.ts'
+import { initReversedZ } from './tech/initReversedZ.ts'
 
 (async () => {
 
@@ -40,14 +41,12 @@ import { initDrawWithArrayBuffer } from './tech/initDrawWithArrayBuffer.ts'
         canvas.style.pointerEvents = 'none';
     }
 
-    console.log(context.GPUDescription);
-
     // color attachment
     const surfaceTexture = compiler.createSurfaceTexture2D();
     const surfaceColorAttachment = compiler.createColorAttachment({
         texture: surfaceTexture,
         blendFormat: 'opaque',
-        colorLoadStoreFormat: 'loadStore',
+        colorLoadStoreFormat: 'clearStore',
         clearColor: [0.0, 0.0, 0.0, 1.0]
     });
     const colorAttachments: ColorAttachment[] = [surfaceColorAttachment];
@@ -59,21 +58,24 @@ import { initDrawWithArrayBuffer } from './tech/initDrawWithArrayBuffer.ts'
         textureFormat: context.getPreferredDepthTexuteFormat(),
     });
     const depthStencilAttachment = compiler.createDepthStencilAttachment({
-        texture: depthTexture
+        texture: depthTexture,
+        depthClearValue: 1.0,
+        depthCompareFunction: 'greater-equal'
     });
 
-    const drawCountHolder = initDrawCount(compiler, colorAttachments, depthStencilAttachment);
-    const drawIndexedHolder = initDrawIndexed(compiler, colorAttachments, depthStencilAttachment);
-    const drawInstanceHolder = initDrawInstance(compiler, colorAttachments, depthStencilAttachment);
-    const texture2DHolder = await initKTXTexture2D(compiler, colorAttachments, depthStencilAttachment);
-    const texture2DArrayHolder = await initKTXTexture2DArray(compiler, colorAttachments, depthStencilAttachment);
-    const drawIndirect = await initDrawIndriect(compiler, colorAttachments, depthStencilAttachment);
-    const multiDrawIndirect = await initMultiDrawIndirect(compiler, colorAttachments, depthStencilAttachment);
-    const drawIndexedIndirect = await initDrawIndexedIndirect(compiler, colorAttachments, depthStencilAttachment);
-    const multiDrawIndexedIndirect = await initMultiDrawIndexedIndirect(compiler, colorAttachments, depthStencilAttachment);
-    const drawIndexedStorage = await initMultiDrawIndirectWithStorageVertex(compiler, colorAttachments, depthStencilAttachment);
-    const texelCopy: BaseHolder[] = await initTexelCopy(compiler, colorAttachments, depthStencilAttachment) as BaseHolder[];
-    const dawWithArrayBuffer = await initDrawWithArrayBuffer(compiler, colorAttachments, depthStencilAttachment);
+    // const drawCountHolder = initDrawCount(compiler, colorAttachments, depthStencilAttachment);
+    // const drawIndexedHolder = initDrawIndexed(compiler, colorAttachments, depthStencilAttachment);
+    // const drawInstanceHolder = initDrawInstance(compiler, colorAttachments, depthStencilAttachment);
+    // const texture2DHolder = await initKTXTexture2D(compiler, colorAttachments, depthStencilAttachment);
+    // const texture2DArrayHolder = await initKTXTexture2DArray(compiler, colorAttachments, depthStencilAttachment);
+    // const drawIndirect = await initDrawIndriect(compiler, colorAttachments, depthStencilAttachment);
+    // const multiDrawIndirect = await initMultiDrawIndirect(compiler, colorAttachments, depthStencilAttachment);
+    // const drawIndexedIndirect = await initDrawIndexedIndirect(compiler, colorAttachments, depthStencilAttachment);
+    // const multiDrawIndexedIndirect = await initMultiDrawIndexedIndirect(compiler, colorAttachments, depthStencilAttachment);
+    // const drawIndexedStorage = await initMultiDrawIndirectWithStorageVertex(compiler, colorAttachments, depthStencilAttachment);
+    // const texelCopy: BaseHolder[] = await initTexelCopy(compiler, colorAttachments, depthStencilAttachment) as BaseHolder[];
+    // const dawWithArrayBuffer = await initDrawWithArrayBuffer(compiler, colorAttachments, depthStencilAttachment);
+    const reversedZ = await initReversedZ(compiler, colorAttachments, depthStencilAttachment, W / H * 0.5, 5.0, 10000.0);
 
     // const graph: OrderedGraph = new OrderedGraph(context);
     // const renderLoop = () => {
@@ -84,19 +86,20 @@ import { initDrawWithArrayBuffer } from './tech/initDrawWithArrayBuffer.ts'
     // requestAnimationFrame(renderLoop);
 
     const holderArray: BaseHolder[] = [];
-    holderArray.push(drawIndexedStorage);
-    holderArray.push(texture2DHolder);
-    holderArray.push(drawCountHolder);
-    holderArray.push(drawIndexedHolder);
-    holderArray.push(drawInstanceHolder);
-    holderArray.push(texture2DArrayHolder);
-    holderArray.push(drawIndirect);
-    holderArray.push(multiDrawIndirect);
-    holderArray.push(drawIndexedIndirect);
-    holderArray.push(multiDrawIndexedIndirect);
-    holderArray.push(texelCopy[0]);
-    holderArray.push(texelCopy[1]);
-    holderArray.push(dawWithArrayBuffer);
+    // holderArray.push(drawIndexedStorage);
+    // holderArray.push(texture2DHolder);
+    // holderArray.push(drawCountHolder);
+    // holderArray.push(drawIndexedHolder);
+    // holderArray.push(drawInstanceHolder);
+    // holderArray.push(texture2DArrayHolder);
+    // holderArray.push(drawIndirect);
+    // holderArray.push(multiDrawIndirect);
+    // holderArray.push(drawIndexedIndirect);
+    // holderArray.push(multiDrawIndexedIndirect);
+    // holderArray.push(texelCopy[0]);
+    // holderArray.push(texelCopy[1]);
+    // holderArray.push(dawWithArrayBuffer);
+    holderArray.push(reversedZ);
 
 
     const renderLoop = async () => {
