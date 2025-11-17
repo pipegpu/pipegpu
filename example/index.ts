@@ -27,7 +27,7 @@ import { initDeferred } from './tech/initDeferred.ts'
     const SELECTOR = `sketchpad`;
     const NEAR = 5.0;
     const FAR = 10000.0;
-    const ASPECT = W / H * 0.5;
+    const ASPECT = W / H;
 
     const context: Context = new Context({
         selector: SELECTOR,
@@ -81,7 +81,7 @@ import { initDeferred } from './tech/initDeferred.ts'
     // const dawWithArrayBuffer = await initDrawWithArrayBuffer(compiler, colorAttachments, depthStencilAttachment);
     // const reversedZ = await initReversedZ(context, compiler, colorAttachments, ASPECT, NEAR, FAR);
 
-    const deferred = await initDeferred(context, compiler, colorAttachments, ASPECT, NEAR, FAR);
+    const deferred = await initDeferred(context, compiler, colorAttachments, depthStencilAttachment, ASPECT, NEAR, FAR);
 
     // const graph: OrderedGraph = new OrderedGraph(context);
     // const renderLoop = () => {
@@ -107,6 +107,7 @@ import { initDeferred } from './tech/initDeferred.ts'
     // holderArray.push(dawWithArrayBuffer);
     // holderArray.push(reversedZ);
     holderArray.push(deferred[0]);
+    holderArray.push(deferred[1]);
 
     const renderLoop = async () => {
         context.refreshFrameResource();
