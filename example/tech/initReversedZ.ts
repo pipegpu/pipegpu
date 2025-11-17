@@ -5,7 +5,7 @@ import {
     Attributes,
     ColorAttachment,
     Compiler,
-    DepthStencilAttachment,
+    Context,
     RenderHolder,
     RenderProperty,
     Uniforms,
@@ -21,7 +21,25 @@ import {
  * ref: https://webgpu.github.io/webgpu-samples/?sample=reversedZ#main.ts
  * ref: https://github.com/greggman/wgpu-matrix
  */
-const initReversedZ = async (compiler: Compiler, colorAttachments: ColorAttachment[], depthStencilAttachment: DepthStencilAttachment, aspect: number, near: number, far: number): Promise<BaseHolder> => {
+const initReversedZ = async (context: Context, compiler: Compiler, colorAttachments: ColorAttachment[], aspect: number, near: number, far: number): Promise<BaseHolder> => {
+
+    // depth stencil attachment
+    const reversedZDepthTexture = compiler.createTexture2D({
+        width: context.getViewportWidth(),
+        height: context.getViewportHeight(),
+        textureFormat: context.getPreferredDepthTexuteFormat(),
+    });
+
+    // need set depth attachment to 
+    // depthClearValue: 0.0,
+    // depthCompareFunction: 'greater',
+    // depthLoadStoreFormat: 'clearStore'
+    const reversedZDepthStencilAttachment = compiler.createDepthStencilAttachment({
+        texture: reversedZDepthTexture,
+        depthClearValue: 0.0,
+        depthCompareFunction: 'greater-equal',
+        depthLoadStoreFormat: 'clearStore'
+    });
 
     const d = 0.0001;   // half distance between two planes
     const o = 0.5;      // half x offset to shift planes so they are only partially overlaping
@@ -85,7 +103,7 @@ fn fs_main(f: FRAGMENT) -> @location(0) vec4f {
         attributes: new Attributes(),
         uniforms: new Uniforms(),
         colorAttachments: colorAttachments,
-        depthStencilAttachment: depthStencilAttachment,
+        depthStencilAttachment: reversedZDepthStencilAttachment,
         primitiveDesc: {
             cullFormat: 'none'
         },
@@ -135,10 +153,6 @@ fn fs_main(f: FRAGMENT) -> @location(0) vec4f {
                 const viewMatrix = mat4.translation(vec3.fromValues(0, 0, -12));
                 cameraViews.view.set(viewMatrix);
                 const projectionMatrix = mat4.perspectiveReverseZ((2.0 * Math.PI) / 5.0, aspect, near, far);
-                // need set depth attachment to 
-                // depthClearValue: 0.0,
-                // depthCompareFunction: 'greater',
-                // depthLoadStoreFormat: 'clearStore'
                 cameraViews.projection.set(projectionMatrix);
                 const detail: BufferHandleDetail = {
                     offset: 0,

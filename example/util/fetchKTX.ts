@@ -1,12 +1,12 @@
 import { LoadLIBKTX } from '../plugin/libktx/libktx_wrapper'
 
 /**
- * 
+ * @type TextureType
  */
 type TextureType = 'BC7_RGBA';
 
 /**
- * 
+ * @type KTXDataPack
  */
 type KTXDataPack = {
     key: string,
@@ -17,15 +17,13 @@ type KTXDataPack = {
 }
 
 /**
- *
  * ref:
  * https://github.khronos.org/KTX-Software/ktxjswrappers/libktx_js.html
  * @param uri
  * @param key
  * @returns Promise<KTX2Container>
- *
  */
-const fetchKTX2AsBc7RGBA = async (uri: string, key: string = ""): Promise<KTXDataPack> => {
+const fetchKTX2AsBc7RGBA = async (uri: string, key: string = ``): Promise<KTXDataPack> => {
     try {
         const ktx = await LoadLIBKTX();
         const response = await fetch(uri);

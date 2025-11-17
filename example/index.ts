@@ -18,12 +18,16 @@ import { initMultiDrawIndirectWithStorageVertex } from './tech/initMultiDrawIndi
 import { initTexelCopy } from './tech/initTexelCopy.ts'
 import { initDrawWithArrayBuffer } from './tech/initDrawWithArrayBuffer.ts'
 import { initReversedZ } from './tech/initReversedZ.ts'
+import { initDeferred } from './tech/initDeferred.ts'
 
 (async () => {
 
     const W = window.innerWidth;
     const H = window.innerHeight;
     const SELECTOR = `sketchpad`;
+    const NEAR = 5.0;
+    const FAR = 10000.0;
+    const ASPECT = W / H * 0.5;
 
     const context: Context = new Context({
         selector: SELECTOR,
@@ -61,9 +65,6 @@ import { initReversedZ } from './tech/initReversedZ.ts'
         texture: depthTexture,
         depthClearValue: 1.0,
         depthCompareFunction: 'less-equal',
-        // depthClearValue: 0.0,
-        // depthCompareFunction: 'greater',
-        // depthLoadStoreFormat: 'clearStore'
     });
 
     // const drawCountHolder = initDrawCount(compiler, colorAttachments, depthStencilAttachment);
@@ -78,7 +79,9 @@ import { initReversedZ } from './tech/initReversedZ.ts'
     // const drawIndexedStorage = await initMultiDrawIndirectWithStorageVertex(compiler, colorAttachments, depthStencilAttachment);
     // const texelCopy: BaseHolder[] = await initTexelCopy(compiler, colorAttachments, depthStencilAttachment) as BaseHolder[];
     // const dawWithArrayBuffer = await initDrawWithArrayBuffer(compiler, colorAttachments, depthStencilAttachment);
-    const reversedZ = await initReversedZ(compiler, colorAttachments, depthStencilAttachment, W / H * 0.5, 0.1, 10000.0);
+    // const reversedZ = await initReversedZ(context, compiler, colorAttachments, ASPECT, NEAR, FAR);
+
+    const deferred = await initDeferred(context, compiler, colorAttachments, ASPECT, NEAR, FAR);
 
     // const graph: OrderedGraph = new OrderedGraph(context);
     // const renderLoop = () => {
@@ -102,8 +105,8 @@ import { initReversedZ } from './tech/initReversedZ.ts'
     // holderArray.push(texelCopy[0]);
     // holderArray.push(texelCopy[1]);
     // holderArray.push(dawWithArrayBuffer);
-    holderArray.push(reversedZ);
-
+    // holderArray.push(reversedZ);
+    holderArray.push(deferred[0]);
 
     const renderLoop = async () => {
         context.refreshFrameResource();
