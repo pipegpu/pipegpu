@@ -1,10 +1,9 @@
 import type { FeatureNameFormat } from "../res/Format";
 
 /**
- * 
  * @description
  * pipegup context descriptor
- * 
+ * @interface IContextOpts
  */
 interface IContextOpts {
     /**
@@ -46,12 +45,11 @@ interface IContextOpts {
 }
 
 /**
- * 
+ * @function createCanvasElement
  * @param container 
  * @param width 
  * @param height 
  * @param devicePixelRatio 
- * 
  */
 const createCanvasElement = (
     container: HTMLElement,
@@ -77,13 +75,12 @@ const createCanvasElement = (
 }
 
 /**
- * 
+ * @function ContextDesc
  * @description
- * @param container 
- * @param width 
- * @param height 
- * @param devicePixelRatio  
- * 
+ * @param container
+ * @param width
+ * @param height
+ * @param devicePixelRatio
  */
 interface ContextDesc extends IContextOpts {
     /**
@@ -110,10 +107,9 @@ interface ContextDesc extends IContextOpts {
 }
 
 /**
- * 
+ * @function parseContextDesc
  * @description
  * @param opts 
- * 
  */
 const parseContextDesc = (
     opts: IContextOpts = {

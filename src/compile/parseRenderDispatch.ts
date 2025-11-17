@@ -8,11 +8,10 @@ import type { PropertyFormat } from "../res/Format";
 import type { RenderHandle } from "../res/Handle";
 
 /**
- * 
+ * @function parseRenderDispatch
  * @param bufferState 
  * @param dispatch 
  * @param _handler 
- * 
  */
 const parseRenderDispatch = (
     opts: {
@@ -61,10 +60,8 @@ const parseRenderDispatch = (
         case 'multiDrawIndirect':
             {
                 /**
-                 * 
                  * needs:
                  * chromium-experimental-multi-draw-indirect
-                 * 
                  */
                 return (encoder: GPURenderPassEncoder): void => {
                     const indirectBuffer: IndirectBuffer = opts.dispatch.getIndirectBuffer()!;

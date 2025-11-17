@@ -3,7 +3,7 @@ import type { ComputeShader } from "../res/shader/ComputeShader"
 import { parseBindGroupLayout } from "./parseBindGroupLayout";
 
 /**
- * 
+ * @function parseComputeBindGroupLayout
  */
 const parseComputeBindGroupLayout = (
     opts: {

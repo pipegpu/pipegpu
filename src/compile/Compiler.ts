@@ -48,11 +48,9 @@ import type { IndirectBuffer } from "../res/buffer/IndirectBuffer";
 import type { IndexedIndirectBuffer } from "../res/buffer/IndexedIndirectBuffer";
 
 /**
- * 
  * render holde descriptor
  * @param label {String} 
  * @param vertexShader {VertexShader}
- * 
  */
 interface RenderHolderDesc {
     /**
@@ -111,6 +109,7 @@ interface RenderHolderDesc {
 /**
  * support:
  * gpu-driven style
+ * @class ComputeHolderDesc
  */
 interface ComputeHolderDesc {
     /**

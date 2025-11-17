@@ -10,17 +10,17 @@ import type { BufferState } from "../state/BufferState"
 import type { TextureState } from "../state/TextureState"
 
 /**
- * 
- * @param _frameStage 
- * @param _encoder 
- * @param _bufferState 
- * @param _textureState 
- * 
+ * @description
+ *  global empty uniform handler.
+ * @param _frameStage
+ * @param _encoder
+ * @param _bufferState
+ * @param _textureState
  */
 const emptyUniformHandler: UniformHandle = (_frameStage: FrameStageFormat, _encoder: GPUCommandEncoder, _bufferState: BufferState, _textureState: TextureState): void => { }
 
 /**
- * 
+ * @interface IUniformRecord
  */
 interface IUniformRecord {
     name: string,
@@ -29,13 +29,12 @@ interface IUniformRecord {
 }
 
 /**
- * 
+ * @function parseUniform
  * @param _handler 
  * @param uniforms 
  * @param uniformRecordMap 
  * @param bufferUniformRecordsMap 
- * @returns 
- * 
+ * @returns
  */
 const parseUniform = (
     opts: {

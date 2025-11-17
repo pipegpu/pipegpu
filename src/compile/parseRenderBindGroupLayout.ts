@@ -4,15 +4,14 @@ import type { VertexShader } from "../res/shader/VertexShader"
 import { parseBindGroupLayout } from "./parseBindGroupLayout";
 
 /**
- * 
+ * @function parseRenderBindGroupLayout
  * @param context 
  * @param vertexShader 
  * @param fragmentShader 
  * @param bindGroupLayouts 
  * @param gourpIDWithBindGroupLayoutMap 
  * @param gourpIDWithBindGroupLayoutDescriptorMap 
- * @returns 
- * 
+ * @returns
  */
 const parseRenderBindGroupLayout = (
     opts: {

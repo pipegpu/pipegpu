@@ -1,13 +1,12 @@
 import type { Context } from "../res/Context"
 
 /**
- * 
+ * @function parseBindGroupLayout
  * @param context 
  * @param collectedBindgroupLayoutEntriesMap 
  * @param bindGroupLayouts 
  * @param gourpIDWithBindGroupLayoutMap 
- * @param gourpIDWithBindGroupLayoutDescriptorMap 
- * 
+ * @param gourpIDWithBindGroupLayoutDescriptorMap
  */
 const parseBindGroupLayout = (
     opts: {

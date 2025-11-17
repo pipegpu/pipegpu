@@ -2,7 +2,7 @@ import type { RenderProperty } from "../property/dispatch/RenderProperty"
 import type { CullFormat } from "../res/Format"
 
 /**
- * 
+ * @interface PrimitiveDesc
  */
 interface PrimitiveDesc {
     /**
@@ -17,11 +17,10 @@ interface PrimitiveDesc {
 }
 
 /**
- * 
- * @param primitiveDesc 
- * @param dispatch 
- * @returns 
- * 
+ * @function parsePrimitiveState
+ * @param primitiveDesc
+ * @param dispatch
+ * @returns
  */
 const parsePrimitiveState = (
     opts: {

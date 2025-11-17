@@ -60,7 +60,10 @@ import { initReversedZ } from './tech/initReversedZ.ts'
     const depthStencilAttachment = compiler.createDepthStencilAttachment({
         texture: depthTexture,
         depthClearValue: 1.0,
-        depthCompareFunction: 'greater-equal'
+        depthCompareFunction: 'less-equal',
+        // depthClearValue: 0.0,
+        // depthCompareFunction: 'greater',
+        // depthLoadStoreFormat: 'clearStore'
     });
 
     // const drawCountHolder = initDrawCount(compiler, colorAttachments, depthStencilAttachment);
@@ -75,7 +78,7 @@ import { initReversedZ } from './tech/initReversedZ.ts'
     // const drawIndexedStorage = await initMultiDrawIndirectWithStorageVertex(compiler, colorAttachments, depthStencilAttachment);
     // const texelCopy: BaseHolder[] = await initTexelCopy(compiler, colorAttachments, depthStencilAttachment) as BaseHolder[];
     // const dawWithArrayBuffer = await initDrawWithArrayBuffer(compiler, colorAttachments, depthStencilAttachment);
-    const reversedZ = await initReversedZ(compiler, colorAttachments, depthStencilAttachment, W / H * 0.5, 5.0, 10000.0);
+    const reversedZ = await initReversedZ(compiler, colorAttachments, depthStencilAttachment, W / H * 0.5, 0.1, 10000.0);
 
     // const graph: OrderedGraph = new OrderedGraph(context);
     // const renderLoop = () => {

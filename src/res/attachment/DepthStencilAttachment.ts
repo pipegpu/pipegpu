@@ -1,10 +1,11 @@
-import type { Context } from "../Context";
-import type { DepthLoadStoreFormat, StencilLoadStoreFormat, StencilStateFormat } from "../Format";
-import type { Texture2D } from "../texture/Texture2D";
-import { BaseAttachment } from "./BaseAttachment";
+import type { Context } from "../Context"
+import type { DepthLoadStoreFormat, StencilLoadStoreFormat, StencilStateFormat } from "../Format"
+import type { Texture2D } from "../texture/Texture2D"
+import { BaseAttachment } from "./BaseAttachment"
 
 /**
- * 
+ * @description
+ * @class DepthStencilAttachment
  */
 class DepthStencilAttachment extends BaseAttachment {
     /**
@@ -93,14 +94,14 @@ class DepthStencilAttachment extends BaseAttachment {
             context: opts.context
         });
         this.texture = opts.texture;
-        this.depthLoadStoreFormat = opts.depthLoadStoreFormat || 'loadStore';
+        this.depthLoadStoreFormat = opts.depthLoadStoreFormat || 'clearStore';
         this.depthCompareFunction = opts.depthCompareFunction || 'less-equal';
         this.stencilStateFormat = opts.stencilFunctionFormat || 'alwaysKeep';
         this.stencilLoadStoreFormat = opts.stencilLoadStoreFormat || 'loadStore';
         this.depthReadOnly = opts.depthReadOnly || false;
-        this.depthClearValue = opts.depthClearValue || 1.0;
+        this.depthClearValue = (opts.depthClearValue === undefined) ? 1.0 : opts.depthClearValue;
         this.stencilReadOnly = opts.stencilReadOnly || false;
-        this.stencilClearValue = opts.stencilClearValue || 1.0;
+        this.stencilClearValue = (opts.stencilClearValue === undefined) ? 1.0 : opts.stencilClearValue;
     }
 
     /**
@@ -160,7 +161,8 @@ class DepthStencilAttachment extends BaseAttachment {
     }
 
     /**
-     * 
+     * @override
+     * @function updateAttachment
      */
     protected override updateAttachment = () => {
         // depthStencilAttachment
@@ -172,7 +174,7 @@ class DepthStencilAttachment extends BaseAttachment {
             switch (this.depthLoadStoreFormat) {
                 case 'clearStore':
                     {
-                        this.depthStencilAttachment.depthClearValue = this.depthClearValue || 1.0;
+                        this.depthStencilAttachment.depthClearValue = this.depthClearValue;
                         this.depthStencilAttachment.depthLoadOp = 'clear';
                         this.depthStencilAttachment.depthStoreOp = 'store';
                         this.depthStencilAttachment.depthReadOnly = this.depthReadOnly;
@@ -180,7 +182,7 @@ class DepthStencilAttachment extends BaseAttachment {
                     }
                 case 'loadStore':
                     {
-                        this.depthStencilAttachment.depthClearValue = this.depthClearValue || 1.0;
+                        this.depthStencilAttachment.depthClearValue = this.depthClearValue;
                         this.depthStencilAttachment.depthLoadOp = 'load';
                         this.depthStencilAttachment.depthStoreOp = 'store';
                         this.depthStencilAttachment.depthReadOnly = this.depthReadOnly;
@@ -198,7 +200,7 @@ class DepthStencilAttachment extends BaseAttachment {
             switch (this.stencilLoadStoreFormat) {
                 case 'clearStore':
                     {
-                        this.depthStencilAttachment.stencilClearValue = this.stencilClearValue || 1.0;
+                        this.depthStencilAttachment.stencilClearValue = this.stencilClearValue;
                         this.depthStencilAttachment.stencilLoadOp = 'clear';
                         this.depthStencilAttachment.stencilStoreOp = 'store';
                         this.depthStencilAttachment.stencilReadOnly = this.stencilReadOnly;
@@ -206,7 +208,7 @@ class DepthStencilAttachment extends BaseAttachment {
                     }
                 case 'loadStore':
                     {
-                        this.depthStencilAttachment.stencilClearValue = this.stencilClearValue || 1.0;
+                        this.depthStencilAttachment.stencilClearValue = this.stencilClearValue;
                         this.depthStencilAttachment.stencilLoadOp = 'load';
                         this.depthStencilAttachment.stencilStoreOp = 'discard';
                         this.depthStencilAttachment.stencilReadOnly = this.stencilReadOnly;

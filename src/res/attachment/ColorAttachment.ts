@@ -1,7 +1,7 @@
-import type { Context } from "../Context";
-import type { BlendFormat, ColorLoadStoreFormat } from "../Format";
-import type { BaseTexture } from "../texture/BaseTexture";
-import { BaseAttachment } from "./BaseAttachment";
+import type { Context } from "../Context"
+import type { BlendFormat, ColorLoadStoreFormat } from "../Format"
+import type { BaseTexture } from "../texture/BaseTexture"
+import { BaseAttachment } from "./BaseAttachment"
 
 /**
  * 

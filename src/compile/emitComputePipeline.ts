@@ -2,7 +2,7 @@ import type { ComputePipeline } from "../res/pipeline/ComputePipeline";
 import type { PipelineState } from "../state/PipelineState";
 
 /**
- * 
+ * @function emitComputePipeline
  */
 const emitComputePipeline = (
     opts: {

@@ -1,7 +1,7 @@
 import type { Context } from "../Context"
 
 /**
- * 
+ * @class BaseAttachment
  */
 abstract class BaseAttachment {
     /**
@@ -15,7 +15,6 @@ abstract class BaseAttachment {
     protected context: Context;
 
     /**
-     * 
      * @param opts 
      */
     constructor(
@@ -29,20 +28,23 @@ abstract class BaseAttachment {
     }
 
     /**
-     * 
-     * @returns 
+     * @function getID
      */
     getID = (): number => {
         return this.id;
     }
 
     /**
-     * 
+     * @protected
+     * @abstract
+     * @function updateState
      */
     protected abstract updateState(): void;
 
     /**
-     * 
+     * @protected
+     * @abstract
+     * @function updateAttachment
      */
     protected abstract updateAttachment(): void;
 }

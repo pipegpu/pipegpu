@@ -12,10 +12,9 @@ import {
 } from "../../src"
 
 import {
-    GLMatrix,
-    Mat4,
-    Vec3
-} from 'pipegpu.matrix'
+    mat4,
+    vec3
+} from 'wgpu-matrix';
 
 /**
  * reversedZ
@@ -87,7 +86,6 @@ fn fs_main(f: FRAGMENT) -> @location(0) vec4f {
         uniforms: new Uniforms(),
         colorAttachments: colorAttachments,
         depthStencilAttachment: depthStencilAttachment,
-
         primitiveDesc: {
             cullFormat: 'none'
         },
@@ -102,16 +100,23 @@ fn fs_main(f: FRAGMENT) -> @location(0) vec4f {
 
     // uniforms assign
     {
-        let modelMatrix = new Mat4().identity();
+        let modelMatrix = mat4.identity();
         desc.uniforms?.assign('model_matrix', compiler.createUniformBuffer({
             totalByteLength: 16 * 4,
             handler: () => {
-                modelMatrix.rotateY(0.03);
-                const modelData = new Float32Array(modelMatrix.value);
+                const tmpMat4 = mat4.create();
+                const now = Date.now() / 1000;
+                mat4.rotate(
+                    modelMatrix,
+                    vec3.fromValues(Math.sin(now), Math.cos(now), 0),
+                    (Math.PI / 180) * 30,
+                    tmpMat4
+                );
+                // modelMatrix.rotateY(0.03);
                 const detail: BufferHandleDetail = {
                     offset: 0,
                     byteLength: 16 * 4,
-                    rawData: modelData
+                    rawData: tmpMat4
                 };
                 return {
                     rewrite: true,
@@ -127,11 +132,14 @@ fn fs_main(f: FRAGMENT) -> @location(0) vec4f {
                     view: new Float32Array(block, 0, 16),
                     projection: new Float32Array(block, 64, 16),
                 };
-                // const viewData = new Mat4().lookAt(new Vec3().set(-1.0, 1.0, 1.0), new Vec3().set(0, 0, 0), new Vec3().set(0, 1.0, 0)).invert()!.value;
-                const viewData = new Mat4().translate(new Vec3().set(0.0, 0.0, -12.0)).value;
-                cameraViews.view.set(viewData);
-                const projectionData = Mat4.perspective01(GLMatrix.toRadian(60.0), aspect, near, far).value;
-                cameraViews.projection.set(projectionData);
+                const viewMatrix = mat4.translation(vec3.fromValues(0, 0, -12));
+                cameraViews.view.set(viewMatrix);
+                const projectionMatrix = mat4.perspectiveReverseZ((2.0 * Math.PI) / 5.0, aspect, near, far);
+                // need set depth attachment to 
+                // depthClearValue: 0.0,
+                // depthCompareFunction: 'greater',
+                // depthLoadStoreFormat: 'clearStore'
+                cameraViews.projection.set(projectionMatrix);
                 const detail: BufferHandleDetail = {
                     offset: 0,
                     byteLength: 16 * 4 * 2,

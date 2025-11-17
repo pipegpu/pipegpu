@@ -9,11 +9,10 @@ import type { TextureState } from "../state/TextureState"
 import type { IUniformRecord } from "./parseUniform"
 
 /**
- * 
  * @param opts 
  * @param slotBindGroupMap 
  * @param mergedUniformResourceMap 
- * 
+ * @function emitUniforms
  */
 const emitUniforms = (
     opts: {

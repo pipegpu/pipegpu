@@ -1,11 +1,10 @@
 import type { Context } from "../res/Context";
 
 /**
- * 
- * @param context 
- * @param bindGroupLayouts 
- * @returns 
- * 
+ * @function parsePipelineLayout
+ * @param context
+ * @param bindGroupLayouts
+ * @returns
  */
 const parsePipelineLayout = (
     opts: {

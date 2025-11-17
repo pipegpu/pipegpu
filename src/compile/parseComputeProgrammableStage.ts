@@ -1,7 +1,7 @@
 import type { ComputeShader } from "../res/shader/ComputeShader";
 
 /**
- * 
+ * @function parseComputeProgrammableStage
  */
 const parseComputeProgrammableStage = (
     opts: {

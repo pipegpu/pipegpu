@@ -1,11 +1,10 @@
 import type { ComputeProperty } from "../property/dispatch/ComputeProperty"
 import type { ComputeHandle } from "../res/Handle"
 
-/**
- * 
+/** 
+ * @function parseComputeDispatch
  * @param opts 
  * @returns 
- * 
  */
 const parseComputeDispatch = (
     opts: {

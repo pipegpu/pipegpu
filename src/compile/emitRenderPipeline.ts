@@ -2,10 +2,9 @@ import type { DepthStencilAttachment } from "../res/attachment/DepthStencilAttac
 import type { PipelineState } from "../state/PipelineState"
 
 /**
- * 
  * @param opts 
  * @returns 
- * 
+ * @function emitRenderPipeline
  */
 const emitRenderPipeline = (
     opts: {

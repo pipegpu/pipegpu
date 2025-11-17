@@ -3,9 +3,7 @@ import type { VertexShader } from "../res/shader/VertexShader"
 import type { IAttributeRecord } from "./parseAttribute"
 
 /**
- * 
  * @param vertexFormat
- * 
  */
 const getVertexFormatStride = (vertexFormat: GPUVertexFormat, debugLabel: string): number => {
     switch (vertexFormat) {
@@ -40,7 +38,6 @@ const getVertexFormatStride = (vertexFormat: GPUVertexFormat, debugLabel: string
 }
 
 /**
- * 
  * @param vertexShader
  * @param attributeRecordMap
  * @param bufferAttributeRecordsMap
@@ -48,7 +45,6 @@ const getVertexFormatStride = (vertexFormat: GPUVertexFormat, debugLabel: string
  * @param vertexBufferIDAttributesMap
  * @param vertexState
  * @param slotBufferIDMap
- * 
  */
 const emitAttributes = (
     opts: {

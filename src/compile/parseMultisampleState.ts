@@ -1,10 +1,9 @@
 import type { MultiSampleFormat } from "../res/Format"
 
 /**
- * 
- * @param multiSampleFormat 
- * @param multiSampleState 
- * 
+ * @function parseMultisampleState
+ * @param multiSampleFormat
+ * @param multiSampleState
  */
 const parseMultisampleState = (
     opts: {
