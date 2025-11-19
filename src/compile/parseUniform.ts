@@ -93,6 +93,7 @@ const parseUniform = (
                     bc.push(bufferID);
                     break;
                 }
+            case 'textureCube':
             case 'texture2D':
             case 'texture2DArray':
             case 'textureStorage2D':

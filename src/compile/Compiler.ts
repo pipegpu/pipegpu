@@ -856,6 +856,37 @@ class Compiler {
     }
 
     /**
+     * @function createTextureCube
+     */
+    createTextureCube = (
+        opts: {
+            debugLabel?: number,
+            width: number,
+            height: number,
+            faces: {
+                posx: TypedArray1DFormat,
+                negx: TypedArray1DFormat,
+                posy: TypedArray1DFormat,
+                negy: TypedArray1DFormat,
+                posz: TypedArray1DFormat,
+                negz: TypedArray1DFormat,
+            },
+            appendixTextureUsages?: number,
+            textureFormat?: GPUTextureFormat,
+            mipmapCount?: number,
+        }
+    ) => {
+        return this.textureState.createTextureCube({
+            width: opts.width,
+            height: opts.height,
+            faces: opts.faces,
+            textureFormat: opts.textureFormat,
+            mipmapCount: opts.mipmapCount,
+            appendixTextureUsages: opts.appendixTextureUsages,
+        });
+    }
+
+    /**
      * 
      * @param opts 
      * @returns 

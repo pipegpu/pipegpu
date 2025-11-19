@@ -77,7 +77,7 @@ fn fs_main(f: FRAGMENT) -> GBUFFER {
         `;
 
         // dragonData.
-        const dragonData = await fetchMesh('./asset/mesh/stanfordDragonData.json', `stanfordDragonData`);
+        const dragonData = await fetchMesh('./asset/mesh/stanfordDragonData.json');
         const positionBuffer = compiler.createVertexBuffer({
             totalByteLength: dragonData.positions.byteLength,
             rawData: dragonData.positions,

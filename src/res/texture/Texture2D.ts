@@ -3,7 +3,8 @@ import type { FrameStageFormat, TypedArray1DFormat } from "../Format";
 import { BaseTexture } from "./BaseTexture";
 
 /**
- * 
+ * @description
+ * @class Texture2D
  */
 class Texture2D extends BaseTexture {
     /**
@@ -77,7 +78,7 @@ class Texture2D extends BaseTexture {
     }
 
     /**
-     * 
+     * @description
      * @param encoder 
      * @param frameStage 
      */
@@ -89,7 +90,8 @@ class Texture2D extends BaseTexture {
     }
 
     /**
-     * 
+     * @override
+     * @function getGpuTextureView
      * @returns 
      */
     override getGpuTextureView = (): GPUTextureView => {

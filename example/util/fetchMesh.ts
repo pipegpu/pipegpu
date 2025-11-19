@@ -165,7 +165,7 @@ const GenerateNormals = function (maxAngle: number, positions: [number, number, 
     };
 }
 
-const fetchMesh = async (uri: string, key: string = ``): Promise<MeshDataPack> => {
+const fetchMesh = async (uri: string): Promise<MeshDataPack> => {
     try {
         const response = await fetch(uri);
         if (!response.ok) {

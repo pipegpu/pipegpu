@@ -4,10 +4,10 @@ import type { TextureArrayHandle } from "../Handle";
 import { BaseTexture } from "./BaseTexture";
 
 /**
- * 
+ * @description
+ * @class Texture2DArray
  */
 class Texture2DArray extends BaseTexture {
-
     /**
      * 
      */

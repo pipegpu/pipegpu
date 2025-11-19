@@ -5,6 +5,7 @@ import type { BaseTexture } from "../res/texture/BaseTexture";
 import { SurfaceTexture2D } from "../res/texture/SurfaceTexture2D";
 import { Texture2D } from "../res/texture/Texture2D";
 import { Texture2DArray } from "../res/texture/Texture2DArray";
+import { TextureCube } from "../res/texture/TextureCube";
 import { TextureStorage2D } from "../res/texture/TextureStorage2D";
 import { uniqueID } from "../util/uniqueID";
 
@@ -121,7 +122,6 @@ class TextureState {
     }
 
     /**
-     * 
      * @param opts 
      * @returns 
      */
@@ -137,9 +137,9 @@ class TextureState {
             appendixTextureUsages?: number,
         }
     ): Texture2DArray => {
-        const textureArrayID: number = uniqueID();
+        const idx: number = uniqueID();
         const texture: Texture2DArray = new Texture2DArray({
-            id: textureArrayID,
+            id: idx,
             context: this.context,
             width: opts.width,
             height: opts.height,
@@ -150,8 +150,44 @@ class TextureState {
             textureFormat: opts.textureFormat,
             mipmapCount: opts.mipmapCount,
         });
-        TextureState.TEXTURE_SET.set(textureArrayID, texture);
-        return TextureState.TEXTURE_SET.get(textureArrayID) as Texture2DArray;
+        TextureState.TEXTURE_SET.set(idx, texture);
+        return TextureState.TEXTURE_SET.get(idx) as Texture2DArray;
+    }
+
+    /**
+     * @param opts 
+     * @returns 
+     */
+    createTextureCube = (
+        opts: {
+            width: number,
+            height: number,
+            faces: {
+                posx: TypedArray1DFormat,
+                negx: TypedArray1DFormat,
+                posy: TypedArray1DFormat,
+                negy: TypedArray1DFormat,
+                posz: TypedArray1DFormat,
+                negz: TypedArray1DFormat,
+            },
+            appendixTextureUsages?: number,
+            textureFormat?: GPUTextureFormat,
+            mipmapCount?: number,
+        }
+    ): TextureCube => {
+        const idx: number = uniqueID();
+        const texture: TextureCube = new TextureCube({
+            id: idx,
+            context: this.context,
+            width: opts.width,
+            height: opts.height,
+            faces: opts.faces,
+            appendixTextureUsages: opts.appendixTextureUsages,
+            textureFormat: opts.textureFormat,
+            mipmapCount: opts.mipmapCount,
+        });
+        TextureState.TEXTURE_SET.set(idx, texture);
+        return TextureState.TEXTURE_SET.get(idx) as TextureCube;
     }
 }
 

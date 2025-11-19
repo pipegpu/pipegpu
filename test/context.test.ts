@@ -50,5 +50,5 @@ test(`webgpu context viewport width/height.`, async () => {
 
 test(`webgpu gpu description`, async () => {
     const n = context.GPUDescription;
-    assert(!n, `webgpu gpu description, e.g Nvidia RTX 4060.`);
+    assert(n, `webgpu gpu description, e.g Nvidia RTX 4060.`);
 });
