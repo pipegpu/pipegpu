@@ -82,8 +82,8 @@ import { initTextureCube } from './tech/initTextureCube.ts'
     // const dawWithArrayBuffer = await initDrawWithArrayBuffer(compiler, colorAttachments, depthStencilAttachment);
     // const reversedZ = await initReversedZ(context, compiler, colorAttachments, ASPECT, NEAR, FAR);
 
-    // const deferred = await initDeferred(context, compiler, colorAttachments, depthStencilAttachment, ASPECT, NEAR, FAR);
-    const textureCube = await initTextureCube(context, compiler, colorAttachments, ASPECT, NEAR, FAR);
+    const deferred = await initDeferred(context, compiler, colorAttachments, depthStencilAttachment, ASPECT, NEAR, FAR);
+    // const textureCube = await initTextureCube(context, compiler, colorAttachments, ASPECT, NEAR, FAR);
 
     // const graph: OrderedGraph = new OrderedGraph(context);
     // const renderLoop = () => {
@@ -108,9 +108,9 @@ import { initTextureCube } from './tech/initTextureCube.ts'
     // holderArray.push(texelCopy[1]);
     // holderArray.push(dawWithArrayBuffer);
     // holderArray.push(reversedZ);
-    // holderArray.push(deferred[0]);
-    // holderArray.push(deferred[1]);
-    holderArray.push(textureCube);
+    holderArray.push(deferred[0]);
+    holderArray.push(deferred[1]);
+    // holderArray.push(textureCube);
 
     const renderLoop = async () => {
         context.refreshFrameResource();
