@@ -46,6 +46,8 @@ import type { IndexedBuffer } from "../res/buffer/IndexedBuffer";
 import type { IndexedStorageBuffer } from "../res/buffer/IndexedStorageBuffer";
 import type { IndirectBuffer } from "../res/buffer/IndirectBuffer";
 import type { IndexedIndirectBuffer } from "../res/buffer/IndexedIndirectBuffer";
+import type { ComparisonSampler } from "../res/sampler/ComparisonSampler";
+import type { TextureSampler } from "../res/sampler/TextureSampler";
 
 /**
  * render holde descriptor
@@ -767,7 +769,6 @@ class Compiler {
     }
 
     /**
-     * 
      * @description link to surface for rendering in each frame.
      * @returns SurfaceTexture2D
      * 
@@ -777,7 +778,7 @@ class Compiler {
     }
 
     /**
-     * 
+     * @function createTexture2D
      */
     createTexture2D = (
         opts: {
@@ -801,7 +802,7 @@ class Compiler {
     }
 
     /**
-     * 
+     * @function createTextureStorage2D
      */
     createTextureStorage2D = (
         opts: {
@@ -825,7 +826,6 @@ class Compiler {
     }
 
     /**
-     * 
      * @param opts 
      * @returns 
      * 
@@ -887,7 +887,7 @@ class Compiler {
     }
 
     /**
-     * 
+     * @function createTextureSampler
      * @param opts 
      * @returns 
      */
@@ -903,10 +903,9 @@ class Compiler {
             lodMinClamp?: number,
             lodMaxClamp?: number
             anisotropy?: number,
-            compareFunction?: GPUCompareFunction,
             samplerBindingType?: GPUSamplerBindingType,
         }
-    ) => {
+    ): TextureSampler => {
         return this.samplerState.createTextureSampler({
             addressModeU: opts.addressModeU,
             addressModeV: opts.addressModeV,
@@ -917,7 +916,40 @@ class Compiler {
             lodMinClamp: opts.lodMinClamp,
             lodMaxClamp: opts.lodMaxClamp,
             anisotropy: opts.anisotropy,
-            compareFunction: opts.compareFunction,
+            samplerBindingType: opts.samplerBindingType
+        });
+    }
+
+    /**
+     * @function createComparisonSampler
+     */
+    createComparisonSampler = (
+        opts: {
+            debugLabel?: number,
+            addressModeU?: GPUAddressMode,
+            addressModeV?: GPUAddressMode,
+            addressModeW?: GPUAddressMode,
+            magFilter?: GPUFilterMode,
+            minFilter?: GPUFilterMode,
+            mipmapFilter?: GPUMipmapFilterMode,
+            lodMinClamp?: number,
+            lodMaxClamp?: number
+            anisotropy?: number,
+            compareFunction?: GPUCompareFunction,
+            samplerBindingType?: GPUSamplerBindingType,
+        }
+    ): ComparisonSampler => {
+        return this.samplerState.createComparisonSampler({
+            addressModeU: opts.addressModeU,
+            addressModeV: opts.addressModeV,
+            addressModeW: opts.addressModeW,
+            magFilter: opts.magFilter,
+            minFilter: opts.minFilter,
+            mipmapFilter: opts.mipmapFilter,
+            lodMinClamp: opts.lodMinClamp,
+            lodMaxClamp: opts.lodMaxClamp,
+            anisotropy: opts.anisotropy,
+            compareFunction: opts.compareFunction || 'always',
             samplerBindingType: opts.samplerBindingType
         });
     }

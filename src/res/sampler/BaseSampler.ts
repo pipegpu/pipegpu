@@ -2,13 +2,12 @@ import type { Context } from "../Context";
 import type { FrameStageFormat } from "../Format";
 
 /**
- * 
  * TODO::
  * https://github.com/brendan-duncan/wgsl_reflect/issues/77
- * 
+ * @abstract
+ * @class BaseSampler
  */
 abstract class BaseSampler {
-
     /**
      * 
      */
@@ -115,7 +114,7 @@ abstract class BaseSampler {
         this.lodMinClamp = opts.lodMinClamp || 0.0;
         this.lodMaxClamp = opts.lodMaxClamp || 1.0;
         this.anisotropy = opts.anisotropy || 1;
-        this.compareFunction = opts.compareFunction || 'always';
+        this.compareFunction = opts.compareFunction;
         this.samplerBindingType = opts.samplerBindingType || 'filtering';
     }
 
@@ -153,8 +152,10 @@ abstract class BaseSampler {
             this.samplerDesc.lodMinClamp = this.lodMinClamp;
             this.samplerDesc.lodMaxClamp = this.lodMaxClamp;
             this.samplerDesc.maxAnisotropy = this.anisotropy;
-            // TODO:: default non-compre sampler
-            // this.samplerDesc.compare = this.compareFunction; 
+            if (this.compareFunction) {
+                // TODO:: default non-compre sampler
+                this.samplerDesc.compare = this.compareFunction;
+            }
             this.sampler = this.context?.getGpuDevice().createSampler(this.samplerDesc);
         }
         return this.sampler;

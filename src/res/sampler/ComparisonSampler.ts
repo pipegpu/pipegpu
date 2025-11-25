@@ -3,10 +3,9 @@ import type { FrameStageFormat } from "../Format";
 import { BaseSampler } from "./BaseSampler";
 
 /**
- * 
+ * @class ComparisonSampler
  */
-class TextureSampler extends BaseSampler {
-
+class ComparisonSampler extends BaseSampler {
     /**
      * 
      * @param opts 
@@ -15,6 +14,7 @@ class TextureSampler extends BaseSampler {
         opts: {
             id: number,
             context: Context,
+            compareFunction: GPUCompareFunction,
             addressModeU?: GPUAddressMode,
             addressModeV?: GPUAddressMode,
             addressModeW?: GPUAddressMode,
@@ -46,5 +46,5 @@ class TextureSampler extends BaseSampler {
 }
 
 export {
-    TextureSampler
+    ComparisonSampler
 }
