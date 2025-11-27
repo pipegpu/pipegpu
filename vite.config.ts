@@ -3,9 +3,9 @@ import type { UserConfig } from 'vite'
 export default {
   build: {
     lib: {
-      name: 'pipegpu',
+      name: 'pipegpu.core',
       entry: ['src/index.ts'],
-      fileName: (format, entryName) => `pipegpu.${format}.js`,
+      fileName: (format, _entryName) => `pipegpu.core.${format}.js`,
       cssFileName: 'pipegpu-lib-style',
       formats: ['es', 'iife', 'umd', 'cjs', 'system'],
     },

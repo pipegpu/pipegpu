@@ -5,21 +5,21 @@ import {
     BaseHolder,
 } from '../src/index'
 
-import { initDrawCount } from './tech/initDrawCount'
-import { initDrawIndexed } from './tech/initDrawIndexed'
-import { initDrawInstance } from './tech/initDrawInstance'
-import { initKTXTexture2D } from './tech/initKTXTexture2D'
-import { initKTXTexture2DArray } from './tech/initKTXTexture2DArray'
-import { initDrawIndriect } from './tech/initDrawIndirect'
-import { initMultiDrawIndirect } from './tech/initMultiDrawIndirect'
-import { initDrawIndexedIndirect } from './tech/initDrawIndexedIndirect.ts'
-import { initMultiDrawIndexedIndirect } from './tech/initMultiDrawIndexedIndirect.ts'
-import { initMultiDrawIndirectWithStorageVertex } from './tech/initMultiDrawIndirectWithStorageVertex.ts'
-import { initTexelCopy } from './tech/initTexelCopy.ts'
-import { initDrawWithArrayBuffer } from './tech/initDrawWithArrayBuffer.ts'
-import { initReversedZ } from './tech/initReversedZ.ts'
+// import { initDrawCount } from './tech/initDrawCount'
+// import { initDrawIndexed } from './tech/initDrawIndexed'
+// import { initDrawInstance } from './tech/initDrawInstance'
+// import { initKTXTexture2D } from './tech/initKTXTexture2D'
+// import { initKTXTexture2DArray } from './tech/initKTXTexture2DArray'
+// import { initDrawIndriect } from './tech/initDrawIndirect'
+// import { initMultiDrawIndirect } from './tech/initMultiDrawIndirect'
+// import { initDrawIndexedIndirect } from './tech/initDrawIndexedIndirect.ts'
+// import { initMultiDrawIndexedIndirect } from './tech/initMultiDrawIndexedIndirect.ts'
+// import { initMultiDrawIndirectWithStorageVertex } from './tech/initMultiDrawIndirectWithStorageVertex.ts'
+// import { initTexelCopy } from './tech/initTexelCopy.ts'
+// import { initDrawWithArrayBuffer } from './tech/initDrawWithArrayBuffer.ts'
+// import { initReversedZ } from './tech/initReversedZ.ts'
 import { initDeferred } from './tech/initDeferred.ts'
-import { initTextureCube } from './tech/initTextureCube.ts'
+// import { initTextureCube } from './tech/initTextureCube.ts'
 
 (async () => {
 
@@ -126,8 +126,8 @@ import { initTextureCube } from './tech/initTextureCube.ts'
         // console.log(f32DebugBuffer);
         requestAnimationFrame(renderLoop);
     };
-    requestAnimationFrame(renderLoop);
 
+    renderLoop();
 })();
 
 
